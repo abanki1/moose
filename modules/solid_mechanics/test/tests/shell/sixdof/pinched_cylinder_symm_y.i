@@ -6,41 +6,7 @@
 [Mesh]
   [./mesh]
     type = FileMeshGenerator
-    file = pinched_cyl_10_10.msh
-  [../]
-  [./block_100]
-    type = ParsedSubdomainMeshGenerator
-    input = mesh
-    combinatorial_geometry = 'x > -1.1 & x < 1.1 & y > -1.1 & y < 1.1 & z > -0.1 & z < 2.1'
-    block_id = 100
-  [../]
-  [./nodeset_1]
-    type = BoundingBoxNodeSetGenerator
-    input = block_100
-    top_right = '1.1 1.1 0'
-    bottom_left = '-1.1 -1.1 0'
-    new_boundary = 'CD' #CD
-  [../]
-  [./nodeset_2]
-    type = BoundingBoxNodeSetGenerator
-    input = nodeset_1
-    top_right = '1.1 1.1 1.0'
-    bottom_left = '-1.1 -1.1 1.0'
-    new_boundary = 'AB' #AB
-  [../]
-  [./nodeset_3]
-    type = BoundingBoxNodeSetGenerator
-    input = nodeset_2
-    top_right = '0.02 1.1 1.0'
-    bottom_left = '-0.1 0.98 0.0'
-    new_boundary = 'AD' #AD
-  [../]
-  [./nodeset_4]
-    type = BoundingBoxNodeSetGenerator
-    input = nodeset_3
-    top_right = '1.1 0.02 1.0'
-    bottom_left = '0.98 -0.1 0.0'
-    new_boundary = 'BC' #BC
+    file = cyl.e
   [../]
 []
 
@@ -111,19 +77,13 @@
   [../]
 []
 
-[DiracKernels]
-  # [./point1]
-  #   type = ConstantPointSource
-  #   variable = disp_x
-  #   point = '1 0 1'
-  #   value = -2.5 # P = 10
-  # [../]
-  [./point1]
-    type = ConstantPointSource
+[NodalKernels]
+  [pinch]
+    type = UserForcingFunctionNodalKernel
+    boundary = 'AD' #'11'
+    function = -2.5
     variable = disp_y
-    point = '0 1 1'
-    value = -2.5 # P = 10
-  [../]
+  []
 []
 
 [Preconditioning]
@@ -137,8 +97,8 @@
   type = Transient
   solve_type = NEWTON
   line_search = 'none'
-  petsc_options_iname = '-pc_type -sub_pc_type -sub_pc_factor_shift_type'
-  petsc_options_value = 'asm      ilu          nonzero'
+  petsc_options_iname = '-pc_type'
+  petsc_options_value = 'lu'
   nl_rel_tol = 1e-10
   nl_abs_tol = 1e-8
   dt = 1.0
@@ -182,7 +142,7 @@
     component = 4
     variable = rot_y
     through_thickness_order = SECOND
-     penalty = 0
+    penalty = 0
   [../]
   [./solid_rot_z]
     type = ADStressDivergenceShell2
@@ -190,7 +150,7 @@
     component = 5
     variable = rot_z
     through_thickness_order = SECOND
-   penalty = 0
+    penalty = 0
   [../]
 []
 
@@ -198,7 +158,7 @@
   [./elasticity]
     type = ADComputeIsotropicElasticityTensorShell
     youngs_modulus = 1e6
-    poissons_ratio = 0.3
+    poissons_ratio = 0.0
     block = '100'
     through_thickness_order = SECOND
   [../]
