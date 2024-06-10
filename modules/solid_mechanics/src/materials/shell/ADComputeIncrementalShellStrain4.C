@@ -14,6 +14,7 @@
 #include "MooseVariable.h"
 #include "ArbitraryQuadrature.h"
 #include "DenseMatrix.h"
+#include "FEProblemBase.h"
 
 #include "libmesh/quadrature.h"
 #include "libmesh/utility.h"
@@ -44,7 +45,8 @@ ADComputeIncrementalShellStrain4::validParams()
   return params;
 }
 
-ADComputeIncrementalShellStrain4::ADComputeIncrementalShellStrain4(const InputParameters & parameters)
+ADComputeIncrementalShellStrain4::ADComputeIncrementalShellStrain4(
+    const InputParameters & parameters)
   : Material(parameters),
     _nrot(coupledComponents("rotations")),
     _ndisp(coupledComponents("displacements")),
@@ -92,7 +94,8 @@ ADComputeIncrementalShellStrain4::ADComputeIncrementalShellStrain4(const InputPa
     _cos_zv2_old(getMaterialPropertyOldByName<Real>("cos_zv2")),
     _cos_zvn_old(getMaterialPropertyOldByName<Real>("cos_zvn")),
     _global_local_rotation(declareADProperty<RankTwoTensor>("global_local_rotation")),
-    _global_local_rotation_old(getMaterialPropertyOldByName<RankTwoTensor>("global_local_rotation")),
+    _global_local_rotation_old(
+        getMaterialPropertyOldByName<RankTwoTensor>("global_local_rotation")),
     _B(),
     _B_old(),
     _ge(),
@@ -164,14 +167,10 @@ ADComputeIncrementalShellStrain4::ADComputeIncrementalShellStrain4(const InputPa
   {
     _strain_increment[i] =
         &declareADProperty<RankTwoTensor>("strain_increment_t_points_" + std::to_string(i));
-    _gamma_test[i] =
-        &declareADProperty<Real>("gamma_test_t_points_" + std::to_string(i));
-    _gamma_test_x[i] =
-        &declareADProperty<Real>("gamma_test_x_t_points_" + std::to_string(i));
-    _gamma_test_y[i] =
-        &declareADProperty<Real>("gamma_test_y_t_points_" + std::to_string(i));
-    _gamma_test_z[i] =
-        &declareADProperty<Real>("gamma_test_z_t_points_" + std::to_string(i));
+    _gamma_test[i] = &declareADProperty<Real>("gamma_test_t_points_" + std::to_string(i));
+    _gamma_test_x[i] = &declareADProperty<Real>("gamma_test_x_t_points_" + std::to_string(i));
+    _gamma_test_y[i] = &declareADProperty<Real>("gamma_test_y_t_points_" + std::to_string(i));
+    _gamma_test_z[i] = &declareADProperty<Real>("gamma_test_z_t_points_" + std::to_string(i));
     _total_strain[i] =
         &declareADProperty<RankTwoTensor>("total_strain_t_points_" + std::to_string(i));
     _total_strain_old[i] =
@@ -224,7 +223,7 @@ ADComputeIncrementalShellStrain4::initQpStatefulProperties()
     mooseError("ADComputeIncrementalShellStrain4: Shell element needs to have exactly four "
                "quadrature points.");
 
-//  std::cout<<"BWS init elem id: "<<_current_elem->id()<<std::endl;
+  //  std::cout<<"BWS init elem id: "<<_current_elem->id()<<std::endl;
   computeGMatrix();
   computeBMatrix();
 }
@@ -294,22 +293,22 @@ ADComputeIncrementalShellStrain4::computeProperties()
       /// was trying to use the current solution but was giving zero. So, had to use the solution vector. Should
       /// still work for the single timestep solution as old soln is zero  and sol vector should give current soln
 
-
-      //Calculate the local out of plane rotation value
-      //(*_gamma_test[j])[i] =  (*_cos_xvn)[i] * _soln_current(12+i) + (*_cos_yvn)[i] * _soln_current(16+i)
-      //                        + (*_cos_zvn)[i] * _soln_current(20+i);
-      (*_gamma_test[j])[i] =  (_cos_xvn[i]) * _soln_vector(12+i) + (_cos_yvn[i]) * _soln_vector(16+i)
-                              + (_cos_zvn[i]) * _soln_vector(20+i);
+      // Calculate the local out of plane rotation value
+      //(*_gamma_test[j])[i] =  (*_cos_xvn)[i] * _soln_current(12+i) + (*_cos_yvn)[i] *
+      //_soln_current(16+i)
+      //                         + (*_cos_zvn)[i] * _soln_current(20+i);
+      (*_gamma_test[j])[i] = (_cos_xvn[i]) * _soln_vector(12 + i) +
+                             (_cos_yvn[i]) * _soln_vector(16 + i) +
+                             (_cos_zvn[i]) * _soln_vector(20 + i);
 
       // Calculate the component of out plane rotation in the cartesian coordinates.
-//      (*_gamma_test_x[j])[i] =  (*_gamma_test[j])[i] * _cos_xvn[i] ;
-//      (*_gamma_test_y[j])[i] =  (*_gamma_test[j])[i] * _cos_yvn[i] ;
-//      (*_gamma_test_z[j])[i] =  (*_gamma_test[j])[i] * _cos_zvn[i] ;
+      //      (*_gamma_test_x[j])[i] =  (*_gamma_test[j])[i] * _cos_xvn[i] ;
+      //      (*_gamma_test_y[j])[i] =  (*_gamma_test[j])[i] * _cos_yvn[i] ;
+      //      (*_gamma_test_z[j])[i] =  (*_gamma_test[j])[i] * _cos_zvn[i] ;
 
-      (*_gamma_test_x[j])[i] =  _soln_vector(12+i);
-      (*_gamma_test_y[j])[i] =  _soln_vector(16+i);
-      (*_gamma_test_z[j])[i] =  _soln_vector(20+i);
-
+      (*_gamma_test_x[j])[i] = _soln_vector(12 + i);
+      (*_gamma_test_y[j])[i] = _soln_vector(16 + i);
+      (*_gamma_test_z[j])[i] = _soln_vector(20 + i);
 
       for (unsigned int ii = 0; ii < 3; ++ii)
         for (unsigned int jj = 0; jj < 3; ++jj)
@@ -326,8 +325,6 @@ ADComputeIncrementalShellStrain4::computeProperties()
       //   std::cout << " unrotated strain xz = " << _unrotated_total_strain(0, 2) << " \n";
       //   std::cout << " unrotated strain yz = " << _unrotated_total_strain(1, 2) << " \n";
       // }
-
-
     }
   }
 }
@@ -339,7 +336,7 @@ ADComputeIncrementalShellStrain4::computeGMatrix()
   _2d_points = _qrule->get_points(); // would be in 2D
 
   unsigned int dim = _current_elem->dim();
-//  std::cout<<"BWS elem id: "<<_current_elem->id()<<std::endl;
+  //  std::cout<<"BWS elem id: "<<_current_elem->id()<<std::endl;
 
   // derivatives of shape functions (dphidxi, dphideta and dphidzeta) evaluated at quadrature points
   // (in isoparametric space).
@@ -358,21 +355,18 @@ ADComputeIncrementalShellStrain4::computeGMatrix()
   ADRealVectorValue normal = x.cross(y);
   normal /= normal.norm();
 
- // std::cout << "node 0 = " << *_nodes[0] << " \n";
- // std::cout << "node 1 = " << *_nodes[1] << " \n";
- // std::cout << "node 2 = " << *_nodes[2] << " \n";
- // std::cout << "node 3 = " << *_nodes[3] << " \n";
+  // std::cout << "node 0 = " << *_nodes[0] << " \n";
+  // std::cout << "node 1 = " << *_nodes[1] << " \n";
+  // std::cout << "node 2 = " << *_nodes[2] << " \n";
+  // std::cout << "node 3 = " << *_nodes[3] << " \n";
 
   for (unsigned int k = 0; k < 4; ++k)
   {
-        _node_normal[k] = normal;
-      // std::cout << "node normal before " << k << " 0 = " << _node_normal[k](0) << " \n";
-      // std::cout << "node normal before " << k << " 1 = " << _node_normal[k](1) << " \n";
-      // std::cout << "node normal before " << k << " 2 = " << _node_normal[k](2) << " \n";
+    _node_normal[k] = normal;
+    // std::cout << "node normal before " << k << " 0 = " << _node_normal[k](0) << " \n";
+    // std::cout << "node normal before " << k << " 1 = " << _node_normal[k](1) << " \n";
+    // std::cout << "node normal before " << k << " 2 = " << _node_normal[k](2) << " \n";
   }
-
-
-
 
   ADRankTwoTensor a;
   ADDenseMatrix b(5, 20);
@@ -380,7 +374,7 @@ ADComputeIncrementalShellStrain4::computeGMatrix()
   RankTwoTensor d;
   for (unsigned int t = 0; t < _t_points.size(); ++t)
   {
-//    std::cout<<"BWS t="<<t<<" qp="<<_qp<<std::endl;
+    //    std::cout<<"BWS t="<<t<<" qp="<<_qp<<std::endl;
     (*_strain_increment[t])[_qp] = a;
     (*_total_strain[t])[_qp] = a;
     (*_B[t])[_qp] = b;
@@ -418,8 +412,8 @@ ADComputeIncrementalShellStrain4::computeGMatrix()
               _thickness[i] * _phi_map[k][i] * _node_normal[k](component) / 2.0;
         }
       }
-//      std::cout<<std::endl<<"BWS node 1:"<<std::endl;
-//      std::cout<<(*_nodes[0])(0)<<" "<<(*_nodes[0])(1)<<" "<<(*_nodes[0])(2)<<std::endl;
+      //      std::cout<<std::endl<<"BWS node 1:"<<std::endl;
+      //      std::cout<<(*_nodes[0])(0)<<" "<<(*_nodes[0])(1)<<" "<<(*_nodes[0])(2)<<std::endl;
     }
   }
 
@@ -471,8 +465,8 @@ ADComputeIncrementalShellStrain4::computeGMatrix()
       J(2, 2) /= normz;
 
       (*_transformation_matrix)[i] = J;
-//      std::cout<<"BWS transformation matrix:"<<std::endl;
-//      (*_transformation_matrix)[i].print();
+      //      std::cout<<"BWS transformation matrix:"<<std::endl;
+      //      (*_transformation_matrix)[i].print();
 
       // calculate ge
       ADRealVectorValue e3 = (*_dxyz_dzeta[j])[i] / (*_dxyz_dzeta[j])[i].norm();
@@ -520,21 +514,22 @@ ADComputeIncrementalShellStrain4::computeGMatrix()
       (*_ge[j])[i](2, 1) = (gmninv * (*_dxyz_dzeta[j])[i]) * e2;
       (*_ge[j])[i](2, 2) = (gmninv * (*_dxyz_dzeta[j])[i]) * e3;
 
-//      std::cout<<"BWS elem id: "<<_current_elem->id()<<std::endl;
-//      std::cout<<std::endl<<"BWS gmninv:"<<std::endl;
-//      gmninv.printReal();
-//      std::cout<<std::endl<<"BWS dxyz_dxi:"<<std::endl;
-//      std::cout<<(*_dxyz_dxi[j])[i](0)<<" "<<(*_dxyz_dxi[j])[i](1)<<" "<<(*_dxyz_dxi[j])[i](2)<<std::endl;
-//      std::cout<<std::endl<<"BWS dxyz_deta:"<<std::endl;
-//      std::cout<<(*_dxyz_deta[j])[i](0)<<" "<<(*_dxyz_deta[j])[i](1)<<" "<<(*_dxyz_deta[j])[i](2)<<std::endl;
-//      std::cout<<std::endl<<"BWS dxyz_dzeta:"<<std::endl;
-//      std::cout<<(*_dxyz_dzeta[j])[i](0)<<" "<<(*_dxyz_dzeta[j])[i](1)<<" "<<(*_dxyz_dzeta[j])[i](2)<<std::endl;
-//      std::cout<<std::endl<<"BWS ge:"<<std::endl;
-//      (*_ge[j])[i].printReal();
-//      std::cout<<std::endl<<"BWS covariant:"<<std::endl;
-//      (*_covariant_transformation_matrix[j])[i].printReal();
-//      std::cout<<std::endl<<"BWS contravariant:"<<std::endl;
-//      (*_contravariant_transformation_matrix[j])[i].printReal();
+      //      std::cout<<"BWS elem id: "<<_current_elem->id()<<std::endl;
+      //      std::cout<<std::endl<<"BWS gmninv:"<<std::endl;
+      //      gmninv.printReal();
+      //      std::cout<<std::endl<<"BWS dxyz_dxi:"<<std::endl;
+      //      std::cout<<(*_dxyz_dxi[j])[i](0)<<" "<<(*_dxyz_dxi[j])[i](1)<<"
+      //      "<<(*_dxyz_dxi[j])[i](2)<<std::endl; std::cout<<std::endl<<"BWS
+      //      dxyz_deta:"<<std::endl; std::cout<<(*_dxyz_deta[j])[i](0)<<"
+      //      "<<(*_dxyz_deta[j])[i](1)<<" "<<(*_dxyz_deta[j])[i](2)<<std::endl;
+      //      std::cout<<std::endl<<"BWS dxyz_dzeta:"<<std::endl;
+      //      std::cout<<(*_dxyz_dzeta[j])[i](0)<<" "<<(*_dxyz_dzeta[j])[i](1)<<"
+      //      "<<(*_dxyz_dzeta[j])[i](2)<<std::endl; std::cout<<std::endl<<"BWS ge:"<<std::endl;
+      //      (*_ge[j])[i].printReal();
+      //      std::cout<<std::endl<<"BWS covariant:"<<std::endl;
+      //      (*_covariant_transformation_matrix[j])[i].printReal();
+      //      std::cout<<std::endl<<"BWS contravariant:"<<std::endl;
+      //      (*_contravariant_transformation_matrix[j])[i].printReal();
     }
   }
 }
@@ -565,37 +560,49 @@ ADComputeIncrementalShellStrain4::computeBMatrix()
       _v1[k] = _x3;
 
     _v2[k] = _node_normal[k].cross(_v1[k]);
-  // std::cout << " k = " << k << " \n";
-  //   std::cout << "v1 " << k << " 0 = " << _v1[k](0) << " \n";
-  //   std::cout << "v1 " << k << " 1 = " << _v1[k](1) << " \n";
-  //   std::cout << "v1 " << k << " 2 = " << _v1[k](2) << " \n";
-  //   std::cout << "v2 " << k << " 0 = " << _v2[k](0) << " \n";
-  //   std::cout << "v2 " << k << " 1 = " << _v2[k](1) << " \n";
-  //   std::cout << "v2 " << k << " 2 = " << _v2[k](2) << " \n";
+    // std::cout << " k = " << k << " \n";
+    //   std::cout << "v1 " << k << " 0 = " << _v1[k](0) << " \n";
+    //   std::cout << "v1 " << k << " 1 = " << _v1[k](1) << " \n";
+    //   std::cout << "v1 " << k << " 2 = " << _v1[k](2) << " \n";
+    //   std::cout << "v2 " << k << " 0 = " << _v2[k](0) << " \n";
+    //   std::cout << "v2 " << k << " 1 = " << _v2[k](1) << " \n";
+    //   std::cout << "v2 " << k << " 2 = " << _v2[k](2) << " \n";
 
-    //Calculate angles between the local coordinate axes and global coordinate axes
-    (_cos_xv1[k]) = MathUtils::dotProduct(_x1, _v1[k])/ ( _x1.norm() * _v1[k].norm());
-    (_cos_xv2[k]) = MathUtils::dotProduct(_x1, _v2[k])/ ( _x1.norm() * _v2[k].norm());
-    (_cos_xvn[k]) = MathUtils::dotProduct(_x1, _node_normal[k])/ ( _x1.norm() * _node_normal[k].norm());
-    (_cos_yv1[k]) = MathUtils::dotProduct(_x2, _v1[k])/ ( _x2.norm() * _v1[k].norm());
-    (_cos_yv2[k]) = MathUtils::dotProduct(_x2, _v2[k])/ ( _x2.norm() * _v2[k].norm());
-    (_cos_yvn[k]) = MathUtils::dotProduct(_x2, _node_normal[k])/ ( _x2.norm() * _node_normal[k].norm());
-    (_cos_zv1[k]) = MathUtils::dotProduct(_x3, _v1[k])/ ( _x3.norm() * _v1[k].norm());
-    (_cos_zv2[k]) = MathUtils::dotProduct(_x3, _v2[k])/ ( _x3.norm() * _v2[k].norm());
-    (_cos_zvn[k]) = MathUtils::dotProduct(_x3, _node_normal[k])/ ( _x3.norm() * _node_normal[k].norm());
+    // Calculate angles between the local coordinate axes and global coordinate axes
+    (_cos_xv1[k]) = MathUtils::dotProduct(_x1, _v1[k]) / (_x1.norm() * _v1[k].norm());
+    (_cos_xv2[k]) = MathUtils::dotProduct(_x1, _v2[k]) / (_x1.norm() * _v2[k].norm());
+    (_cos_xvn[k]) =
+        MathUtils::dotProduct(_x1, _node_normal[k]) / (_x1.norm() * _node_normal[k].norm());
+    (_cos_yv1[k]) = MathUtils::dotProduct(_x2, _v1[k]) / (_x2.norm() * _v1[k].norm());
+    (_cos_yv2[k]) = MathUtils::dotProduct(_x2, _v2[k]) / (_x2.norm() * _v2[k].norm());
+    (_cos_yvn[k]) =
+        MathUtils::dotProduct(_x2, _node_normal[k]) / (_x2.norm() * _node_normal[k].norm());
+    (_cos_zv1[k]) = MathUtils::dotProduct(_x3, _v1[k]) / (_x3.norm() * _v1[k].norm());
+    (_cos_zv2[k]) = MathUtils::dotProduct(_x3, _v2[k]) / (_x3.norm() * _v2[k].norm());
+    (_cos_zvn[k]) =
+        MathUtils::dotProduct(_x3, _node_normal[k]) / (_x3.norm() * _node_normal[k].norm());
 
     _global_local_rotation[k].zero();
-    _global_local_rotation[k](0,0) = MathUtils::dotProduct(_x1, _v1[k])/ ( _x1.norm() * _v1[k].norm());
-    _global_local_rotation[k](1,0) = MathUtils::dotProduct(_x1, _v2[k])/ ( _x1.norm() * _v2[k].norm());
-    _global_local_rotation[k](2,0) = MathUtils::dotProduct(_x1, _node_normal[k])/ ( _x1.norm() * _node_normal[k].norm());
-    _global_local_rotation[k](0,1)  = MathUtils::dotProduct(_x2, _v1[k])/ ( _x2.norm() * _v1[k].norm());
-    _global_local_rotation[k](1,1)  = MathUtils::dotProduct(_x2, _v2[k])/ ( _x2.norm() * _v2[k].norm());
-    _global_local_rotation[k](2,1)  = MathUtils::dotProduct(_x2, _node_normal[k])/ ( _x2.norm() * _node_normal[k].norm());
-    _global_local_rotation[k](0,2)  = MathUtils::dotProduct(_x3, _v1[k])/ ( _x3.norm() * _v1[k].norm());
-    _global_local_rotation[k](1,2)  = MathUtils::dotProduct(_x3, _v2[k])/ ( _x3.norm() * _v2[k].norm());
-    _global_local_rotation[k](2,2)  = MathUtils::dotProduct(_x3, _node_normal[k])/ ( _x3.norm() * _node_normal[k].norm());
+    _global_local_rotation[k](0, 0) =
+        MathUtils::dotProduct(_x1, _v1[k]) / (_x1.norm() * _v1[k].norm());
+    _global_local_rotation[k](1, 0) =
+        MathUtils::dotProduct(_x1, _v2[k]) / (_x1.norm() * _v2[k].norm());
+    _global_local_rotation[k](2, 0) =
+        MathUtils::dotProduct(_x1, _node_normal[k]) / (_x1.norm() * _node_normal[k].norm());
+    _global_local_rotation[k](0, 1) =
+        MathUtils::dotProduct(_x2, _v1[k]) / (_x2.norm() * _v1[k].norm());
+    _global_local_rotation[k](1, 1) =
+        MathUtils::dotProduct(_x2, _v2[k]) / (_x2.norm() * _v2[k].norm());
+    _global_local_rotation[k](2, 1) =
+        MathUtils::dotProduct(_x2, _node_normal[k]) / (_x2.norm() * _node_normal[k].norm());
+    _global_local_rotation[k](0, 2) =
+        MathUtils::dotProduct(_x3, _v1[k]) / (_x3.norm() * _v1[k].norm());
+    _global_local_rotation[k](1, 2) =
+        MathUtils::dotProduct(_x3, _v2[k]) / (_x3.norm() * _v2[k].norm());
+    _global_local_rotation[k](2, 2) =
+        MathUtils::dotProduct(_x3, _node_normal[k]) / (_x3.norm() * _node_normal[k].norm());
 
-    std::cout<<"BWS elem: "<<_current_elem->id()<<" node: "<<k<<std::endl;
+    std::cout << "BWS elem: " << _current_elem->id() << " node: " << k << std::endl;
     std::cout << " cosxv1 = " << (_cos_xv1[k]) << " \n";
     std::cout << " cosxv2  = " << (_cos_xv2[k]) << " \n";
     std::cout << " cosxvn  = " << (_cos_xvn[k]) << " \n";
@@ -604,35 +611,31 @@ ADComputeIncrementalShellStrain4::computeBMatrix()
     std::cout << " cosyvn  = " << (_cos_yvn[k]) << " \n";
     std::cout << " coszv1  = " << (_cos_zv1[k]) << " \n";
     std::cout << " coszv2  = " << (_cos_zv2[k]) << " \n";
-    std::cout << " global_local_rotation:"<<std::endl;
+    std::cout << " global_local_rotation:" << std::endl;
     _global_local_rotation[k].print();
 
-
-        // std::cout << " cosxv1 = " << (_cos_xv1[k]) << " \n";
-        // std::cout << " cosxv2  = " << (_cos_xv2[k]) << " \n";
-        // std::cout << " cosxvn  = " << (_cos_xvn[k]) << " \n";
-        // std::cout << " cosyv1  = " << (_cos_yv1[k]) << " \n";
-        // std::cout << " cosyv2  = " << (_cos_yv2[k]) << " \n";
-        // std::cout << " cosyvn  = " << (_cos_yvn[k]) << " \n";
-        // std::cout << " coszv1  = " << (_cos_zv1[k]) << " \n";
-        // std::cout << " coszv2  = " << (_cos_zv2[k]) << " \n";
-        // std::cout << "node normal in " << k << " 0 = " << _node_normal[k](0) << " \n";
-        // std::cout << "node normal in " << k << " 1 = " << _node_normal[k](1) << " \n";
-        // std::cout << "node normal in " << k << " 2 = " << _node_normal[k](2) << " \n";
-        // std::cout << " coszvn  = " << (_cos_zvn[k]) << " \n";
-
-
-
+    // std::cout << " cosxv1 = " << (_cos_xv1[k]) << " \n";
+    // std::cout << " cosxv2  = " << (_cos_xv2[k]) << " \n";
+    // std::cout << " cosxvn  = " << (_cos_xvn[k]) << " \n";
+    // std::cout << " cosyv1  = " << (_cos_yv1[k]) << " \n";
+    // std::cout << " cosyv2  = " << (_cos_yv2[k]) << " \n";
+    // std::cout << " cosyvn  = " << (_cos_yvn[k]) << " \n";
+    // std::cout << " coszv1  = " << (_cos_zv1[k]) << " \n";
+    // std::cout << " coszv2  = " << (_cos_zv2[k]) << " \n";
+    // std::cout << "node normal in " << k << " 0 = " << _node_normal[k](0) << " \n";
+    // std::cout << "node normal in " << k << " 1 = " << _node_normal[k](1) << " \n";
+    // std::cout << "node normal in " << k << " 2 = " << _node_normal[k](2) << " \n";
+    // std::cout << " coszvn  = " << (_cos_zvn[k]) << " \n";
   }
 
   // compute B matrix rows correspond to [ux1, ux2, ux3, ux4, uy1, uy2, uy3, uy4, uz1, uz2, uz3,
   // uz4, rx1, rx2, rx3, rx4, ry1, ry2, ry3, ry4, rz1, rz2, rz3, rz4]
 
-  //changes required
+  // changes required
 
   for (unsigned int i = 0; i < _2d_points.size(); ++i)
   {
-      // std::cout << " node " << i << "\n";
+    // std::cout << " node " << i << "\n";
     for (unsigned int j = 0; j < _t_points.size(); ++j)
     {
       (*_B[j])[i].resize(5, 20);
@@ -762,13 +765,14 @@ ADComputeIncrementalShellStrain4::computeSolnVector()
 
     for (unsigned int k = 0; k < _ndisp; ++k)
       for (unsigned int l = 0; l < _ndisp; ++l)
-        _soln_vector_local_5dof(j + k * _nodes.size()) += _global_local_rotation[j](k, l) * _soln_vector(j + l * _nodes.size());
+        _soln_vector_local_5dof(j + k * _nodes.size()) +=
+            _global_local_rotation[j](k, l) * _soln_vector(j + l * _nodes.size());
 
-//    for (unsigned int k = 0; k < _ndisp; ++k)
-//      for (unsigned int l = 0; l < _ndisp; ++l)
-//        if (k == l)
-//          _soln_vector_local_5dof(j + k * _nodes.size()) = _soln_vector(j + l * _nodes.size());
-
+    //    for (unsigned int k = 0; k < _ndisp; ++k)
+    //      for (unsigned int l = 0; l < _ndisp; ++l)
+    //        if (k == l)
+    //          _soln_vector_local_5dof(j + k * _nodes.size()) = _soln_vector(j + l *
+    //          _nodes.size());
 
     for (unsigned int i = 0; i < _nrot; ++i)
     {
@@ -791,25 +795,27 @@ ADComputeIncrementalShellStrain4::computeSolnVector()
 
     for (unsigned int k = 0; k < 2; ++k)
       for (unsigned int l = 0; l < _nrot; ++l)
-        _soln_vector_local_5dof(j + 10 + k * _nodes.size()) += _global_local_rotation[j](k, l) * _soln_vector(j + 12 + l * _nodes.size());
+        _soln_vector_local_5dof(j + 10 + k * _nodes.size()) +=
+            _global_local_rotation[j](k, l) * _soln_vector(j + 12 + l * _nodes.size());
 
-//    for (unsigned int l = 0; l < _nrot; ++l)
-//      _soln_vector_local_z(j + k * _nodes.size()) += _global_local_rotation[j](2, l) * _soln_vector(j + l * _nodes.size());
+    //    for (unsigned int l = 0; l < _nrot; ++l)
+    //      _soln_vector_local_z(j + k * _nodes.size()) += _global_local_rotation[j](2, l) *
+    //      _soln_vector(j + l * _nodes.size());
   }
 
-  std::cout<<"BWS solnvec:"<<std::endl;
+  std::cout << "BWS solnvec:" << std::endl;
   for (unsigned int j = 0; j < 4; ++j)
   {
     for (unsigned int k = 0; k < 6; ++k)
-      std::cout<<MetaPhysicL::raw_value(_soln_vector(j + k*4))<<" ";
-    std::cout<<std::endl;
+      std::cout << MetaPhysicL::raw_value(_soln_vector(j + k * 4)) << " ";
+    std::cout << std::endl;
   }
 
-  std::cout<<"BWS solnvec_5dof:"<<std::endl;
+  std::cout << "BWS solnvec_5dof:" << std::endl;
   for (unsigned int j = 0; j < 4; ++j)
   {
     for (unsigned int k = 0; k < 5; ++k)
-      std::cout<<MetaPhysicL::raw_value(_soln_vector_local_5dof(j + k*4))<<" ";
-    std::cout<<std::endl;
+      std::cout << MetaPhysicL::raw_value(_soln_vector_local_5dof(j + k * 4)) << " ";
+    std::cout << std::endl;
   }
 }

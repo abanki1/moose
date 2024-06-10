@@ -6,6 +6,7 @@
     ny = 10
     xmax = 0.304 # Length of test chamber
     ymax = 0.0257 # Test chamber radius
+    show_info = true
   []
   coord_type = RZ
   rz_coord_axis = X

@@ -39,14 +39,14 @@
     type = DirichletBC
     variable = convected
     boundary = 'bottom'
-    value = 1
+    value = 100
   [../]
 
   [./top_convected]
     type = DirichletBC
     variable = convected
     boundary = 'top'
-    value = 0
+    value = 50
   [../]
 
   [./bottom_diffused]
