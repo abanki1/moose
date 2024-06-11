@@ -19,7 +19,7 @@
 #
 # RESULTS are below. Since stresses are average element values, values for the
 # edge element and one-element-in are used to extrapolate the stress to the
-# inner surface. The vesrion of the tests that are checked use the coarsest meshes.
+# inner surface. The version of the tests that are checked use the coarsest meshes.
 #
 #  Mesh    Radial elem   S(edge elem)  S(one elem in)  S(extrap to surf)
 # 1D-SPH
@@ -184,7 +184,7 @@
   l_max_its = 50
 
   start_time = 0.0
-  end_time = 0.2
+  end_time = 2
   dt = 0.1
 
 []

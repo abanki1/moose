@@ -47,6 +47,7 @@
     poissons_ratio = 0.345
   [../]
   [./stress]
+    type = ComputeLinearElasticStress
   [../]
 []
 
@@ -119,7 +120,7 @@
   l_max_its = 50
 
   start_time = 0.0
-  end_time = 1
+  end_time = 20.0
 #  num_steps = 1000
 
   dtmax = 5e6

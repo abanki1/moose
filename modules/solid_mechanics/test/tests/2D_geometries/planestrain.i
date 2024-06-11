@@ -78,7 +78,7 @@
   start_time = 0.0
   dt = 1.0
   dtmin = 1.0
-  end_time = 5.0
+  end_time = 50.0
 []
 
 [Outputs]

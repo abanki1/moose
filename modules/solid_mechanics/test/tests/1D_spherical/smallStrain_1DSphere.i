@@ -1,6 +1,6 @@
 # This simulation models the mechanics solution for a solid sphere under
 # pressure, applied on the outer surfaces, using 1D spherical symmetry
-# assumpitions.  The inner center of the sphere, r = 0, is pinned to prevent
+# assumptions.  The inner center of the sphere, r = 0, is pinned to prevent
 # movement of the sphere.
 #
 # From Bower (Applied Mechanics of Solids, 2008, available online at
@@ -29,7 +29,7 @@
 []
 
 [Problem]
-  coord_type = RSPHERICAL
+  Mesh/coord_type = RSPHERICAL
 []
 
 [Physics/SolidMechanics/QuasiStatic]
@@ -85,6 +85,7 @@
     youngs_modulus = 1e4
   []
   [stress]
+    type = RankTwoAux
   []
 []
 
@@ -104,9 +105,9 @@
 
   # time control
   start_time = 0.0
-  dt = 0.25
+  dt = 0.20
   dtmin = 0.0001
-  end_time = 0.25
+  end_time = 0.20
 []
 
 [Outputs]

@@ -185,8 +185,8 @@
   nl_rel_tol = 1e-8
   nl_abs_tol = 1e-10
   start_time = 0
-  end_time = 2
-  num_steps = 2
+  end_time = 20
+  num_steps = 20
 []
 
 [Outputs]
