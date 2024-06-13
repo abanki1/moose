@@ -5,7 +5,6 @@
   []
 []
 
-
 [Variables]
   [disp_x]
   []
