@@ -30,6 +30,10 @@
     type = FileMeshGenerator
     file = cylinder_nodesall.e
   [../]
+  # [file]
+  #   type = FileMeshGenerator
+  #   file = pinched_cyl_10_10.msh
+  # []
 []
 
 [Variables]
