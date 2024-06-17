@@ -25,16 +25,54 @@
 # The results from FEM analysis matches well with the series solution and with
 # the solution presented by Dvorkin and Bathe (1984).
 
+# [Mesh]
+#   [./mesh]
+#     type = FileMeshGenerator
+#     file = cylinder_nodesall.e
+#   [../]
+# []
+
 [Mesh]
   [./mesh]
     type = FileMeshGenerator
-    file = cylinder_nodesall.e
+    file = pinched_cyl_10_10.msh
   [../]
-  # [file]
-  #   type = FileMeshGenerator
-  #   file = pinched_cyl_10_10.msh
-  # []
+  [./block_100]
+    type = ParsedSubdomainMeshGenerator
+    input = mesh
+    combinatorial_geometry = 'x > -1.1 & x < 1.1 & y > -1.1 & y < 1.1 & z > -0.1 & z < 2.1'
+    block_id = 100
+  [../]
+  [./nodeset_1]
+    type = BoundingBoxNodeSetGenerator
+    input = block_100
+    top_right = '1.1 1.1 0'
+    bottom_left = '-1.1 -1.1 0'
+    new_boundary = 'CD' #CD
+  [../]
+  [./nodeset_2]
+    type = BoundingBoxNodeSetGenerator
+    input = nodeset_1
+    top_right = '1.1 1.1 1.0'
+    bottom_left = '-1.1 -1.1 1.0'
+    new_boundary = 'AB' #AB
+  [../]
+  [./nodeset_3]
+    type = BoundingBoxNodeSetGenerator
+    input = nodeset_2
+    top_right = '0.02 1.1 1.0'
+    bottom_left = '-0.1 0.98 0.0'
+    new_boundary = 'AD' #AD
+  [../]
+  [./nodeset_4]
+    type = BoundingBoxNodeSetGenerator
+    input = nodeset_3
+    top_right = '1.1 0.02 1.0'
+    bottom_left = '0.98 -0.1 0.0'
+    new_boundary = 'BC' #BC
+  [../]
 []
+
 
 [Variables]
   [./disp_x]
