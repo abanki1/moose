@@ -2,7 +2,6 @@
 
 
 [Mesh]
-
   [file]
       type = FileMeshGenerator
       file = plateyy.msh
@@ -39,6 +38,10 @@
     family = LAGRANGE
   [../]
   [./rot_y]
+    order =FIRST
+    family = LAGRANGE
+  [../]
+  [./rot_z]
     order =FIRST
     family = LAGRANGE
   [../]
@@ -145,6 +148,13 @@
     variable = rot_y
     through_thickness_order = SECOND
   [../]
+
+  [./solid_rot_z]
+    type = ADStressDivergenceShell2
+    component = 5
+    variable = rot_z
+    through_thickness_order = SECOND
+  [../]
 []
 
 [Materials]
@@ -157,7 +167,7 @@
   [./strain]
     type = ADComputeIncrementalShellStrain2
     displacements = 'disp_x disp_y disp_z'
-    rotations = 'rot_x rot_y'
+    rotations = 'rot_x rot_y rot_z'
     thickness = 0.5
     through_thickness_order = SECOND
   [../]
