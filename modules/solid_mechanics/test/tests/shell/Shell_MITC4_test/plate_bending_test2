@@ -1,4 +1,6 @@
-
+#A new input file to check the setup of 2.C files
+#The current code simulates the bending behavior of a clamped cantilever plate under transverse loading
+#as shown in MOOSE Discussion #27038
 
 
 [Mesh]
@@ -78,6 +80,12 @@
     boundary = 'right'
     value = 0.0
   [../]
+  [./symm_bottom_rotz]
+    type = DirichletBC
+    variable = rot_z
+    boundary = 'right'
+    value = 0.0
+  [../]
       [./side2]
     type = FunctionDirichletBC
     variable = disp_z
@@ -85,8 +93,6 @@
     function = '-0.5*t'
    [../]
      
-  
- 
 []
 
 

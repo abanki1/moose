@@ -48,7 +48,7 @@ protected:
   std::vector<Point> _t_points;
 
   /// Covariant base vector matrix material property to transform stress
-  std::vector<const MaterialProperty<RankTwoTensor> *> _covariant_transformation_matrix;
+  std::vector<const ADMaterialProperty<RankTwoTensor> *> _covariant_transformation_matrix;
 
   /// Global stress tensor material property
   std::vector<MaterialProperty<RankTwoTensor> *> _global_stress;

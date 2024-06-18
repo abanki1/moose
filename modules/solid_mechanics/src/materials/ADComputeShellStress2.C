@@ -19,6 +19,8 @@
 #include "libmesh/string_to_enum.h"
 #include "libmesh/quadrature_gauss.h"
 
+#include "metaphysicl/raw_type.h"
+
 registerMooseObject("SolidMechanicsApp", ADComputeShellStress2);
 
 InputParameters
@@ -54,13 +56,12 @@ ADComputeShellStress2::ADComputeShellStress2(const InputParameters & parameters)
     _strain_increment[t] =
         &getADMaterialProperty<RankTwoTensor>("strain_increment_t_points_" + std::to_string(t));
     // rotation matrix and stress for output purposes only
-    _covariant_transformation_matrix[t] = &getMaterialProperty<RankTwoTensor>(
+    _covariant_transformation_matrix[t] = &getADMaterialProperty<RankTwoTensor>(
         "covariant_transformation_t_points_" + std::to_string(t));
     _global_stress[t] =
         &declareProperty<RankTwoTensor>("global_stress_t_points_" + std::to_string(t));
   }
 }
-
 void
 ADComputeShellStress2::initQpStatefulProperties()
 {
@@ -80,7 +81,8 @@ ADComputeShellStress2::computeQpProperties()
     for (unsigned int ii = 0; ii < 3; ++ii)
       for (unsigned int jj = 0; jj < 3; ++jj)
         _unrotated_stress(ii, jj) = MetaPhysicL::raw_value((*_stress[i])[_qp](ii, jj));
-    (*_global_stress[i])[_qp] = (*_covariant_transformation_matrix[i])[_qp].transpose() *
-                                _unrotated_stress * (*_covariant_transformation_matrix[i])[_qp];
+    (*_global_stress[i])[_qp] =
+        MetaPhysicL::raw_value((*_covariant_transformation_matrix[i])[_qp]).transpose() *
+        _unrotated_stress * MetaPhysicL::raw_value((*_covariant_transformation_matrix[i])[_qp]);
   }
 }
