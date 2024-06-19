@@ -50,9 +50,9 @@ ADComputeShellStress2::ADComputeShellStress2(const InputParameters & parameters)
   {
     _elasticity_tensor[t] =
         &getADMaterialProperty<RankFourTensor>("elasticity_tensor_t_points_" + std::to_string(t));
-    _stress[t] = &declareADProperty<RankTwoTensor>("stress_t_points_" + std::to_string(t));
+    _stress[t] = &declareADProperty<RankTwoTensor>("t_points_" + std::to_string(t)+"_stress");
     _stress_old[t] =
-        &getMaterialPropertyOldByName<RankTwoTensor>("stress_t_points_" + std::to_string(t));
+        &getMaterialPropertyOldByName<RankTwoTensor>("t_points_" + std::to_string(t)+"_stress");
     _strain_increment[t] =
         &getADMaterialProperty<RankTwoTensor>("strain_increment_t_points_" + std::to_string(t));
     // rotation matrix and stress for output purposes only

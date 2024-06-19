@@ -68,9 +68,9 @@ ADStressDivergenceShell2::ADStressDivergenceShell2(const InputParameters & param
 
   for (unsigned int i = 0; i < _t_weights.size(); ++i)
   {
-    _stress[i] = &getADMaterialProperty<RankTwoTensor>("t_points_" + std::to_string(i) + "_stress");
+    _stress[i] = &getADMaterialProperty<RankTwoTensor>("t_points_" + std::to_string(t)+"_stress");
     _stress_old[i] =
-        &getMaterialPropertyOldByName<RankTwoTensor>("t_points_" + std::to_string(i) + "_stress");
+        &getMaterialPropertyOldByName<RankTwoTensor>("t_points_" + std::to_string(t)+"_stress");
     _contravariant_transformation_matrix[i] = &getADMaterialProperty<RankTwoTensor>(
         "contravariant_transformation_t_points_" + std::to_string(i));
     _B_mat[i] = &getADMaterialProperty<DenseMatrix<Real>>("B_t_points_" + std::to_string(i));
