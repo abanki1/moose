@@ -123,8 +123,17 @@
   type = Transient
   solve_type = NEWTON
   line_search = 'none'
+#  petsc_options_iname = '-pc_type'
+#  petsc_options_value = 'lu'
+
+#  petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
+#  petsc_options_value = 'lu NONZERO   1e1'
   petsc_options_iname = '-pc_type -pc_factor_mat_solver_package'
-  petsc_options_value = 'lu       superlu_dist'
+  petsc_options_value = 'lu superlu_dist'
+#  petsc_options = '-snes_ksp_ew'
+  petsc_options = '-ksp_view_pmat'
+
+#  l_max_its = 10
   nl_rel_tol = 1e-10
   nl_abs_tol = 1e-8
   dt = 1.0
@@ -238,4 +247,5 @@
 
 [Outputs]
   exodus = true
+  dofmap = true
 []
