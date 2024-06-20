@@ -62,6 +62,46 @@
   [../]
 []
 
+[ICs]
+  [disp_x]
+    type = RandomIC
+    variable = disp_x
+    min = -0.01
+    max = 0.01
+  []
+  [disp_y]
+    type = RandomIC
+    variable = disp_y
+    min = -0.01
+    max = 0.01
+  []
+  [disp_z]
+    type = RandomIC
+    variable = disp_z
+    min = -0.01
+    max = 0.01
+  []
+
+  [rot_x]
+    type = RandomIC
+    variable = rot_x
+    min = -0.01
+    max = 0.01
+  []
+  [rot_y]
+    type = RandomIC
+    variable = rot_y
+    min = -0.01
+    max = 0.01
+  []
+  [rot_z]
+    type = RandomIC
+    variable = rot_z
+    min = -0.01
+    max = 0.01
+  []
+[]
+
 [BCs]
   [./simply_support_x]
     type = DirichletBC
@@ -112,13 +152,13 @@
 []
 
 [Preconditioning]
-  # [./smp]
-  #   type = SMP
-  #   full = true
-  # [../]
-  [./FDP_jfnk]
-    type = FDP
+  [./smp]
+    type = SMP
+    full = true
   [../]
+  # [./FDP_jfnk]
+  #   type = FDP
+  # [../]
 []
 
 [Executioner]
@@ -126,15 +166,15 @@
   solve_type = NEWTON
   line_search = 'none'
   ###### this gives a zeroPivit error with SMP ######
-  # petsc_options_iname = '-pc_type'
-  # petsc_options_value = 'lu'
+  petsc_options_iname = '-pc_type'
+  petsc_options_value = 'lu'
 
 #  petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
 #  petsc_options_value = 'lu NONZERO   1e1'
   # petsc_options_iname = '-pc_type -pc_factor_mat_solver_package'
   # petsc_options_value = 'lu superlu_dist'
   # petsc_options = '-snes_ksp_ew'
-  # petsc_options = '-ksp_view_pmat'
+  petsc_options = '-ksp_view_pmat'
 #  l_max_its = 10
   nl_rel_tol = 1e-10
   nl_abs_tol = 1e-8
@@ -249,5 +289,5 @@
 
 [Outputs]
   exodus = true
-  dofmap = true
+  #dofmap = true
 []
