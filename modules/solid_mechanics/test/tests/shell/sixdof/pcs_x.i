@@ -31,7 +31,7 @@
 [Mesh]
   [./mesh]
     type = FileMeshGenerator
-    file = cyl_1x2.e
+    file = cyl_1x1.e
   [../]
 []
 
@@ -152,13 +152,13 @@
 []
 
 [Preconditioning]
-  [./smp]
-    type = SMP
-    full = true
-  [../]
-  # [./FDP_jfnk]
-  #   type = FDP
+  # [./smp]
+  #   type = SMP
+  #   full = true
   # [../]
+  [./FDP_jfnk]
+    type = FDP
+  [../]
 []
 
 [Executioner]
@@ -232,25 +232,25 @@
 []
 
 [Materials]
-  [elasticity_t0]
-    type = ADComputeIsotropicElasticityTensor
-    youngs_modulus = 1e6
-    poissons_ratio = 0.0
-    base_name = t_points_0
-  []
-  [elasticity_t1]
-    type = ADComputeIsotropicElasticityTensor
-    youngs_modulus = 1e6
-    poissons_ratio = 0.0
-    base_name = t_points_1
-  []
-#  [./elasticity]
-#    type = ADComputeIsotropicElasticityTensorShell
-#    youngs_modulus = 1e6
-#    poissons_ratio = 0.0
-#    block = '100'
-#    through_thickness_order = SECOND
-#  [../]
+  # [elasticity_t0]
+  #   type = ADComputeIsotropicElasticityTensor
+  #   youngs_modulus = 1e6
+  #   poissons_ratio = 0.0
+  #   base_name = t_points_0
+  # []
+  # [elasticity_t1]
+  #   type = ADComputeIsotropicElasticityTensor
+  #   youngs_modulus = 1e6
+  #   poissons_ratio = 0.0
+  #   base_name = t_points_1
+  # []
+ [./elasticity]
+   type = ADComputeIsotropicElasticityTensorShell
+   youngs_modulus = 1e6
+   poissons_ratio = 0.0
+   block = '100'
+   through_thickness_order = SECOND
+ [../]
   [./strain]
     type = ADComputeIncrementalShellStrain2
     block = '100'
@@ -259,19 +259,19 @@
     thickness = 0.01
     through_thickness_order = SECOND
   [../]
-#  [./stress]
-#    type = ADComputeShellStress2
-#    block = '100'
-#    through_thickness_order = SECOND
-#  [../]
-  [stress_t0]
-    type = ADComputeLinearElasticStress
-    base_name = t_points_0
-  []
-  [stress_t1]
-    type = ADComputeLinearElasticStress
-    base_name = t_points_1
-  []
+ [./stress]
+   type = ADComputeShellStress2
+   block = '100'
+   through_thickness_order = SECOND
+ [../]
+  # [stress_t0]
+  #   type = ADComputeLinearElasticStress
+  #   base_name = t_points_0
+  # []
+  # [stress_t1]
+  #   type = ADComputeLinearElasticStress
+  #   base_name = t_points_1
+  # []
 []
 
 [Postprocessors]
