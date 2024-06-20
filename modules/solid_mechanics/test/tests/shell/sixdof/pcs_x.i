@@ -232,6 +232,7 @@
 []
 
 [Materials]
+  #these are consistent with the continuum model
   # [elasticity_t0]
   #   type = ADComputeIsotropicElasticityTensor
   #   youngs_modulus = 1e6
@@ -264,6 +265,7 @@
    block = '100'
    through_thickness_order = SECOND
  [../]
+
   # [stress_t0]
   #   type = ADComputeLinearElasticStress
   #   base_name = t_points_0
