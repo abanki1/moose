@@ -248,7 +248,7 @@
  [./elasticity]
    type = ADComputeIsotropicElasticityTensorShell
    youngs_modulus = 1e6
-   poissons_ratio = 0.0
+   poissons_ratio = 0.3
    block = '100'
    through_thickness_order = SECOND
  [../]
