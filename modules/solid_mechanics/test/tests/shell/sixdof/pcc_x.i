@@ -31,7 +31,7 @@
 [Mesh]
   [./mesh]
     type = FileMeshGenerator
-    file = cyl.e
+    file = cyl_1x1.e
   [../]
 []
 
@@ -116,6 +116,9 @@
     type = SMP
     full = true
   [../]
+  # [./FDP_jfnk]
+  #   type = FDP
+  # [../]
 []
 
 [Executioner]
