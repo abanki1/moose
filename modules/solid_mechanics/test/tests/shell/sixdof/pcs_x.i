@@ -9,7 +9,7 @@
 # The normalized series solution for the displacement at the loading point is
 # w = Wc E t / P = 164.24; where Wc is the displacement in m, E is the Young's
 # modulus, t is the thickness and P is the point load.
-# w = 164.24 * 1e6 * 0.01 / 2.5 = 
+# w = 164.24 * 1e6 * 0.01 / 2.5 =
 
 # For this problem, E = 1e6 Pa, L = 2 m, R = 1 m, t = 0.01 m, P = 10 N and
 # Poisson's ratio = 0.3. FEM results from different mesh discretizations are
@@ -31,7 +31,7 @@
 [Mesh]
   [./mesh]
     type = FileMeshGenerator
-    file = cyl_4x8.e
+    file = cyl_1x1.e
   [../]
 []
 
@@ -181,6 +181,10 @@
   dt = 1.0
   dtmin = 1.0
   end_time = 1.0
+[]
+
+[Debug]
+  show_material_props = true
 []
 
 [Kernels]

@@ -49,7 +49,7 @@ ADComputeIsotropicElasticityTensorShell::ADComputeIsotropicElasticityTensorShell
   _Cijkl(1, 1, 0, 0) = _Cijkl(0, 0, 1, 1);
   _Cijkl(0, 0, 2, 2) = 0.0;
   _Cijkl(1, 1, 2, 2) = 0.0;
-  _Cijkl(2, 2, 2, 2) = _youngs_modulus/(2*(1+_poissons_ratio));
+  _Cijkl(2, 2, 2, 2) = _youngs_modulus / (2 * (1 + _poissons_ratio)); // refer to Eq.(8.2.57)
   _Cijkl(2, 2, 0, 0) = 0.0;
   _Cijkl(2, 2, 1, 1) = 0.0;
 
