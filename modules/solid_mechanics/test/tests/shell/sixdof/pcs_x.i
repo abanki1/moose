@@ -62,45 +62,45 @@
   [../]
 []
 
-[ICs]
-  [disp_x]
-    type = RandomIC
-    variable = disp_x
-    min = -0.01
-    max = 0.01
-  []
-  [disp_y]
-    type = RandomIC
-    variable = disp_y
-    min = -0.01
-    max = 0.01
-  []
-  [disp_z]
-    type = RandomIC
-    variable = disp_z
-    min = -0.01
-    max = 0.01
-  []
+# [ICs]
+#   [disp_x]
+#     type = RandomIC
+#     variable = disp_x
+#     min = -0.01
+#     max = 0.01
+#   []
+#   [disp_y]
+#     type = RandomIC
+#     variable = disp_y
+#     min = -0.01
+#     max = 0.01
+#   []
+#   [disp_z]
+#     type = RandomIC
+#     variable = disp_z
+#     min = -0.01
+#     max = 0.01
+#   []
 
-  [rot_x]
-    type = RandomIC
-    variable = rot_x
-    min = -0.01
-    max = 0.01
-  []
-  [rot_y]
-    type = RandomIC
-    variable = rot_y
-    min = -0.01
-    max = 0.01
-  []
-  [rot_z]
-    type = RandomIC
-    variable = rot_z
-    min = -0.01
-    max = 0.01
-  []
-[]
+#   [rot_x]
+#     type = RandomIC
+#     variable = rot_x
+#     min = -0.01
+#     max = 0.01
+#   []
+#   [rot_y]
+#     type = RandomIC
+#     variable = rot_y
+#     min = -0.01
+#     max = 0.01
+#   []
+#   [rot_z]
+#     type = RandomIC
+#     variable = rot_z
+#     min = -0.01
+#     max = 0.01
+#   []
+# []
 
 [BCs]
   [./simply_support_x]
@@ -146,19 +146,19 @@
   [pinch]
     type = UserForcingFunctionNodalKernel
     boundary = '10'
-    function = -2.5
+    function =-2.5
     variable = disp_x
   []
 []
 
 [Preconditioning]
-  [./smp]
-    type = SMP
-    full = true
-  [../]
-  # [./FDP_jfnk]
-  #   type = FDP
+  # [./smp]
+  #   type = SMP
+  #   full = true
   # [../]
+  [./FDP_jfnk]
+    type = FDP
+  [../]
 []
 
 [Executioner]
@@ -236,7 +236,7 @@
 []
 
 [Materials]
-  #these are consistent with the continuum model
+  # these are consistent with the continuum model
   # [elasticity_t0]
   #   type = ADComputeIsotropicElasticityTensor
   #   youngs_modulus = 1e6
