@@ -112,13 +112,13 @@
 []
 
 [Preconditioning]
-  [./smp]
-    type = SMP
-    full = true
-  [../]
-  # [./FDP_jfnk]
-  #   type = FDP
+  # [./smp]
+  #   type = SMP
+  #   full = true
   # [../]
+  [./FDP_jfnk]
+    type = FDP
+  [../]
 []
 
 [Executioner]
@@ -127,7 +127,7 @@
   line_search = 'none'
   petsc_options_iname = '-pc_type'
   petsc_options_value = 'lu'
-  # petsc_options = '-ksp_view_pmat'
+  petsc_options = '-ksp_view_pmat'
   nl_rel_tol = 1e-10
   nl_abs_tol = 1e-8
   dt = 1.0
@@ -184,13 +184,26 @@
 []
 
 [Materials]
-  [./elasticity]
-    type = ADComputeIsotropicElasticityTensorShell
+  # these are consistent with the continuum model
+  [elasticity_t0]
+    type = ADComputeIsotropicElasticityTensor
     youngs_modulus = 1e6
-    poissons_ratio = 0.0
-    block = '100'
-    through_thickness_order = SECOND
-  [../]
+    poissons_ratio = 0.3
+    base_name = t_points_0
+  []
+  [elasticity_t1]
+    type = ADComputeIsotropicElasticityTensor
+    youngs_modulus = 1e6
+    poissons_ratio = 0.3
+    base_name = t_points_1
+  []
+  # [./elasticity]
+  #   type = ADComputeIsotropicElasticityTensorShell
+  #   youngs_modulus = 1e6
+  #   poissons_ratio = 0.3
+  #   block = '100'
+  #   through_thickness_order = SECOND
+  # [../]
   [./strain]
     type = ADComputeIncrementalShellStrain2
     block = '100'
@@ -199,11 +212,19 @@
     thickness = 0.01
     through_thickness_order = SECOND
   [../]
-  [./stress]
-    type = ADComputeShellStress2
-    block = '100'
-    through_thickness_order = SECOND
-  [../]
+  # [./stress]
+  #   type = ADComputeShellStress2
+  #   block = '100'
+  #   through_thickness_order = SECOND
+  # [../]
+    [stress_t0]
+    type = ADComputeLinearElasticStress
+    base_name = t_points_0
+  []
+  [stress_t1]
+    type = ADComputeLinearElasticStress
+    base_name = t_points_1
+  []
 []
 
 [Postprocessors]
