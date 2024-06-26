@@ -182,7 +182,7 @@
   dtmin = 1.0
   end_time = 1.0
 []
-
+# 
 [Debug]
   show_material_props = true
 []
@@ -272,7 +272,6 @@
    block = '100'
    through_thickness_order = SECOND
   [../]
-
   # [stress_t0]
   #   type = ADComputeLinearElasticStress
   #   base_name = t_points_0
