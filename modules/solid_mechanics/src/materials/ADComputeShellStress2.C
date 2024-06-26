@@ -81,8 +81,7 @@ ADComputeShellStress2::computeQpProperties()
     for (unsigned int ii = 0; ii < 3; ++ii)
       for (unsigned int jj = 0; jj < 3; ++jj)
         _unrotated_stress(ii, jj) = MetaPhysicL::raw_value((*_stress[i])[_qp](ii, jj));
-    (*_global_stress[i])[_qp] =
-        MetaPhysicL::raw_value((*_covariant_transformation_matrix[i])[_qp]).transpose() *
-        _unrotated_stress * MetaPhysicL::raw_value((*_covariant_transformation_matrix[i])[_qp]);
+    (*_global_stress[i])[_qp] = (*_covariant_transformation_matrix[i])[_qp]).transpose() *
+        _unrotated_stress * (*_covariant_transformation_matrix[i])[_qp];
   }
 }
