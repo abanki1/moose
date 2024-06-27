@@ -71,8 +71,8 @@
   [./simply_support_rot_z]
     type = DirichletBC
     variable = rot_z
-    # boundary = 'CD AD BC'
-    boundary = 'CD AD BC AB' #debugging attempts
+    boundary = 'CD AD BC'
+    # boundary = 'CD AD BC AB' #debugging attempts
     value = 0.0
   [../]
 []
