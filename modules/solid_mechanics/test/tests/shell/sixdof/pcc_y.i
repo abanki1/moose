@@ -6,7 +6,7 @@
 [Mesh]
   [./mesh]
     type = FileMeshGenerator
-    file = cyl_1x1.e
+    file = cyl_1x2.e
   [../]
 []
 
@@ -71,7 +71,8 @@
   [./simply_support_rot_z]
     type = DirichletBC
     variable = rot_z
-    boundary = 'CD AD BC'
+    # boundary = 'CD AD BC'
+    boundary = 'CD AD BC AB' #debugging attempts
     value = 0.0
   [../]
 []
@@ -86,13 +87,13 @@
 []
 
 [Preconditioning]
-  [./smp]
-    type = SMP
-    full = true
-  [../]
-# [./FDP_jfnk]
-#   type = FDP
-# [../]
+  # [./smp]
+  #   type = SMP
+  #   full = true
+  # [../]
+[./FDP_jfnk]
+  type = FDP
+[../]
 []
 
 [Executioner]
