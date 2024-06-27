@@ -86,13 +86,13 @@
 []
 
 [Preconditioning]
-  # [./smp]
-  #   type = SMP
-  #   full = true
-  # [../]
-[./FDP_jfnk]
-  type = FDP
-[../]
+  [./smp]
+    type = SMP
+    full = true
+  [../]
+# [./FDP_jfnk]
+#   type = FDP
+# [../]
 []
 
 [Executioner]

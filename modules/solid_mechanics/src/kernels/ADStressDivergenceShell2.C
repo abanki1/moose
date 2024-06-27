@@ -40,8 +40,7 @@ ADStressDivergenceShell2::validParams()
   params.addParam<bool>(
       "large_strain", false, "Set to true to turn on finite strain calculations.");
   params.set<bool>("use_displaced_mesh") = false;
-  params.addParam<Real>(
-      "penalty", 1e4, "Penalty parameter for out of plane stress");
+  params.addParam<Real>("penalty", 1e4, "Penalty parameter for out of plane stress");
   return params;
 }
 
@@ -68,9 +67,9 @@ ADStressDivergenceShell2::ADStressDivergenceShell2(const InputParameters & param
 
   for (unsigned int i = 0; i < _t_weights.size(); ++i)
   {
-    _stress[i] = &getADMaterialProperty<RankTwoTensor>("t_points_" + std::to_string(i)+"_stress");
+    _stress[i] = &getADMaterialProperty<RankTwoTensor>("t_points_" + std::to_string(i) + "_stress");
     _stress_old[i] =
-        &getMaterialPropertyOldByName<RankTwoTensor>("t_points_" + std::to_string(i)+"_stress");
+        &getMaterialPropertyOldByName<RankTwoTensor>("t_points_" + std::to_string(i) + "_stress");
     _contravariant_transformation_matrix[i] = &getADMaterialProperty<RankTwoTensor>(
         "contravariant_transformation_t_points_" + std::to_string(i));
     _B_mat[i] = &getADMaterialProperty<DenseMatrix<Real>>("B_t_points_" + std::to_string(i));
@@ -78,12 +77,9 @@ ADStressDivergenceShell2::ADStressDivergenceShell2(const InputParameters & param
       _B_nl[i] = &getADMaterialProperty<DenseMatrix<Real>>("B_nl_t_points_" + std::to_string(i));
 
     _J_map[i] = &getADMaterialProperty<Real>("J_mapping_t_points_" + std::to_string(i));
-    _gamma_x[i] =
-        &getADMaterialProperty<Real>("gamma_test_x_t_points_" + std::to_string(i));
-    _gamma_y[i] =
-        &getADMaterialProperty<Real>("gamma_test_y_t_points_" + std::to_string(i));
-    _gamma_z[i] =
-        &getADMaterialProperty<Real>("gamma_test_z_t_points_" + std::to_string(i));
+    _gamma_x[i] = &getADMaterialProperty<Real>("gamma_test_x_t_points_" + std::to_string(i));
+    _gamma_y[i] = &getADMaterialProperty<Real>("gamma_test_y_t_points_" + std::to_string(i));
+    _gamma_z[i] = &getADMaterialProperty<Real>("gamma_test_z_t_points_" + std::to_string(i));
   }
 }
 
@@ -96,19 +92,19 @@ ADStressDivergenceShell2::computeQpResidual()
   for (_qp_z = 0; _qp_z < _t_weights.size(); ++_qp_z)
   {
     _stress_covariant = (*_contravariant_transformation_matrix[_qp_z])[_qp].transpose() *
-      (*_stress[_qp_z])[_qp] *
-      (*_contravariant_transformation_matrix[_qp_z])[_qp];
+                        (*_stress[_qp_z])[_qp] *
+                        (*_contravariant_transformation_matrix[_qp_z])[_qp];
 
-//    std::cout<<"BWS stress pre: "<<std::endl;
-//    (*_stress[_qp_z])[_qp].printReal();
-//    std::cout<<"BWS kernel contrav: "<<std::endl;
-//    (*_contravariant_transformation_matrix[_qp_z])[_qp].printReal();
-//    std::cout<<"BWS kernel ge: "<<std::endl;
-//    (*_ge[_qp_z])[_qp].printReal();
-//    std::cout<<"BWS stress post: "<<std::endl;
-//    _stress_covariant.printReal();
-//    std::cout<<std::endl;
-    
+    //    std::cout<<"BWS stress pre: "<<std::endl;
+    //    (*_stress[_qp_z])[_qp].printReal();
+    //    std::cout<<"BWS kernel contrav: "<<std::endl;
+    //    (*_contravariant_transformation_matrix[_qp_z])[_qp].printReal();
+    //    std::cout<<"BWS kernel ge: "<<std::endl;
+    //    (*_ge[_qp_z])[_qp].printReal();
+    //    std::cout<<"BWS stress post: "<<std::endl;
+    //    _stress_covariant.printReal();
+    //    std::cout<<std::endl;
+
     residual1 = _stress_covariant(0, 0) * (*_B_mat[_qp_z])[_qp](0, _i + _component * 4) +
                 _stress_covariant(1, 1) * (*_B_mat[_qp_z])[_qp](1, _i + _component * 4) +
                 2.0 * _stress_covariant(0, 1) * (*_B_mat[_qp_z])[_qp](2, _i + _component * 4) +
@@ -118,8 +114,8 @@ ADStressDivergenceShell2::computeQpResidual()
     if (_large_strain)
     {
       _stress_covariant_old = (*_contravariant_transformation_matrix[_qp_z])[_qp] *
-        (*_stress_old[_qp_z])[_qp] *
-        (*_contravariant_transformation_matrix[_qp_z])[_qp].transpose();
+                              (*_stress_old[_qp_z])[_qp] *
+                              (*_contravariant_transformation_matrix[_qp_z])[_qp].transpose();
       residual1 +=
           (_stress_covariant_old(0, 0) * (*_B_nl[_qp_z])[_qp](0, _i + _component * 4) +
            _stress_covariant_old(1, 1) * (*_B_nl[_qp_z])[_qp](1, _i + _component * 4) +
@@ -128,27 +124,26 @@ ADStressDivergenceShell2::computeQpResidual()
            2.0 * _stress_covariant_old(1, 2) * (*_B_nl[_qp_z])[_qp](4, _i + _component * 4));
     }
 
-    if(_component == 5)
+    if (_component == 5)
     {
       if (_i == _qp)
-      residual1 += _penalty * (*_gamma_z[_qp_z])[_qp] / (_ad_JxW[_qp] * _ad_coord[_qp]);
+        residual1 += _penalty * (*_gamma_z[_qp_z])[_qp] / (_ad_JxW[_qp] * _ad_coord[_qp]);
     }
 
-    if(_component == 4)
+    if (_component == 4)
     {
       if (_i == _qp)
-      residual1 += _penalty * (*_gamma_y[_qp_z])[_qp] / (_ad_JxW[_qp] * _ad_coord[_qp]);
+        residual1 += _penalty * (*_gamma_y[_qp_z])[_qp] / (_ad_JxW[_qp] * _ad_coord[_qp]);
     }
 
-    if(_component == 3)
+    if (_component == 3)
     {
       if (_i == _qp)
-      residual1 += _penalty * (*_gamma_x[_qp_z])[_qp] / (_ad_JxW[_qp] * _ad_coord[_qp]);
+        residual1 += _penalty * (*_gamma_x[_qp_z])[_qp] / (_ad_JxW[_qp] * _ad_coord[_qp]);
     }
 
     residual += residual1 * (*_J_map[_qp_z])[_qp] * _q_weights[_qp] * _t_weights[_qp_z] /
                 (_ad_JxW[_qp] * _ad_coord[_qp]);
-
   }
   return residual;
 }

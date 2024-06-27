@@ -26,46 +26,49 @@
 # the solution presented by Dvorkin and Bathe (1984).
 
 [Mesh]
-  [./mesh]
-    type = FileMeshGenerator
-    file = pinched_cyl_10_10.msh
-  [../]
-  [./block_100]
-    type = ParsedSubdomainMeshGenerator
-    input = mesh
-    combinatorial_geometry = 'x > -1.1 & x < 1.1 & y > -1.1 & y < 1.1 & z > -0.1 & z < 2.1'
-    block_id = 100
-  [../]
-  [./nodeset_1]
-    type = BoundingBoxNodeSetGenerator
-    input = block_100
-    top_right = '1.1 1.1 0'
-    bottom_left = '-1.1 -1.1 0'
-    new_boundary = 'CD' #CD
-  [../]
-  [./nodeset_2]
-    type = BoundingBoxNodeSetGenerator
-    input = nodeset_1
-    top_right = '1.1 1.1 1.0'
-    bottom_left = '-1.1 -1.1 1.0'
-    new_boundary = 'AB' #AB
-  [../]
-  [./nodeset_3]
-    type = BoundingBoxNodeSetGenerator
-    input = nodeset_2
-    top_right = '0.02 1.1 1.0'
-    bottom_left = '-0.1 0.98 0.0'
-    new_boundary = 'AD' #AD
-  [../]
-  [./nodeset_4]
-    type = BoundingBoxNodeSetGenerator
-    input = nodeset_3
-    top_right = '1.1 0.02 1.0'
-    bottom_left = '0.98 -0.1 0.0'
-    new_boundary = 'BC' #BC
-  [../]
+  # [./mesh]
+  #   type = FileMeshGenerator
+  #   # file = pinched_cyl_10_10.msh
+  # [../]
+  # [./block_100]
+  #   type = ParsedSubdomainMeshGenerator
+  #   input = mesh
+  #   combinatorial_geometry = 'x > -1.1 & x < 1.1 & y > -1.1 & y < 1.1 & z > -0.1 & z < 2.1'
+  #   block_id = 100
+  # [../]
+  # [./nodeset_1]
+  #   type = BoundingBoxNodeSetGenerator
+  #   input = block_100
+  #   top_right = '1.1 1.1 0'
+  #   bottom_left = '-1.1 -1.1 0'
+  #   new_boundary = 'CD' #CD
+  # [../]
+  # [./nodeset_2]
+  #   type = BoundingBoxNodeSetGenerator
+  #   input = nodeset_1
+  #   top_right = '1.1 1.1 1.0'
+  #   bottom_left = '-1.1 -1.1 1.0'
+  #   new_boundary = 'AB' #AB
+  # [../]
+  # [./nodeset_3]
+  #   type = BoundingBoxNodeSetGenerator
+  #   input = nodeset_2
+  #   top_right = '0.02 1.1 1.0'
+  #   bottom_left = '-0.1 0.98 0.0'
+  #   new_boundary = 'AD' #AD
+  # [../]
+  # [./nodeset_4]
+  #   type = BoundingBoxNodeSetGenerator
+  #   input = nodeset_3
+  #   top_right = '1.1 0.02 1.0'
+  #   bottom_left = '0.98 -0.1 0.0'
+  #   new_boundary = 'BC' #BC
+  # [../]
+[./mesh]
+  type=FileMeshGenerator
+  file = cyl_1x1.e
+[../]
 []
-
 
 [Variables]
   [./disp_x]
@@ -112,13 +115,15 @@
   [./simply_support_rot_x]
     type = DirichletBC
     variable = rot_x
-    boundary = 'CD BC'
+    # boundary = 'CD BC'
+    boundary='CD AB'
     value = 0.0
   [../]
   [./simply_support_rot_y]
     type = DirichletBC
     variable = rot_y
-    boundary = 'CD AD'
+    # boundary = 'CD AD'
+    boundary='CD AB'
     value = 0.0
   [../]
 []
@@ -126,8 +131,10 @@
 [DiracKernels]
   [./point1]
     type = ConstantPointSource
-    variable = disp_x
-    point = '1 0 1'
+    # variable = disp_x
+    # point = '1 0 1'
+    variable = disp_y
+    point='0 1 1'
     value = -2.5 # P = 10
   [../]
 []
@@ -143,6 +150,12 @@
   type = Transient
   solve_type = NEWTON
   line_search = 'none'
+  petsc_options_iname='-pc_type'
+  petsc_options_value='lu'
+  petsc_options='-ksp_view_pmat'
+  # petsc_options_iname = '-pc_type'
+  # petsc_options_value = 'lu'
+  # petsc_options = '-ksp_view_pmat'
   nl_rel_tol = 1e-10
   nl_abs_tol = 1e-8
   dt = 1.0
@@ -212,10 +225,15 @@
 []
 
 [Postprocessors]
-  [./disp_z2]
+  [./disp_x]
     type = PointValue
     point = '1 0 1'
     variable = disp_x
+  [../]
+  [./disp_y]
+    type = PointValue
+    point = '0 1 1'
+    variable = disp_y
   [../]
 []
 

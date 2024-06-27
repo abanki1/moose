@@ -31,7 +31,7 @@
 [Mesh]
   [./mesh]
     type = FileMeshGenerator
-    file = cyl_1x1.e
+    file = cyl_1x2.e
   [../]
 []
 
@@ -112,13 +112,13 @@
 []
 
 [Preconditioning]
-  # [./smp]
-  #   type = SMP
-  #   full = true
-  # [../]
-  [./FDP_jfnk]
-    type = FDP
+  [./smp]
+    type = SMP
+    full = true
   [../]
+  # [./FDP_jfnk]
+  #   type = FDP
+  # [../]
 []
 
 [Executioner]
