@@ -13,6 +13,8 @@
 #include "ADComputeIsotropicElasticityTensorShell.h"
 #include "ADRankTwoTensorForward.h"
 #include "ADRankFourTensorForward.h"
+#include "MaterialProperty.h"
+#include "RankTwoTensorForward.h"
 
 #define usingComputeShellStressMembers usingMaterialMembers
 
@@ -51,7 +53,9 @@ protected:
   std::vector<const ADMaterialProperty<RankTwoTensor> *> _covariant_transformation_matrix;
 
   /// Global stress tensor material property
-  std::vector<MaterialProperty<RankTwoTensor> *> _global_stress;
+  std::vector<ADMaterialProperty<RankTwoTensor> *> _global_stress;
+  // std::vector<const ADMaterialProperty<RankTwoTensor> *> _global_stress;
+
 
   /// Real value of stress in the local coordinate system
   RankTwoTensor _unrotated_stress;

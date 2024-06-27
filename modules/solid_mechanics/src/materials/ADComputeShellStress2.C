@@ -50,16 +50,16 @@ ADComputeShellStress2::ADComputeShellStress2(const InputParameters & parameters)
   {
     _elasticity_tensor[t] =
         &getADMaterialProperty<RankFourTensor>("elasticity_tensor_t_points_" + std::to_string(t));
-    _stress[t] = &declareADProperty<RankTwoTensor>("t_points_" + std::to_string(t)+"_stress");
+    _stress[t] = &declareADProperty<RankTwoTensor>("t_points_" + std::to_string(t) + "_stress");
     _stress_old[t] =
-        &getMaterialPropertyOldByName<RankTwoTensor>("t_points_" + std::to_string(t)+"_stress");
+        &getMaterialPropertyOldByName<RankTwoTensor>("t_points_" + std::to_string(t) + "_stress");
     _strain_increment[t] =
         &getADMaterialProperty<RankTwoTensor>("strain_increment_t_points_" + std::to_string(t));
     // rotation matrix and stress for output purposes only
     _covariant_transformation_matrix[t] = &getADMaterialProperty<RankTwoTensor>(
         "covariant_transformation_t_points_" + std::to_string(t));
     _global_stress[t] =
-        &declareProperty<RankTwoTensor>("global_stress_t_points_" + std::to_string(t));
+        &declareADProperty<RankTwoTensor>("global_stress_t_points_" + std::to_string(t));
   }
 }
 void
@@ -80,8 +80,16 @@ ADComputeShellStress2::computeQpProperties()
 
     for (unsigned int ii = 0; ii < 3; ++ii)
       for (unsigned int jj = 0; jj < 3; ++jj)
-        _unrotated_stress(ii, jj) = MetaPhysicL::raw_value((*_stress[i])[_qp](ii, jj));
-    (*_global_stress[i])[_qp] = (*_covariant_transformation_matrix[i])[_qp]).transpose() *
-        _unrotated_stress * (*_covariant_transformation_matrix[i])[_qp];
+        // _unrotated_stress(ii, jj) = MetaPhysicL::raw_value((*_stress[i])[_qp](ii, jj));
+        _unrotated_stress(ii, jj) = (*_stress[i])[_qp](ii, jj);
+    (*_global_stress[i])[_qp] = (*_covariant_transformation_matrix[i])[_qp].transpose() *
+                                _unrotated_stress * (*_covariant_transformation_matrix[i])[_qp];
+    // const auto test = (*_global_stress[i])[_qp] =
+    //     (*_covariant_transformation_matrix[i])[_qp].transpose() * _unrotated_stress *
+    //     (*_covariant_transformation_matrix[i])[_qp];
+    // auto test = (*_covariant_transformation_matrix[i])[_qp].transpose();
+    // auto test = (*_covariant_transformation_matrix[i])[_qp].transpose() * (*_stress[i])[_qp] *
+    //             (*_covariant_transformation_matrix[i])[_qp];
+    // (*_global_stress[i])[_qp] = test;
   }
 }
