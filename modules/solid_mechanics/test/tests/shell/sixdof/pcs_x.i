@@ -136,8 +136,8 @@
   [./simply_support_rot_z]
     type = DirichletBC
     variable = rot_z
-    boundary = 'CD AD BC'
-    #boundary = 'CD AB' #'CD AD BC'
+    # boundary = 'CD AD BC'
+    boundary = 'CD AB AD BC'
     value = 0.0
   [../]
 []
@@ -152,13 +152,13 @@
 []
 
 [Preconditioning]
-  # [./smp]
-  #   type = SMP
-  #   full = true
-  # [../]
-  [./FDP_jfnk]
-    type = FDP
+  [./smp]
+    type = SMP
+    full = true
   [../]
+  # [./FDP_jfnk]
+  #   type = FDP
+  # [../]
 []
 
 [Executioner]
