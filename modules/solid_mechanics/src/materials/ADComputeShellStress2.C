@@ -80,9 +80,12 @@ ADComputeShellStress2::computeQpProperties()
 
     for (unsigned int ii = 0; ii < 3; ++ii)
       for (unsigned int jj = 0; jj < 3; ++jj)
-        // _unrotated_stress(ii, jj) = MetaPhysicL::raw_value((*_stress[i])[_qp](ii, jj));
-        // _unrotated_stress(ii, jj) = (*_stress[i])[_qp](ii, jj);
-        auto test = (*_stress[i])[_qp](ii, jj);
+        _unrotated_stress(ii, jj) = MetaPhysicL::raw_value((*_stress[i])[_qp](ii, jj));
+    // auto test = (*_stress[i])[_qp](ii, jj);
+    // _unrotated_stress(ii, jj) = test;
+    // _unrotated_stress(ii, jj) = (*_stress[i])[_qp](ii, jj);
+
+    // _unrotated_stress(ii, jj) = MetaPhysicL::raw_value((*_stress[i])[_qp](ii, jj));
 
     (*_global_stress[i])[_qp] = (*_covariant_transformation_matrix[i])[_qp].transpose() *
                                 _unrotated_stress * (*_covariant_transformation_matrix[i])[_qp];
@@ -91,7 +94,7 @@ ADComputeShellStress2::computeQpProperties()
     //     (*_covariant_transformation_matrix[i])[_qp];
     // auto test = (*_covariant_transformation_matrix[i])[_qp].transpose();
     // auto test = (*_covariant_transformation_matrix[i])[_qp].transpose() * (*_stress[i])[_qp] *
-    //             (*_covariant_transformation_matrix[i])[_qp];
+    // (*_covariant_transformation_matrix[i])[_qp];
     // (*_global_stress[i])[_qp] = test;
   }
 }
