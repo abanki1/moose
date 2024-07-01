@@ -137,6 +137,7 @@
     type = DirichletBC
     variable = rot_z
     boundary = 'CD AD BC'
+    # boundary = 'CD AB' 
     # boundary = 'CD AB AD BC'
     value = 0.0
   [../]
