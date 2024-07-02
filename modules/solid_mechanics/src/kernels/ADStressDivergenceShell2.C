@@ -50,10 +50,10 @@ ADStressDivergenceShell2::ADStressDivergenceShell2(const InputParameters & param
     _large_strain(getParam<bool>("large_strain")),
     _penalty(getParam<Real>("penalty"))
 {
+  std::cout<<"AB: calling ADStressDivergenceShell2.C: "<<std::endl; // AB: print out shear strains rot_Z
   _t_qrule = std::make_unique<QGauss>(
       1, Utility::string_to_enum<Order>(getParam<std::string>("through_thickness_order")));
   _t_weights = _t_qrule->get_weights();
-  std::cout<<'AB:_t_weights.size(): '<<_t_weights.size()<<std::endl; # AB: print out shear strains rot_Z
   _stress.resize(_t_weights.size());
   _stress_old.resize(_t_weights.size());
   _B_mat.resize(_t_weights.size());
@@ -89,29 +89,30 @@ ADStressDivergenceShell2::computeQpResidual()
   _q_weights = _qrule->get_weights();
   ADReal residual = 0.0;
   ADReal residual1 = 0.0;
-  std::cout<<'AB:_t_weights.size(): '<<_t_weights.size()<<std::endl; # AB: print out shear strains rot_Z
+  std::cout<<"AB:_t_weights.size(): "<<_t_weights.size()<<std::endl; // AB: print out shear strains rot_Z
   for (_qp_z = 0; _qp_z < _t_weights.size(); ++_qp_z)
   {
+    std::cout<<" AB: I am _qp_z : "<<_qp_z<<std::endl;
     _stress_covariant = (*_contravariant_transformation_matrix[_qp_z])[_qp].transpose() *
                         (*_stress[_qp_z])[_qp] *
                         (*_contravariant_transformation_matrix[_qp_z])[_qp];
 
-    //    std::cout<<"BWS stress pre: "<<std::endl;
-    //    (*_stress[_qp_z])[_qp].printReal();
-    //    std::cout<<"BWS kernel contrav: "<<std::endl;
-    //    (*_contravariant_transformation_matrix[_qp_z])[_qp].printReal();
-    //    std::cout<<"BWS kernel ge: "<<std::endl;
-    //    (*_ge[_qp_z])[_qp].printReal();
-    //    std::cout<<"BWS stress post: "<<std::endl;
-    //    _stress_covariant.printReal();
-    //    std::cout<<std::endl;
+    std::cout<<"BWS stress pre: "<<std::endl;
+    (*_stress[_qp_z])[_qp].printReal();
+    std::cout<<"BWS kernel contrav: "<<std::endl;
+    (*_contravariant_transformation_matrix[_qp_z])[_qp].printReal();
+    std::cout<<"BWS kernel transf: "<<std::endl;
+    (*_contravariant_transformation_matrix[_qp_z])[_qp].printReal();
+    std::cout<<"BWS stress post: "<<std::endl;
+    _stress_covariant.printReal();
+    std::cout<<std::endl;
 
     residual1 = _stress_covariant(0, 0) * (*_B_mat[_qp_z])[_qp](0, _i + _component * 4) +
                 _stress_covariant(1, 1) * (*_B_mat[_qp_z])[_qp](1, _i + _component * 4) +
                 2.0 * _stress_covariant(0, 1) * (*_B_mat[_qp_z])[_qp](2, _i + _component * 4) +
                 2.0 * _stress_covariant(0, 2) * (*_B_mat[_qp_z])[_qp](3, _i + _component * 4) +
                 2.0 * _stress_covariant(1, 2) * (*_B_mat[_qp_z])[_qp](4, _i + _component * 4);
-    std::cout<<' AB: _residual1 : '<<_residual1<<std::endl; # AB: print out shear strains rot_Z
+    std::cout<<" AB: I am _residual1 : before penalty"<<residual1<<std::endl; // AB: print out the residual before penalty
     if (_large_strain)
     {
       _stress_covariant_old = (*_contravariant_transformation_matrix[_qp_z])[_qp] *
@@ -125,14 +126,13 @@ ADStressDivergenceShell2::computeQpResidual()
            2.0 * _stress_covariant_old(1, 2) * (*_B_nl[_qp_z])[_qp](4, _i + _component * 4));
     }
 
-    std::cout<<'AB:_component: '<<_component<<std::endl; # AB: print out shear strains rot_Z
+    std::cout<<"AB:I am _component: "<<_component<<std::endl; // AB: print out shear strains rot_Z
 
     if (_component == 5)
     {
-      std::cout<<'AB:_gamma_z: '<<_gamma_z<<std::endl; # AB: print out shear strains rot_Z
       if (_i == _qp)
       {
-        std::cout<<'AB:_gamma_z: '<<_gamma_z<<std::endl; # AB: print out shear strains rot_Z
+        std::cout<<"AB:_gamma_z: " <<(*_gamma_z[_qp_z])[_qp]<<std::endl; // AB: print out shear strain Z
         residual1 += _penalty * (*_gamma_z[_qp_z])[_qp] / (_ad_JxW[_qp] * _ad_coord[_qp]);
       }
     }
@@ -141,7 +141,7 @@ ADStressDivergenceShell2::computeQpResidual()
     {
       if (_i == _qp)
       {
-        std::cout<<'AB:_gamma_y: '<<_gamma_y<<std::endl; # AB: print out shear strains rot_Y
+        std::cout<<"AB:_gamma_y: "<<(*_gamma_y[_qp_z])[_qp]<<std::endl; // AB: print out shear strains rot_Y
         residual1 += _penalty * (*_gamma_y[_qp_z])[_qp] / (_ad_JxW[_qp] * _ad_coord[_qp]);
       }
     }
@@ -150,7 +150,7 @@ ADStressDivergenceShell2::computeQpResidual()
     {
       if (_i == _qp)
       {
-        std::cout<<'AB:_gamma_x: '<<_gamma_x<<std::endl; # AB: print out shear strains rot_X
+        std::cout<<"AB:_gamma_x: "<<(*_gamma_x[_qp_z])[_qp]<<std::endl; // AB: print out shear strains rot_X
         residual1 += _penalty * (*_gamma_x[_qp_z])[_qp] / (_ad_JxW[_qp] * _ad_coord[_qp]);
       }
        
@@ -158,6 +158,8 @@ ADStressDivergenceShell2::computeQpResidual()
 
     residual += residual1 * (*_J_map[_qp_z])[_qp] * _q_weights[_qp] * _t_weights[_qp_z] /
                 (_ad_JxW[_qp] * _ad_coord[_qp]);
+    std::cout<<" AB: I am _residual1 : after all penalties"<<residual1<<std::endl; // AB: print out the residual after penalty
   }
+
   return residual;
 }
