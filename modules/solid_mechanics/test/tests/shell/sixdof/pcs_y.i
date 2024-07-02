@@ -10,7 +10,6 @@
   [../]
 []
 
-
 [Variables]
   [./disp_x]
     order = FIRST
