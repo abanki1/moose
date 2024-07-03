@@ -29,37 +29,37 @@
 # Run with -pc_type svd -pc_svd_monitor if convergence issue
 
 [Mesh]
-  [./mesh]
+  [mesh]
     type = FileMeshGenerator
     file = cyl_1x1.e
-  [../]
+  []
 []
 
 [Variables]
-  [./disp_x]
+  [disp_x]
     order = FIRST
     family = LAGRANGE
-  [../]
-  [./disp_y]
+  []
+  [disp_y]
     order = FIRST
     family = LAGRANGE
-  [../]
-  [./disp_z]
+  []
+  [disp_z]
     order = FIRST
     family = LAGRANGE
-  [../]
-  [./rot_x]
+  []
+  [rot_x]
     order = FIRST
     family = LAGRANGE
-  [../]
-  [./rot_y]
+  []
+  [rot_y]
     order = FIRST
     family = LAGRANGE
-  [../]
-  [./rot_z]
+  []
+  [rot_z]
     order = FIRST
     family = LAGRANGE
-  [../]
+  []
 []
 
 [ICs]
@@ -103,51 +103,51 @@
 []
 
 [BCs]
-  [./simply_support_x]
-    type = DirichletBC
-    variable = disp_x
-    boundary = 'CD AD'
-    value = 0.0
-  [../]
-  [./simply_support_y]
-    type = DirichletBC
-    variable = disp_y
-    boundary = 'CD BC'
-    value = 0.0
-  [../]
-  [./simply_support_z]
-    type = DirichletBC
-    variable = disp_z
-    boundary = 'CD AB'
-    value = 0.0
-  [../]
-  [./simply_support_rot_x]
-    type = DirichletBC
-    variable = rot_x
-    boundary = 'CD BC AB'
-    value = 0.0
-  [../]
-  [./simply_support_rot_y]
-    type = DirichletBC
-    variable = rot_y
-    boundary = 'CD AD AB'
-    value = 0.0
-  [../]
-  [./simply_support_rot_z]
-    type = DirichletBC
-    variable = rot_z
-    boundary = 'CD AD BC'
-    # boundary = 'CD AB' 
-    # boundary = 'CD AB AD BC'
-    value = 0.0
-  [../]
+  # [simply_support_x]
+  #   type = DirichletBC
+  #   variable = disp_x
+  #   boundary = 'CD AD'
+  #   value = 0.0
+  # []
+  # [simply_support_y]
+  #   type = DirichletBC
+  #   variable = disp_y
+  #   boundary = 'CD BC'
+  #   value = 0.0
+  # []
+  # [simply_support_z]
+  #   type = DirichletBC
+  #   variable = disp_z
+  #   boundary = 'CD AB'
+  #   value = 0.0
+  # []
+  # [simply_support_rot_x]
+  #   type = DirichletBC
+  #   variable = rot_x
+  #   boundary = 'CD BC AB'
+  #   value = 0.0
+  # []
+  # [simply_support_rot_y]
+  #   type = DirichletBC
+  #   variable = rot_y
+  #   boundary = 'CD AD AB'
+  #   value = 0.0
+  # []
+  # [simply_support_rot_z]
+  #   type = DirichletBC
+  #   variable = rot_z
+  #   boundary = 'CD AD BC'
+  #   # boundary = 'CD AB'
+  #   # boundary = 'CD AB AD BC'
+  #   value = 0.0
+  # []
 []
 
 [NodalKernels]
   [pinch]
     type = UserForcingFunctionNodalKernel
     boundary = 'BC' #'10'
-    function =-2.5
+    function = -2.5
     variable = disp_x
   []
 []
@@ -157,26 +157,36 @@
   #   type = SMP
   #   full = true
   # [../]
-  [./FDP_jfnk]
+  [FDP_jfnk]
     type = FDP
-  [../]
+  []
 []
 
-[Executioner]
-  type = Transient
-  solve_type = NEWTON
-  line_search = 'none'
-  ###### this gives a zeroPivit error with SMP ######
-  # petsc_options_iname = '-pc_type'
-  # petsc_options_value = 'lu'
+# [Problem]
+#   solve = false
+# []
 
-  petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
-  petsc_options_value = 'lu NONZERO   1e1'
-  # petsc_options_iname = '-pc_type -pc_factor_mat_solver_package'
-  # petsc_options_value = 'lu superlu_dist'
-  # petsc_options = '-snes_ksp_ew'
-  petsc_options = '-ksp_view_pmat'
-#  l_max_its = 10
+[Executioner]
+  type = Transient #debugging attempts to avoid prints
+  solve_type = NEWTON
+  # type = Steady //debugging attempts to avoid prints
+
+  # solve_type = NEWTON //debugging attempts to avoid prints
+  # solve = false
+  # line_search = 'none'
+  # ###### this gives a zeroPivit error with SMP ######
+  # # petsc_options_iname = '-pc_type'
+  # # petsc_options_value = 'lu'
+
+  # petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
+  # petsc_options_value = 'lu NONZERO   1e1'
+  # # petsc_options_iname = '-pc_type -pc_factor_mat_solver_package'
+  # # petsc_options_value = 'lu superlu_dist'
+  # # petsc_options = '-snes_ksp_ew'
+  # petsc_options = '-ksp_view_pmat'
+  petsc_options='-ksp_view_rhs'
+  l_max_its = 1
+  nl_max_its = 1
   nl_rel_tol = 1e-10
   nl_abs_tol = 1e-8
   dt = 1.0
@@ -189,51 +199,51 @@
 # []
 
 [Kernels]
-  [./solid_disp_x]
+  [solid_disp_x]
     type = ADStressDivergenceShell2
     block = '100'
     component = 0
     variable = disp_x
     through_thickness_order = SECOND
-  [../]
-  [./solid_disp_y]
+  []
+  [solid_disp_y]
     type = ADStressDivergenceShell2
     block = '100'
     component = 1
     variable = disp_y
     through_thickness_order = SECOND
-  [../]
-  [./solid_disp_z]
+  []
+  [solid_disp_z]
     type = ADStressDivergenceShell2
     block = '100'
     component = 2
     variable = disp_z
     through_thickness_order = SECOND
-  [../]
-  [./solid_rot_x]
+  []
+  [solid_rot_x]
     type = ADStressDivergenceShell2
     block = '100'
     component = 3
     variable = rot_x
     through_thickness_order = SECOND
     penalty = 1e6
-  [../]
-  [./solid_rot_y]
+  []
+  [solid_rot_y]
     type = ADStressDivergenceShell2
     block = '100'
     component = 4
     variable = rot_y
     through_thickness_order = SECOND
     penalty = 1e6
-  [../]
-  [./solid_rot_z]
+  []
+  [solid_rot_z]
     type = ADStressDivergenceShell2
     block = '100'
     component = 5
     variable = rot_z
     through_thickness_order = SECOND
     penalty = 1e6
-  [../]
+  []
 []
 
 [Materials]
@@ -251,28 +261,28 @@
   #   base_name = t_points_1
   # []
 
-  [./elasticity]
-   type = ADComputeIsotropicElasticityTensorShell
-   youngs_modulus = 1e6
-   poissons_ratio = 0.3
-   block = '100'
-   through_thickness_order = SECOND
-  [../]
+  [elasticity]
+    type = ADComputeIsotropicElasticityTensorShell
+    youngs_modulus = 1e6
+    poissons_ratio = 0.3
+    block = '100'
+    through_thickness_order = SECOND
+  []
 
-  [./strain]
+  [strain]
     type = ADComputeIncrementalShellStrain2
     block = '100'
     displacements = 'disp_x disp_y disp_z'
     rotations = 'rot_x rot_y rot_z'
     thickness = 0.01
     through_thickness_order = SECOND
-  [../]
+  []
 
-  [./stress]
-   type = ADComputeShellStress2
-   block = '100'
-   through_thickness_order = SECOND
-  [../]
+  [stress]
+    type = ADComputeShellStress2
+    block = '100'
+    through_thickness_order = SECOND
+  []
 
   # [stress_t0]
   #   type = ADComputeLinearElasticStress
@@ -285,16 +295,16 @@
 []
 
 [Postprocessors]
-  [./disp_x]
+  [disp_x]
     type = PointValue
     point = '1 0 1'
     variable = disp_x
-  [../]
-  [./disp_y]
+  []
+  [disp_y]
     type = PointValue
     point = '0 1 1'
     variable = disp_y
-  [../]
+  []
 []
 
 [Outputs]
