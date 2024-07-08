@@ -173,18 +173,18 @@
   line_search = 'none'
 
   # ###### this gives a zeroPivit error with SMP ######
-  petsc_options_iname = '-pc_type'
-  petsc_options_value = 'lu'
+  # petsc_options_iname = '-pc_type'
+  # petsc_options_value = 'lu'
 
-  # petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
-  # petsc_options_value = 'lu NONZERO   1e1'
+  petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
+  petsc_options_value = 'lu NONZERO   1e1'
   # # petsc_options_iname = '-pc_type -pc_factor_mat_solver_package'
   # # petsc_options_value = 'lu superlu_dist'
   # # petsc_options = '-snes_ksp_ew'
-  petsc_options = '-ksp_view_pmat'
-  # petsc_options='-ksp_view_rhs'
-  # l_max_its = 10
-  # nl_max_its = 10
+  # petsc_options = '-ksp_view_pmat'
+  petsc_options='-ksp_view_rhs'
+  # l_max_its = 1
+  # nl_max_its = 1
   nl_rel_tol = 1e-10
   nl_abs_tol = 1e-8
   dt = 1.0
@@ -224,7 +224,7 @@
     component = 3
     variable = rot_x
     through_thickness_order = SECOND
-    penalty = 0
+    penalty = 1e6
   [../]
   [./solid_rot_y]
     type = ADStressDivergenceShell2
@@ -232,7 +232,7 @@
     component = 4
     variable = rot_y
     through_thickness_order = SECOND
-    penalty = 0
+    penalty = 1e6
   [../]
   [./solid_rot_z]
     type = ADStressDivergenceShell2
@@ -240,7 +240,7 @@
     component = 5
     variable = rot_z
     through_thickness_order = SECOND
-    penalty = 0
+    penalty = 1e6
   [../]
 []
 

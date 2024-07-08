@@ -111,7 +111,7 @@
   [./simply_support_rot_z]
     type = DirichletBC
     variable = rot_z
-    boundary = 'CD AD BC AB'
+    boundary = 'CD AD BC'
     # boundary = 'CD AB' #'CD AB AD BC'
     # boundary = 'CD AD BC'
     value = 0.0
@@ -121,7 +121,7 @@
 [NodalKernels]
   [pinch]
     type = UserForcingFunctionNodalKernel
-    boundary = 'AD' #'11'
+    boundary = '11' #'AD'
     function = -2.5
     variable = disp_y
   []
@@ -145,7 +145,9 @@
   # petsc_options_value = 'lu'
   petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
   petsc_options_value = 'lu NONZERO   1e1'
-  petsc_options = '-ksp_view_pmat'
+  # petsc_options = '-ksp_view_pmat'
+  petsc_options = '-ksp_view_rhs'
+  # l_max_its=1
   nl_rel_tol = 1e-10
   nl_abs_tol = 1e-8
   dt = 1.0
