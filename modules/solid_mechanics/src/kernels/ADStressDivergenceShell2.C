@@ -87,8 +87,8 @@ ADStressDivergenceShell2::ADStressDivergenceShell2(const InputParameters & param
 ADReal
 ADStressDivergenceShell2::computeQpResidual()
 {
-  std::cout << std::endl;
-  std::cout << "AB: calling computeQPResidual(): " << std::endl; // AB: calling QPResidual
+  // std::cout << std::endl;
+  // std::cout << "AB: calling computeQPResidual(): " << std::endl; // AB: calling QPResidual
   _q_weights = _qrule->get_weights();
   ADReal residual = 0.0;
   ADReal residual1 = 0.0;
