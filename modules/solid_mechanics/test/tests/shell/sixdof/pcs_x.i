@@ -31,7 +31,7 @@
 [Mesh]
   [./mesh]
     type = FileMeshGenerator
-    file = cyl_1x2.e
+    file = cyl_1x1.e
   [../]
 []
 
@@ -182,9 +182,9 @@
   # petsc_options_value = 'lu superlu_dist'
   # # petsc_options = '-snes_ksp_ew'
   # petsc_options = '-ksp_view_pmat'
-  petsc_options='-ksp_view_rhs'
-  # l_max_its = 1
-  # nl_max_its = 1
+  # petsc_options='-ksp_view_rhs'
+  # l_max_its = 10
+  # nl_max_its = 10
   nl_rel_tol = 1e-10
   nl_abs_tol = 1e-8
   dt = 1.0
@@ -224,7 +224,7 @@
     component = 3
     variable = rot_x
     through_thickness_order = SECOND
-    penalty = 1e6
+    penalty = 0
   [../]
   [./solid_rot_y]
     type = ADStressDivergenceShell2
@@ -232,7 +232,7 @@
     component = 4
     variable = rot_y
     through_thickness_order = SECOND
-    penalty = 1e6
+    penalty = 0
   [../]
   [./solid_rot_z]
     type = ADStressDivergenceShell2
@@ -240,7 +240,7 @@
     component = 5
     variable = rot_z
     through_thickness_order = SECOND
-    penalty = 1e6
+    penalty = 0
   [../]
 []
 
