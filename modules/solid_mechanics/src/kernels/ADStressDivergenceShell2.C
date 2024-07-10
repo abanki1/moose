@@ -145,25 +145,25 @@ ADStressDivergenceShell2::computeQpResidual()
       }
     }
 
-    if (_component == 4)
-    {
-      if (_i == _qp)
-      {
-        // std::cout << "AB:_gamma_y: " << (*_gamma_y[_qp_z])[_qp] << std::endl; // AB: print out shear
-        // strains rot_Y
-        residual1 += _penalty * (*_gamma_y[_qp_z])[_qp] / (_ad_JxW[_qp] * _ad_coord[_qp]);
-      }
-    }
+    // if (_component == 4)
+    // {
+    //   if (_i == _qp)
+    //   {
+    //     // std::cout << "AB:_gamma_y: " << (*_gamma_y[_qp_z])[_qp] << std::endl; // AB: print out shear
+    //     // strains rot_Y
+    //     residual1 += _penalty * (*_gamma_y[_qp_z])[_qp] / (_ad_JxW[_qp] * _ad_coord[_qp]);
+    //   }
+    // }
 
-    if (_component == 3)
-    {
-      if (_i == _qp)
-      {
-        // std::cout << "AB:_gamma_x: " << (*_gamma_x[_qp_z])[_qp] << std::endl; // AB: print out shear
-        // strains rot_X
-        residual1 += _penalty * (*_gamma_x[_qp_z])[_qp] / (_ad_JxW[_qp] * _ad_coord[_qp]);
-      }
-    }
+    // if (_component == 3)
+    // {
+    //   if (_i == _qp)
+    //   {
+    //     // std::cout << "AB:_gamma_x: " << (*_gamma_x[_qp_z])[_qp] << std::endl; // AB: print out shear
+    //     // strains rot_X
+    //     residual1 += _penalty * (*_gamma_x[_qp_z])[_qp] / (_ad_JxW[_qp] * _ad_coord[_qp]);
+    //   }
+    // }
 
     residual += residual1 * (*_J_map[_qp_z])[_qp] * _q_weights[_qp] * _t_weights[_qp_z] /
                 (_ad_JxW[_qp] * _ad_coord[_qp]);

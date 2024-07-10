@@ -147,8 +147,8 @@
   petsc_options_value = 'lu NONZERO   1e1'
   # petsc_options_iname = '-pc_type -pc_factor_mat_solver_package'
   # petsc_options_value = 'lu superlu_dist'
-  # petsc_options = '-ksp_view_pmat'
-  petsc_options = '-ksp_view_rhs'
+  petsc_options = '-ksp_view_pmat'
+  # petsc_options = '-ksp_view_rhs'
   # l_max_its=1
   nl_rel_tol = 1e-10
   nl_abs_tol = 1e-8

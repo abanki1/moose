@@ -181,8 +181,8 @@
   # petsc_options_iname = '-pc_type -pc_factor_mat_solver_package'
   # petsc_options_value = 'lu superlu_dist'
   # # petsc_options = '-snes_ksp_ew'
-  # petsc_options = '-ksp_view_pmat'
-  petsc_options='-ksp_view_rhs'
+  petsc_options = '-ksp_view_pmat'
+  # petsc_options='-ksp_view_rhs'
   # l_max_its = 10
   # nl_max_its = 10
   nl_rel_tol = 1e-10
