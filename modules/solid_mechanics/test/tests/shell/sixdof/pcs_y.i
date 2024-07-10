@@ -6,7 +6,7 @@
 [Mesh]
   [./mesh]
     type = FileMeshGenerator
-    file = cyl_1x2.e
+    file = cyl_1x1.e
   [../]
 []
 
@@ -143,10 +143,10 @@
   line_search = 'none'
   # petsc_options_iname = '-pc_type'
   # petsc_options_value = 'lu'
-  # petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
-  # petsc_options_value = 'lu NONZERO   1e1'
-  petsc_options_iname = '-pc_type -pc_factor_mat_solver_package'
-  petsc_options_value = 'lu superlu_dist'
+  petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
+  petsc_options_value = 'lu NONZERO   1e1'
+  # petsc_options_iname = '-pc_type -pc_factor_mat_solver_package'
+  # petsc_options_value = 'lu superlu_dist'
   # petsc_options = '-ksp_view_pmat'
   petsc_options = '-ksp_view_rhs'
   # l_max_its=1
