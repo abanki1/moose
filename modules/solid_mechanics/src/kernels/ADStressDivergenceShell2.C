@@ -40,7 +40,7 @@ ADStressDivergenceShell2::validParams()
   params.addParam<bool>(
       "large_strain", false, "Set to true to turn on finite strain calculations.");
   params.set<bool>("use_displaced_mesh") = false;
-  params.addParam<Real>("penalty", 1e4, "Penalty parameter for out of plane stress");
+  params.addParam<Real>("penalty", 0, "Penalty parameter for out of plane stress");
   return params;
 }
 
@@ -131,39 +131,47 @@ ADStressDivergenceShell2::computeQpResidual()
            2.0 * _stress_covariant_old(0, 2) * (*_B_nl[_qp_z])[_qp](3, _i + _component * 4) +
            2.0 * _stress_covariant_old(1, 2) * (*_B_nl[_qp_z])[_qp](4, _i + _component * 4));
     }
+    // std::cout<<"AB _stress_covariant: "<<std::endl;
+    // _stress_covariant.printReal();
+
+    // std::cout<<"AB residual1: "<<residual<<std::endl;
     // std::cout << std::endl;                                         // AB segregate the block
     // std::cout << "AB:I am _component: " << _component << std::endl; // AB: print out shear strains
     // rot_Z
     // std::cout << "AB:I am in plane qp: " << _qp << std::endl; // AB: print out the inplane _qp loop
-    if (_component == 5)
-    {
-      if (_i == _qp)
-      {
-        // std::cout << "AB:_gamma_z: " << (*_gamma_z[_qp_z])[_qp] << std::endl; // AB: print out shear
-        // strain Z
-        residual1 += _penalty * (*_gamma_z[_qp_z])[_qp] / (_ad_JxW[_qp] * _ad_coord[_qp]);
-      }
-    }
+    // if (_component == 5)
+    // {
+    //   if (_i == _qp)
+    //   {
+    //     std::cout << "AB:_gamma_z: " << (*_gamma_z[_qp_z])[_qp] << std::endl; // AB: print out shear strain Z
+    //     std::cout << "AB:_ad_JxW[_qp]: " << _ad_JxW[_qp] << std::endl; // AB: print out geometric Jacobian
+    //     std::cout << "AB:_ad_coord[_qp]: " << _ad_coord[_qp] << std::endl; // AB: print out the quadrature points
+    //     residual1 += _penalty * (*_gamma_z[_qp_z])[_qp] / (_ad_JxW[_qp] * _ad_coord[_qp]);
+    //     // residual1 += _penalty * (*_gamma_z[_qp_z])[_qp] * (_ad_JxW[_qp] * _ad_coord[_qp]); //atempting to fix the penalty
+    //   }
+    // }
 
-    if (_component == 4)
-    {
-      if (_i == _qp)
-      {
-        // std::cout << "AB:_gamma_y: " << (*_gamma_y[_qp_z])[_qp] << std::endl; // AB: print out shear
-        // strains rot_Y
-        residual1 += _penalty * (*_gamma_y[_qp_z])[_qp] / (_ad_JxW[_qp] * _ad_coord[_qp]);
-      }
-    }
+    // if (_component == 4)
+    // {
+    //   if (_i == _qp)
+    //   {
+    //     // std::cout << "AB:_gamma_y: " << (*_gamma_y[_qp_z])[_qp] << std::endl; // AB: print out shear
+    //     // strains rot_Y
+    //     residual1 += _penalty * (*_gamma_y[_qp_z])[_qp] / (_ad_JxW[_qp] * _ad_coord[_qp]);
+    //     // residual1 += _penalty * (*_gamma_y[_qp_z])[_qp] * (_ad_JxW[_qp] * _ad_coord[_qp]); //atempting to fix the penalty
+    //   }
+    // }
 
-    if (_component == 3)
-    {
-      if (_i == _qp)
-      {
-        // std::cout << "AB:_gamma_x: " << (*_gamma_x[_qp_z])[_qp] << std::endl; // AB: print out shear
-        // strains rot_X
-        residual1 += _penalty * (*_gamma_x[_qp_z])[_qp] / (_ad_JxW[_qp] * _ad_coord[_qp]);
-      }
-    }
+    // if (_component == 3)
+    // {
+    //   if (_i == _qp)
+    //   {
+    //     // std::cout << "AB:_gamma_x: " << (*_gamma_x[_qp_z])[_qp] << std::endl; // AB: print out shear
+    //     // strains rot_X
+    //     residual1 += _penalty * (*_gamma_x[_qp_z])[_qp] / (_ad_JxW[_qp] * _ad_coord[_qp]);
+    //     // residual1 += _penalty * (*_gamma_x[_qp_z])[_qp] * (_ad_JxW[_qp] * _ad_coord[_qp]); //atempting to fix the penalty
+    //   }
+    // }
 
     residual += residual1 * (*_J_map[_qp_z])[_qp] * _q_weights[_qp] * _t_weights[_qp_z] /
                 (_ad_JxW[_qp] * _ad_coord[_qp]);

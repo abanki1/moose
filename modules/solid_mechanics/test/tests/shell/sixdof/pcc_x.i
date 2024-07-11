@@ -29,77 +29,77 @@
 # Run with -pc_type svd -pc_svd_monitor if convergence issue
 
 [Mesh]
-  [./mesh]
+  [mesh]
     type = FileMeshGenerator
-    file = cyl_4x8.e
-  [../]
+    file = cyl_1x2.e
+  []
 []
 
 [Variables]
-  [./disp_x]
+  [disp_x]
     order = FIRST
     family = LAGRANGE
-  [../]
-  [./disp_y]
+  []
+  [disp_y]
     order = FIRST
     family = LAGRANGE
-  [../]
-  [./disp_z]
+  []
+  [disp_z]
     order = FIRST
     family = LAGRANGE
-  [../]
-  [./rot_x]
+  []
+  [rot_x]
     order = FIRST
     family = LAGRANGE
-  [../]
-  [./rot_y]
+  []
+  [rot_y]
     order = FIRST
     family = LAGRANGE
-  [../]
-  [./rot_z]
+  []
+  [rot_z]
     order = FIRST
     family = LAGRANGE
-  [../]
+  []
 []
 
 [BCs]
-  [./simply_support_x]
+  [simply_support_x]
     type = DirichletBC
     variable = disp_x
     boundary = 'CD AD'
     value = 0.0
-  [../]
-  [./simply_support_y]
+  []
+  [simply_support_y]
     type = DirichletBC
     variable = disp_y
     boundary = 'CD BC'
     value = 0.0
-  [../]
-  [./simply_support_z]
+  []
+  [simply_support_z]
     type = DirichletBC
     variable = disp_z
     boundary = 'CD AB'
     value = 0.0
-  [../]
-  [./simply_support_rot_x]
+  []
+  [simply_support_rot_x]
     type = DirichletBC
     variable = rot_x
     boundary = 'CD BC AB'
     value = 0.0
-  [../]
-  [./simply_support_rot_y]
+  []
+  [simply_support_rot_y]
     type = DirichletBC
     variable = rot_y
     boundary = 'CD AD AB'
     value = 0.0
-  [../]
-  [./simply_support_rot_z]
+  []
+  [simply_support_rot_z]
     type = DirichletBC
     variable = rot_z
     # boundary = 'CD AD BC'
     boundary = 'CD AD BC AB' #debugging attempts
     value = 0.0
-  [../]
+  []
 []
 
 [NodalKernels]
@@ -116,9 +116,9 @@
   #   type = SMP
   #   full = true
   # [../]
-  [./FDP_jfnk]
+  [FDP_jfnk]
     type = FDP
-  [../]
+  []
 []
 
 [Executioner]
@@ -136,51 +136,51 @@
 []
 
 [Kernels]
-  [./solid_disp_x]
+  [solid_disp_x]
     type = ADStressDivergenceShell2
     block = '100'
     component = 0
     variable = disp_x
     through_thickness_order = SECOND
-  [../]
-  [./solid_disp_y]
+  []
+  [solid_disp_y]
     type = ADStressDivergenceShell2
     block = '100'
     component = 1
     variable = disp_y
     through_thickness_order = SECOND
-  [../]
-  [./solid_disp_z]
+  []
+  [solid_disp_z]
     type = ADStressDivergenceShell2
     block = '100'
     component = 2
     variable = disp_z
     through_thickness_order = SECOND
-  [../]
-  [./solid_rot_x]
+  []
+  [solid_rot_x]
     type = ADStressDivergenceShell2
     block = '100'
     component = 3
     variable = rot_x
     through_thickness_order = SECOND
     penalty = 0
-  [../]
-  [./solid_rot_y]
+  []
+  [solid_rot_y]
     type = ADStressDivergenceShell2
     block = '100'
     component = 4
     variable = rot_y
     through_thickness_order = SECOND
     penalty = 0
-  [../]
-  [./solid_rot_z]
+  []
+  [solid_rot_z]
     type = ADStressDivergenceShell2
     block = '100'
     component = 5
     variable = rot_z
     through_thickness_order = SECOND
     penalty = 0
-  [../]
+  []
 []
 
 [Materials]
@@ -204,20 +204,20 @@
   #   block = '100'
   #   through_thickness_order = SECOND
   # [../]
-  [./strain]
+  [strain]
     type = ADComputeIncrementalShellStrain2
     block = '100'
     displacements = 'disp_x disp_y disp_z'
     rotations = 'rot_x rot_y rot_z'
     thickness = 0.01
     through_thickness_order = SECOND
-  [../]
+  []
   # [./stress]
   #   type = ADComputeShellStress2
   #   block = '100'
   #   through_thickness_order = SECOND
   # [../]
-    [stress_t0]
+  [stress_t0]
     type = ADComputeLinearElasticStress
     base_name = t_points_0
   []
@@ -228,16 +228,16 @@
 []
 
 [Postprocessors]
-  [./disp_x]
+  [disp_x]
     type = PointValue
     point = '1 0 1'
     variable = disp_x
-  [../]
-  [./disp_y]
+  []
+  [disp_y]
     type = PointValue
     point = '0 1 1'
     variable = disp_y
-  [../]
+  []
 []
 
 [Outputs]
