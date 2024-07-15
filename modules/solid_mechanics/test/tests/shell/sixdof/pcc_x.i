@@ -126,12 +126,12 @@
   #   value = 0
   #   penalty = 1e6
   # []
-  # [./constraint_z]
-  #   type = PenaltyDirichletNodalKernel
-  #   variable = rot_z
-  #   value = 0
-  #   penalty = 0
-  # []
+  [./constraint_z]
+    type = PenaltyDirichletNodalKernel
+    variable = rot_z
+    value = 0
+    penalty = 0
+  []
 []
 
 [Preconditioning]
