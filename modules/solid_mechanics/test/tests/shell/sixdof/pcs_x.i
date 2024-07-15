@@ -258,7 +258,7 @@
     component = 5
     variable = rot_z
     through_thickness_order = SECOND
-    penalty = 0
+    penalty = 1e6
   []
 []
 
