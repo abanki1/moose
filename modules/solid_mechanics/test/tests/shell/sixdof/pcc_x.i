@@ -28,11 +28,16 @@
 
 # Run with -pc_type svd -pc_svd_monitor if convergence issue
 
+# [GlobalParams]
+#   use_displaced_mesh = true
+# []
+
 [Mesh]
   [mesh]
     type = FileMeshGenerator
-    file = cyl_1x2.e
+    file = cyl_1x1.e
   []
+  # displacements = 'disp_x disp_y disp_z'
 []
 
 [Variables]
@@ -62,45 +67,45 @@
   []
 []
 
-[BCs]
-  [simply_support_x]
-    type = DirichletBC
-    variable = disp_x
-    boundary = 'CD AD'
-    value = 0.0
-  []
-  [simply_support_y]
-    type = DirichletBC
-    variable = disp_y
-    boundary = 'CD BC'
-    value = 0.0
-  []
-  [simply_support_z]
-    type = DirichletBC
-    variable = disp_z
-    boundary = 'CD AB'
-    value = 0.0
-  []
-  [simply_support_rot_x]
-    type = DirichletBC
-    variable = rot_x
-    boundary = 'CD BC AB'
-    value = 0.0
-  []
-  [simply_support_rot_y]
-    type = DirichletBC
-    variable = rot_y
-    boundary = 'CD AD AB'
-    value = 0.0
-  []
-  [simply_support_rot_z]
-    type = DirichletBC
-    variable = rot_z
-    # boundary = 'CD AD BC'
-    boundary = 'CD AD BC AB' #debugging attempts
-    value = 0.0
-  []
-[]
+# [BCs]
+#   [simply_support_x]
+#     type = DirichletBC
+#     variable = disp_x
+#     boundary = 'CD AD'
+#     value = 0.0
+#   []
+#   [simply_support_y]
+#     type = DirichletBC
+#     variable = disp_y
+#     boundary = 'CD BC'
+#     value = 0.0
+#   []
+#   [simply_support_z]
+#     type = DirichletBC
+#     variable = disp_z
+#     boundary = 'CD AB'
+#     value = 0.0
+#   []
+#   [simply_support_rot_x]
+#     type = DirichletBC
+#     variable = rot_x
+#     boundary = 'CD BC AB'
+#     value = 0.0
+#   []
+#   [simply_support_rot_y]
+#     type = DirichletBC
+#     variable = rot_y
+#     boundary = 'CD AD AB'
+#     value = 0.0
+#   []
+#   [simply_support_rot_z]
+#     type = DirichletBC
+#     variable = rot_z
+#     # boundary = 'CD AD BC'
+#     boundary = 'CD AD BC AB' #debugging attempts
+#     value = 0.0
+#   []
+# []
 
 [NodalKernels]
   [pinch]
@@ -109,6 +114,24 @@
     function = -2.5
     variable = disp_x
   []
+  # [./constraint_x]
+  #   type = PenaltyDirichletNodalKernel
+  #   variable = rot_x
+  #   value = 0
+  #   penalty = 1e6
+  # []
+  # [./constraint_y]
+  #   type = PenaltyDirichletNodalKernel
+  #   variable = rot_y
+  #   value = 0
+  #   penalty = 1e6
+  # []
+  # [./constraint_z]
+  #   type = PenaltyDirichletNodalKernel
+  #   variable = rot_z
+  #   value = 0
+  #   penalty = 0
+  # []
 []
 
 [Preconditioning]
@@ -171,7 +194,7 @@
     component = 4
     variable = rot_y
     through_thickness_order = SECOND
-    penalty = 0
+    penalty = 1e6
   []
   [solid_rot_z]
     type = ADStressDivergenceShell2
@@ -179,7 +202,7 @@
     component = 5
     variable = rot_z
     through_thickness_order = SECOND
-    penalty = 0
+    penalty = 1e6
   []
 []
 

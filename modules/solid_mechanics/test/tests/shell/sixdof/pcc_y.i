@@ -84,6 +84,12 @@
     function = -2.5
     variable = disp_y
   []
+  [constraint]
+    type = PenaltyDirichletNodalKernel
+    variable = rot_z
+    value = 0
+    penalty = 0
+  []
 []
 
 [Preconditioning]
