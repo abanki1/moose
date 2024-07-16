@@ -67,6 +67,46 @@
   []
 []
 
+[ICs]
+  [disp_x]
+    type = RandomIC
+    variable = disp_x
+    min = -0.01
+    max = 0.01
+  []
+  [disp_y]
+    type = RandomIC
+    variable = disp_y
+    min = -0.01
+    max = 0.01
+  []
+  [disp_z]
+    type = RandomIC
+    variable = disp_z
+    min = -0.01
+    max = 0.01
+  []
+
+  [rot_x]
+    type = RandomIC
+    variable = rot_x
+    min = -0.01
+    max = 0.01
+  []
+  [rot_y]
+    type = RandomIC
+    variable = rot_y
+    min = -0.01
+    max = 0.01
+  []
+  [rot_z]
+    type = RandomIC
+    variable = rot_z
+    min = -0.01
+    max = 0.01
+  []
+[]
+
 # [BCs]
 #   [simply_support_x]
 #     type = DirichletBC
@@ -101,8 +141,8 @@
 #   [simply_support_rot_z]
 #     type = DirichletBC
 #     variable = rot_z
-#     # boundary = 'CD AD BC'
-#     boundary = 'CD AD BC AB' #debugging attempts
+#     boundary = 'CD AD BC'
+#     # boundary = 'CD AD BC AB' #debugging attempts
 #     value = 0.0
 #   []
 # []
@@ -110,7 +150,7 @@
 [NodalKernels]
   [pinch]
     type = UserForcingFunctionNodalKernel
-    boundary = 'BC' #'10'
+    boundary = '10' #'BC'
     function = -2.5
     variable = disp_x
   []
@@ -130,18 +170,18 @@
     type = PenaltyDirichletNodalKernel
     variable = rot_z
     value = 0
-    penalty = 0
+    penalty = 1e6
   []
 []
 
 [Preconditioning]
-  # [./smp]
-  #   type = SMP
-  #   full = true
-  # [../]
-  [FDP_jfnk]
-    type = FDP
-  []
+  [./smp]
+    type = SMP
+    full = true
+  [../]
+  # [FDP_jfnk]
+  #   type = FDP
+  # []
 []
 
 [Executioner]
@@ -204,6 +244,97 @@
     through_thickness_order = SECOND
     penalty = 1e6
   []
+
+  # [solid_disp_x_t_points_0]
+  #   type = ADStressDivergenceShell2
+  #   base_name = t_points_0
+  #   component = 0
+  #   variable = disp_x
+  #   through_thickness_order = SECOND
+  # []
+  # [solid_disp_x_t_points_1]
+  #   type = ADStressDivergenceShell2
+  #   base_name = t_points_1
+  #   component = 0
+  #   variable = disp_x
+  #   through_thickness_order = SECOND
+  # []
+  # [solid_disp_y_t_points_0]
+  #   type = ADStressDivergenceShell2
+  #   base_name = t_points_0
+  #   component = 1
+  #   variable = disp_y
+  #   through_thickness_order = SECOND
+  # []
+  # [solid_disp_y_t_points_1]
+  #   type = ADStressDivergenceShell2
+  #   base_name = t_points_1
+  #   component = 1
+  #   variable = disp_y
+  #   through_thickness_order = SECOND
+  # []
+  # [solid_disp_z_t_points_0]
+  #   type = ADStressDivergenceShell2
+  #   base_name = t_points_0
+  #   component = 2
+  #   variable = disp_z
+  #   through_thickness_order = SECOND
+  # []
+  # [solid_disp_z_t_points_1]
+  #   type = ADStressDivergenceShell2
+  #   base_name = t_points_1
+  #   component = 2
+  #   variable = disp_z
+  #   through_thickness_order = SECOND
+  # []
+  # [solid_rot_x_t_points_0]
+  #   type = ADStressDivergenceShell2
+  #   base_name = t_points_0
+  #   component = 3
+  #   variable = rot_x
+  #   through_thickness_order = SECOND
+  #   penalty = 1e6
+  # []
+  # [solid_rot_x_t_points_1]
+  #   type = ADStressDivergenceShell2
+  #   base_name = t_points_1
+  #   component = 3
+  #   variable = rot_x
+  #   through_thickness_order = SECOND
+  #   penalty = 1e6
+  # []
+  # [solid_rot_y_t_points_0]
+  #   type = ADStressDivergenceShell2
+  #   base_name = t_points_0
+  #   component = 4
+  #   variable = rot_y
+  #   through_thickness_order = SECOND
+  #   penalty = 1e6
+  # []
+  # [solid_rot_y_t_points_1]
+  #   type = ADStressDivergenceShell2
+  #   base_name = t_points_1
+  #   component = 4
+  #   variable = rot_y
+  #   through_thickness_order = SECOND
+  #   penalty = 1e6
+  # []
+  # [solid_rot_z_t_points_0]
+  #   type = ADStressDivergenceShell2
+  #   base_name = t_points_0
+  #   component = 5
+  #   variable = rot_z
+  #   through_thickness_order = SECOND
+  #   penalty = 1e6
+  # []
+  # [solid_rot_z_t_points_1]
+  #   type = ADStressDivergenceShell2
+  #   base_name = t_points_1
+  #   component = 5
+  #   variable = rot_z
+  #   through_thickness_order = SECOND
+  #   penalty = 1e6
+  # []
 []
 
 [Materials]
@@ -211,19 +342,19 @@
   [elasticity_t0]
     type = ADComputeIsotropicElasticityTensor
     youngs_modulus = 1e6
-    poissons_ratio = 0.3
+    poissons_ratio = 0
     base_name = t_points_0
   []
   [elasticity_t1]
     type = ADComputeIsotropicElasticityTensor
     youngs_modulus = 1e6
-    poissons_ratio = 0.3
+    poissons_ratio = 0
     base_name = t_points_1
   []
   # [./elasticity]
   #   type = ADComputeIsotropicElasticityTensorShell
   #   youngs_modulus = 1e6
-  #   poissons_ratio = 0.3
+  #   poissons_ratio = 0
   #   block = '100'
   #   through_thickness_order = SECOND
   # [../]
@@ -235,11 +366,7 @@
     thickness = 0.01
     through_thickness_order = SECOND
   []
-  # [./stress]
-  #   type = ADComputeShellStress2
-  #   block = '100'
-  #   through_thickness_order = SECOND
-  # [../]
+
   [stress_t0]
     type = ADComputeLinearElasticStress
     base_name = t_points_0

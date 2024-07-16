@@ -31,7 +31,7 @@
 [Mesh]
   [mesh]
     type = FileMeshGenerator
-    file = cyl_1x2.e
+    file = cyl_1x1.e
   []
 []
 
@@ -102,44 +102,44 @@
   []
 []
 
-[BCs]
-  [simply_support_x]
-    type = DirichletBC
-    variable = disp_x
-    boundary = 'CD AD'
-    value = 0.0
-  []
-  [simply_support_y]
-    type = DirichletBC
-    variable = disp_y
-    boundary = 'CD BC'
-    value = 0.0
-  []
-  [simply_support_z]
-    type = DirichletBC
-    variable = disp_z
-    boundary = 'CD AB'
-    value = 0.0
-  []
-  [simply_support_rot_x]
-    type = DirichletBC
-    variable = rot_x
-    boundary = 'CD BC AB'
-    value = 0.0
-  []
-  [simply_support_rot_y]
-    type = DirichletBC
-    variable = rot_y
-    boundary = 'CD AD AB'
-    value = 0.0
-  []
-  [simply_support_rot_z]
-    type = DirichletBC
-    variable = rot_z
-    boundary = 'CD AD BC'
-    value = 0.0
-  []
-[]
+# [BCs]
+#   [simply_support_x]
+#     type = DirichletBC
+#     variable = disp_x
+#     boundary = 'CD AD'
+#     value = 0.0
+#   []
+#   [simply_support_y]
+#     type = DirichletBC
+#     variable = disp_y
+#     boundary = 'CD BC'
+#     value = 0.0
+#   []
+#   [simply_support_z]
+#     type = DirichletBC
+#     variable = disp_z
+#     boundary = 'CD AB'
+#     value = 0.0
+#   []
+#   [simply_support_rot_x]
+#     type = DirichletBC
+#     variable = rot_x
+#     boundary = 'CD BC AB'
+#     value = 0.0
+#   []
+#   [simply_support_rot_y]
+#     type = DirichletBC
+#     variable = rot_y
+#     boundary = 'CD AD AB'
+#     value = 0.0
+#   []
+#   [simply_support_rot_z]
+#     type = DirichletBC
+#     variable = rot_z
+#     boundary = 'CD AD BC'
+#     value = 0.0
+#   []
+# []
 
 [NodalKernels]
   [pinch]
@@ -148,20 +148,20 @@
     function = -2.5
     variable = disp_x
   []
-  [constraint_x]
-    type = PenaltyDirichletNodalKernel
-    variable = rot_x
-    value = 0
-    boundary = 'CD AD BC'
-    penalty = 1e6
-  [../]
-  [constraint_y]
-    type = PenaltyDirichletNodalKernel
-    variable = rot_y
-    value = 0
-    boundary = 'CD AD BC'
-    penalty = 1e6
-  [../]
+  # [constraint_x]
+  #   type = PenaltyDirichletNodalKernel
+  #   variable = rot_x
+  #   value = 0
+  #   boundary = 'CD AD BC'
+  #   penalty = 1e6
+  # [../]
+  # [constraint_y]
+  #   type = PenaltyDirichletNodalKernel
+  #   variable = rot_y
+  #   value = 0
+  #   boundary = 'CD AD BC'
+  #   penalty = 1e6
+  # [../]
   [constraint_z]
     type = PenaltyDirichletNodalKernel
     variable = rot_z
@@ -171,13 +171,13 @@
 []
 
 [Preconditioning]
-  # [./smp]
-  #   type = SMP
-  #   full = true
-  # [../]
-  [FDP_jfnk]
-    type = FDP
-  []
+  [./smp]
+    type = SMP
+    full = true
+  [../]
+  # [FDP_jfnk]
+  #   type = FDP
+  # []
 []
 
 # [Problem]
@@ -191,11 +191,11 @@
   line_search = 'none'
 
   # ###### this gives a zeroPivit error with SMP ######
-  # petsc_options_iname = '-pc_type'
-  # petsc_options_value = 'lu'
+  petsc_options_iname = '-pc_type'
+  petsc_options_value = 'lu'
 
-  petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
-  petsc_options_value = 'lu NONZERO   1e1'
+  # petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
+  # petsc_options_value = 'lu NONZERO   1e1'
   # petsc_options_iname = '-pc_type -pc_factor_mat_solver_package'
   # petsc_options_value = 'lu superlu_dist'
   # # petsc_options = '-snes_ksp_ew'
@@ -250,7 +250,7 @@
     component = 4
     variable = rot_y
     through_thickness_order = SECOND
-    penalty = 0
+    penalty = 1e6
   []
   [solid_rot_z]
     type = ADStressDivergenceShell2
@@ -258,26 +258,12 @@
     component = 5
     variable = rot_z
     through_thickness_order = SECOND
-    penalty = 0
+    penalty = 1e6
   []
 []
 
 [Materials]
-  # these are consistent with the continuum model
-  # [elasticity_t0]
-  #   type = ADComputeIsotropicElasticityTensor
-  #   youngs_modulus = 1e6
-  #   poissons_ratio = 0.3
-  #   base_name = t_points_0
-  # []
-  # [elasticity_t1]
-  #   type = ADComputeIsotropicElasticityTensor
-  #   youngs_modulus = 1e6
-  #   poissons_ratio = 0.3
-  #   base_name = t_points_1
-  # []
-
-  [elasticity]
+  [elasticity_shell]
     type = ADComputeIsotropicElasticityTensorShell
     youngs_modulus = 1e6
     poissons_ratio = 0
@@ -294,20 +280,11 @@
     through_thickness_order = SECOND
   []
 
-  [stress]
+  [stress_shell]
     type = ADComputeShellStress2
     block = '100'
     through_thickness_order = SECOND
   []
-
-  # [stress_t0]
-  #   type = ADComputeLinearElasticStress
-  #   base_name = t_points_0
-  # []
-  # [stress_t1]
-  #   type = ADComputeLinearElasticStress
-  #   base_name = t_points_1
-  # []
 []
 
 [Postprocessors]
