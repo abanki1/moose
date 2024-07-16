@@ -160,8 +160,8 @@ ADStressDivergenceShell2::computeQpResidual()
         std::cout << "PENx: AB: _penalty * (*_gamma_z[_qp_z])[_qp]: "
                   << _penalty * (*_gamma_z[_qp_z])[_qp] << std::endl; // AB: print out first step
 
-        // residual1 += _penalty * (*_gamma_z[_qp_z])[_qp] / (_ad_JxW[_qp] * _ad_coord[_qp]);
-        // //original implementation
+        residual1 += _penalty * (*_gamma_z[_qp_z])[_qp] / (_ad_JxW[_qp] * _ad_coord[_qp]); //original implementation
+
         auto addDiag = _penalty * (*_gamma_z[_qp_z])[_qp] * (*_gamma_z[_qp_z])[_qp] *
                        (_ad_JxW[_qp]) * (_ad_coord[_qp]);
         auto addDiag0 = _penalty * (*_gamma_z[_qp_z])[_qp] /
@@ -215,8 +215,8 @@ ADStressDivergenceShell2::computeQpResidual()
       {
         auto sfl = (*_gamma_x[_qp_z])[_qp].derivatives();
         std::cout << "DERIVE " << sfl << std::endl;
-        auto sflTsfl = sfl.transpose();
-        std::cout << "AB: SISJ: " << sflTsfl << std::endl;
+        // auto sflTsfl = sfl.transpose();
+        // std::cout << "AB: SISJ: " << sflTsfl << std::endl;
         std::cout << "GAMMAx AB: _gamma_x: " << (*_gamma_x[_qp_z])[_qp]
                   << std::endl; // AB: print out shear strains rot_x
         std::cout << "JWx: AB:_ad_JxW[_qp] Jacobian: " << _ad_JxW[_qp]
