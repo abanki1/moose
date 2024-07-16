@@ -5,7 +5,7 @@
 [Mesh]
   [mesh]
     type = FileMeshGenerator
-    file = cyl_1x1.e
+    file = cyl_1x2.e
   []
 []
 
@@ -128,7 +128,7 @@
     type = PenaltyDirichletNodalKernel
     variable = rot_z
     value = 0
-    boundary = 'CD AD BC'
+    # boundary = 'CD AD BC'
     penalty = 1e6
   []
 []

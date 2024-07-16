@@ -31,7 +31,7 @@
 [Mesh]
   [mesh]
     type = FileMeshGenerator
-    file = cyl_1x1.e
+    file = cyl_1x2.e
   []
 []
 
@@ -148,21 +148,21 @@
     function = -2.5
     variable = disp_x
   []
-  # [./constraint]
-  #   type = PenaltyDirichletNodalKernel
-  #   variable = rot_x
-  #   value = 0
-  #   boundary = 'CD AD BC'
-  #   penalty = 1e6
-  # [../]
-  # [./constraint]
-  #   type = PenaltyDirichletNodalKernel
-  #   variable = rot_y
-  #   value = 0
-  #   boundary = 'CD AD BC'
-  #   penalty = 1e6
-  # [../]
-  [constraint]
+  [constraint_x]
+    type = PenaltyDirichletNodalKernel
+    variable = rot_x
+    value = 0
+    boundary = 'CD AD BC'
+    penalty = 1e6
+  [../]
+  [constraint_y]
+    type = PenaltyDirichletNodalKernel
+    variable = rot_y
+    value = 0
+    boundary = 'CD AD BC'
+    penalty = 1e6
+  [../]
+  [constraint_z]
     type = PenaltyDirichletNodalKernel
     variable = rot_z
     value = 0
@@ -242,7 +242,7 @@
     component = 3
     variable = rot_x
     through_thickness_order = SECOND
-    penalty = 1e6
+    penalty = 0
   []
   [solid_rot_y]
     type = ADStressDivergenceShell2
@@ -250,7 +250,7 @@
     component = 4
     variable = rot_y
     through_thickness_order = SECOND
-    penalty = 1e6
+    penalty = 0
   []
   [solid_rot_z]
     type = ADStressDivergenceShell2
@@ -280,7 +280,7 @@
   [elasticity]
     type = ADComputeIsotropicElasticityTensorShell
     youngs_modulus = 1e6
-    poissons_ratio = 0.3
+    poissons_ratio = 0
     block = '100'
     through_thickness_order = SECOND
   []
