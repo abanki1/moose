@@ -1,7 +1,19 @@
+# [Mesh]
+  # [mesh]
+  #   type = FileMeshGenerator
+  #   file = flatplates_xy.e
+  # []
 [Mesh]
-  [mesh]
-    type = FileMeshGenerator
-    file = flatplates_xy.e
+  [gmg]
+    type = GeneratedMeshGenerator
+    dim = 2
+    nx = 1
+    ny = 1
+    xmin = 0
+    xmax = 1
+    ymin = 0
+    ymax = 0
+    show_info = true
   []
 []
 
@@ -39,13 +51,13 @@
   [xy_fix_x]
     type = DirichletBC
     variable = disp_x
-    boundary = '6'
+    boundary = 'left' #'6'
     value = 0.0
   []
   [xy_fix_y]
     type = DirichletBC
     variable = disp_y
-    boundary = '1'
+    boundary = 'left' #'1'
     value = 0.0
   []
   [xy_fix_z]
@@ -87,17 +99,20 @@
 []
 
 [Preconditioning]
-  [./smp]
-    type = SMP
-    full = true
-  [../]
+  # [./smp]
+  #   type = SMP
+  #   full = true
+  # [../]
+  [FDP_jfnk]
+    type = FDP
+  []
 []
 
 [Executioner]
   type = Transient
   solve_type = NEWTON
   line_search = 'none'
-  ppetsc_options_iname = '-pc_type'
+  petsc_options_iname = '-pc_type'
   petsc_options_value = 'lu'
   # petsc_options = '-ksp_view_pmat'
   nl_rel_tol = 1e-10
@@ -135,7 +150,7 @@
     variable = rot_x
     save_in = react_rot_x
     through_thickness_order = SECOND
-    penalty = 1e6
+    penalty = 0
   []
   [solid_rot_y]
     type = ADStressDivergenceShell2
@@ -143,7 +158,7 @@
     variable = rot_y
     save_in = react_rot_y
     through_thickness_order = SECOND
-    penalty = 1e6
+    penalty = 0
   []
   [solid_rot_z]
     type = ADStressDivergenceShell2
@@ -151,7 +166,7 @@
     variable = rot_z
     save_in = react_rot_z
     through_thickness_order = SECOND
-    penalty = 1e6
+    penalty = 0
   []
 []
 
@@ -228,16 +243,16 @@
     point = '1 1 0'
     variable = disp_x
   []
-  [xreact_right]
-    type = NodalSum
-    boundary = 8
-    variable = react_disp_x
-  []
-  [xreact_left]
-    type = NodalSum
-    boundary = 6
-    variable = react_disp_x
-  []
+  # [xreact_left]
+  #   type = NodalSum
+  #   boundary = 6
+  #   variable = react_disp_x
+  # []
+  # [xreact_right]
+  #   type = NodalSum
+  #   boundary = 8
+  #   variable = react_disp_x
+  # []
 []
 
 [Outputs]
