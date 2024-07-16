@@ -12,7 +12,7 @@
     xmin = 0
     xmax = 1
     ymin = 0
-    ymax = 0
+    ymax = 1
     show_info = true
   []
 []
@@ -63,21 +63,21 @@
   [xy_fix_z]
     type = DirichletBC
     variable = disp_z
-    boundary = '6'
+    boundary = 'left'
     value = 0.0
   []
   [xy_fix_rot_y]
     type = DirichletBC
     variable = rot_y
-    boundary = '6'
+    boundary = 'left'
     value = 0.0
   []
-  [xy_pull_x]
-    type = DirichletBC
-    variable = disp_x
-    boundary = '8'
-    value = 0.01
-  []
+  # [xy_pull_x]
+  #   type = DirichletBC
+  #   variable = disp_x
+  #   boundary = 'right'
+  #   value = 0.01
+  # []
 []
 
 [DiracKernels]
@@ -92,7 +92,7 @@
 [NodalKernels]
  [fx]
    type = UserForcingFunctionNodalKernel
-   boundary = '3 4'
+   boundary = 'right'
    function = 1
    variable = 'disp_x'
  []
