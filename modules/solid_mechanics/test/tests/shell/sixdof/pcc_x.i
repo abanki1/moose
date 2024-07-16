@@ -107,45 +107,45 @@
   []
 []
 
-# [BCs]
-#   [simply_support_x]
-#     type = DirichletBC
-#     variable = disp_x
-#     boundary = 'CD AD'
-#     value = 0.0
-#   []
-#   [simply_support_y]
-#     type = DirichletBC
-#     variable = disp_y
-#     boundary = 'CD BC'
-#     value = 0.0
-#   []
-#   [simply_support_z]
-#     type = DirichletBC
-#     variable = disp_z
-#     boundary = 'CD AB'
-#     value = 0.0
-#   []
-#   [simply_support_rot_x]
-#     type = DirichletBC
-#     variable = rot_x
-#     boundary = 'CD BC AB'
-#     value = 0.0
-#   []
-#   [simply_support_rot_y]
-#     type = DirichletBC
-#     variable = rot_y
-#     boundary = 'CD AD AB'
-#     value = 0.0
-#   []
-#   [simply_support_rot_z]
-#     type = DirichletBC
-#     variable = rot_z
-#     boundary = 'CD AD BC'
-#     # boundary = 'CD AD BC AB' #debugging attempts
-#     value = 0.0
-#   []
-# []
+[BCs]
+  [simply_support_x]
+    type = DirichletBC
+    variable = disp_x
+    boundary = 'CD AD'
+    value = 0.0
+  []
+  [simply_support_y]
+    type = DirichletBC
+    variable = disp_y
+    boundary = 'CD BC'
+    value = 0.0
+  []
+  [simply_support_z]
+    type = DirichletBC
+    variable = disp_z
+    boundary = 'CD AB'
+    value = 0.0
+  []
+  [simply_support_rot_x]
+    type = DirichletBC
+    variable = rot_x
+    boundary = 'CD BC AB'
+    value = 0.0
+  []
+  [simply_support_rot_y]
+    type = DirichletBC
+    variable = rot_y
+    boundary = 'CD AD AB'
+    value = 0.0
+  []
+  [simply_support_rot_z]
+    type = DirichletBC
+    variable = rot_z
+    boundary = 'CD AD BC'
+    # boundary = 'CD AD BC AB' #debugging attempts
+    value = 0.0
+  []
+[]
 
 [NodalKernels]
   [pinch]
@@ -348,7 +348,7 @@
   [elasticity_t1]
     type = ADComputeIsotropicElasticityTensor
     youngs_modulus = 1e6
-    poissons_ratio = 0
+    poissons_ratio = 0.0
     base_name = t_points_1
   []
   # [./elasticity]

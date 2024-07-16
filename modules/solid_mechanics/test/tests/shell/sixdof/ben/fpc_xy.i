@@ -19,16 +19,28 @@
 
 [Variables]
   [disp_x]
+    order = FIRST
+    family = LAGRANGE
   []
   [disp_y]
+    order = FIRST
+    family = LAGRANGE
   []
   [disp_z]
+    order = FIRST
+    family = LAGRANGE
   []
   [rot_x]
+    order = FIRST 
+    family = LAGRANGE
   []
   [rot_y]
+    order = FIRST
+    family = LAGRANGE
   []
   [rot_z]
+    order = FIRST
+    family = LAGRANGE
   []
 []
 
@@ -57,19 +69,25 @@
   [xy_fix_y]
     type = DirichletBC
     variable = disp_y
-    boundary = 'left' #'1'
+    boundary = 'left top bottom' #'1'
     value = 0.0
   []
   [xy_fix_z]
     type = DirichletBC
     variable = disp_z
-    boundary = 'left'
+    boundary = 'left top bottom'
     value = 0.0
   []
   [xy_fix_rot_y]
     type = DirichletBC
     variable = rot_y
-    boundary = 'left'
+    boundary = 'left top bottom'
+    value = 0.0
+  []
+  [xy_fix_rot_z]
+    type = DirichletBC
+    variable = rot_z
+    boundary = 'left top bottom'
     value = 0.0
   []
   # [xy_pull_x]
@@ -80,14 +98,14 @@
   # []
 []
 
-[DiracKernels]
- [point1]
-   type = ConstantPointSource
-   variable = disp_x
-   point = '1 0 1'
-   value = -2.5 # P = 10
- []
-[]
+# [DiracKernels]
+#  [point1]
+#    type = ConstantPointSource
+#    variable = disp_x
+#    point = '1 0 1'
+#    value = -2.5 # P = 10
+#  []
+# []
 
 [NodalKernels]
  [fx]
@@ -150,7 +168,7 @@
     variable = rot_x
     save_in = react_rot_x
     through_thickness_order = SECOND
-    penalty = 0
+    penalty = 1e6
   []
   [solid_rot_y]
     type = ADStressDivergenceShell2
@@ -158,7 +176,7 @@
     variable = rot_y
     save_in = react_rot_y
     through_thickness_order = SECOND
-    penalty = 0
+    penalty = 1e6
   []
   [solid_rot_z]
     type = ADStressDivergenceShell2
@@ -166,7 +184,7 @@
     variable = rot_z
     save_in = react_rot_z
     through_thickness_order = SECOND
-    penalty = 0
+    penalty = 1e6
   []
 []
 
@@ -183,62 +201,70 @@
     poissons_ratio = 0.0
     base_name = t_points_1
   []
-  [strain]
+  # [strain]
+  #   type = ADComputeIncrementalShellStrain2
+  #   displacements = 'disp_x disp_y disp_z'
+  #   rotations = 'rot_x rot_y rot_z'
+  #   thickness = 0.01
+  #   through_thickness_order = SECOND
+  # []
+  # [stress_t0]
+  #   type = ADComputeLinearElasticStress
+  #   base_name = t_points_0
+  # []
+  # [stress_t1]
+  #   type = ADComputeLinearElasticStress
+  #   base_name = t_points_1
+  # []
+  [total_strain_xx_0]
     type = ADComputeIncrementalShellStrain2
+    rank_two_tensor = t_points_0_total_strain
+    property_name = 'total_strain_xx_0t'
     displacements = 'disp_x disp_y disp_z'
     rotations = 'rot_x rot_y rot_z'
     thickness = 0.01
     through_thickness_order = SECOND
-  []
-  [stress_t0]
-    type = ADComputeLinearElasticStress
-    base_name = t_points_0
-  []
-  [stress_t1]
-    type = ADComputeLinearElasticStress
-    base_name = t_points_1
-  []
-  [total_strain_xx_0]
-    type = ADRankTwoCartesianComponent
-    rank_two_tensor = t_points_0_total_strain
-    property_name = 'total_strain_xx_0t'
     index_i = 0
     index_j = 0
     outputs = all
   []
   [total_strain_xx_1]
-    type = ADRankTwoCartesianComponent
+    type = ADComputeIncrementalShellStrain2
     rank_two_tensor = t_points_1_total_strain
     property_name = 'total_strain_xx_1t'
+    displacements = 'disp_x disp_y disp_z'
+    rotations = 'rot_x rot_y rot_z'
+    thickness = 0.01
+    through_thickness_order = SECOND
     index_i = 0
     index_j = 0
     outputs = all
   []
   [stress_xx_0]
-    type = ADRankTwoCartesianComponent
+    type = ADComputeLinearElasticStress
     rank_two_tensor = t_points_0_stress
     property_name = 'stress_xx_0t'
-    index_i = 0
-    index_j = 0
-    outputs = all
+    # index_i = 0
+    # index_j = 0
+    # outputs = all
   []
   [stress_xx_1]
-    type = ADRankTwoCartesianComponent
+    type = ADComputeLinearElasticStress
     rank_two_tensor = t_points_1_stress
     property_name = 'stress_xx_1t'
-    index_i = 0
-    index_j = 0
-    outputs = all
+    # index_i = 0
+    # index_j = 0
+    # outputs = all
   []
 []
 
 [Postprocessors]
-  [xdisp1]
+  [xdisp_1]
     type = PointValue
     point = '1 0 0'
     variable = disp_x
   []
-  [xdisp2]
+  [xdisp_2]
     type = PointValue
     point = '1 1 0'
     variable = disp_x
