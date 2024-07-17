@@ -97,12 +97,6 @@
     boundary = '3 2 1 0' #'6' #LeftEdge
     value = 0.0
   []
-  # [xy_pull_x]
-  #   type = DirichletBC
-  #   variable = disp_x
-  #   boundary = '1' #'8' #RightEdge
-  #   value = 0.001
-  # []
 []
 
 # [DiracKernels]
