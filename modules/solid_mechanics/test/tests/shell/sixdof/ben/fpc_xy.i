@@ -223,46 +223,62 @@
     type = ADComputeLinearElasticStress
     base_name = t_points_1
   []
-  [total_strain_xx_0]
-    type = ADComputeIncrementalShellStrain2
-    rank_two_tensor = t_points_0_total_strain
-    property_name = 'total_strain_xx_0t'
-    displacements = 'disp_x disp_y disp_z'
-    rotations = 'rot_x rot_y rot_z'
-    thickness = 0.01
-    through_thickness_order = SECOND
-    index_i = 0
-    index_j = 0
-    outputs = all
-  []
-  [total_strain_xx_1]
-    type = ADComputeIncrementalShellStrain2
-    rank_two_tensor = t_points_1_total_strain
-    property_name = 'total_strain_xx_1t'
-    displacements = 'disp_x disp_y disp_z'
-    rotations = 'rot_x rot_y rot_z'
-    thickness = 0.01
-    through_thickness_order = SECOND
-    index_i = 0
-    index_j = 0
-    outputs = all
-  []
-  [stress_xx_0]
-    type = ADComputeLinearElasticStress
-    rank_two_tensor = t_points_0_stress
-    property_name = 'stress_xx_0t'
-    index_i = 0
-    index_j = 0
-    outputs = all
-  []
-  [stress_xx_1]
-    type = ADComputeLinearElasticStress
-    rank_two_tensor = t_points_1_stress
-    property_name = 'stress_xx_1t'
-    index_i = 0
-    index_j = 0
-    outputs = all
-  []
+  # [total_strain_xx_0]
+  #   type = ADComputeIncrementalShellStrain2
+  #   base_name = t_points_0
+  #   rank_two_tensor = t_points_0_total_strain
+  #   property_name = 'total_strain_xx_0t'
+  #   displacements = 'disp_x disp_y disp_z'
+  #   rotations = 'rot_x rot_y rot_z'
+  #   thickness = 0.01
+  #   through_thickness_order = SECOND
+  #   index_i = 0
+  #   index_j = 0
+  #   outputs = all
+  # []
+  # [mech_strain_xx_0]
+  #   type = ADComputeIncrementalShellStrain2
+  #   rank_two_tensor = t_points_0_total_strain
+  #   property_name = 'mechanical_strain'
+  #   displacements = 'disp_x disp_y disp_z'
+  #   rotations = 'rot_x rot_y rot_z'
+  #   thickness = 0.01
+  #   through_thickness_order = SECOND
+  #   index_i = 0
+  #   index_j = 0
+  #   outputs = all
+  # []
+  # [total_strain_xx_1]
+  #   type = ADComputeIncrementalShellStrain2
+  #   base_name = t_points_1
+  #   rank_two_tensor = t_points_1_total_strain
+  #   property_name = 'total_strain_xx_1t'
+  #   displacements = 'disp_x disp_y disp_z'
+  #   rotations = 'rot_x rot_y rot_z'
+  #   thickness = 0.01
+  #   through_thickness_order = SECOND
+  #   index_i = 0
+  #   index_j = 0
+  #   outputs = all
+  # []
+#   [stress_xx_0]
+#     type = ADComputeLinearElasticStress
+#     rank_two_tensor = t_points_0_stress
+#     property_name = 'stress_xx_0t'
+#     base_name = t_points_0
+#     index_i = 0
+#     index_j = 0
+#     outputs = all
+#   []
+#   [stress_xx_1]
+#     type = ADComputeLinearElasticStress
+#     rank_two_tensor = t_points_1_stress
+#     property_name = 'stress_xx_1t'
+#     base_name = t_points_1
+#     index_i = 0
+#     index_j = 0
+#     outputs = all
+#   []
 []
 
 [Postprocessors]
@@ -276,16 +292,16 @@
     point = '1 1 0'
     variable = disp_x
   []
-  # [xreact_left]
-  #   type = NodalSum
-  #   boundary = 6
-  #   variable = react_disp_x
-  # []
-  # [xreact_right]
-  #   type = NodalSum
-  #   boundary = 8
-  #   variable = react_disp_x
-  # []
+  [xreact_left]
+    type = NodalSum
+    boundary = 6
+    variable = react_disp_x
+  []
+  [xreact_right]
+    type = NodalSum
+    boundary = 8
+    variable = react_disp_x
+  []
 []
 
 [Outputs]
