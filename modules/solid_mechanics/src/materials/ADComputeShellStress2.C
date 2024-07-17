@@ -60,7 +60,8 @@ ADComputeShellStress2::ADComputeShellStress2(const InputParameters & parameters)
         "covariant_transformation_t_points_" + std::to_string(t));
     _global_stress[t] =
         &declareADProperty<RankTwoTensor>("global_stress_t_points_" + std::to_string(t));
-      // _global_stress[t] = &declareADProperty<RankTwoTensor>("_t_points"+std::to_string(t)+"_global_stress");
+    // _global_stress[t] =
+    // &declareADProperty<RankTwoTensor>("_t_points"+std::to_string(t)+"_global_stress");
   }
 }
 void

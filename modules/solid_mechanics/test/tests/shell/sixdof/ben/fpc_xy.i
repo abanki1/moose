@@ -11,7 +11,7 @@
     nx = 1
     ny = 1
     xmin = 0
-    xmax = 2
+    xmax = 1
     ymin = 0
     ymax = 1
     show_info = true
@@ -119,7 +119,7 @@
  [fx]
    type = UserForcingFunctionNodalKernel
    boundary = '1'
-   function = -10
+   function = 10
    variable = 'disp_x'
  []
 []
@@ -275,12 +275,12 @@
 [Postprocessors]
   [xdisp_1]
     type = PointValue
-    point = '2 0 0'
+    point = '1 0 0'
     variable = disp_x
   []
   [xdisp_2]
     type = PointValue
-    point = '2 1 0'
+    point = '1 1 0'
     variable = disp_x
   []
   [xreact_left]
