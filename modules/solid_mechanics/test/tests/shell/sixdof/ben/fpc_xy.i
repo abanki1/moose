@@ -10,10 +10,10 @@
     dim = 2
     nx = 1
     ny = 1
-    xmin = 0
-    xmax = 1
-    ymin = 0
-    ymax = 1
+    xmin = 0.0
+    xmax = 1.0
+    ymin = 0.0
+    ymax = 1.0
     show_info = true
   []
 []
@@ -70,31 +70,31 @@
   [xy_fix_y]
     type = DirichletBC
     variable = disp_y
-    boundary = '3 2 1 0' #'6'#'LeftEdge'
+    boundary = '0 1 2 3' #'6'#'LeftEdge'
     value = 0.0
   []
   [xy_fix_z]
     type = DirichletBC
     variable = disp_z
-    boundary = '3 2 1 0' #'6' #LeftEdge
+    boundary = '0 1 2 3' #'6' #LeftEdge
     value = 0.0
   []
   [xy_fix_rot_x]
     type = DirichletBC
     variable = rot_x
-    boundary = '3 2 1 0' #'6' #LeftEdge
+    boundary = '0 1 2 3' 
     value = 0.0
   []
   [xy_fix_rot_y]
     type = DirichletBC
     variable = rot_y
-    boundary = '3 2 1 0' #'6' #LeftEdge
+    boundary = '0 1 2 3' 
     value = 0.0
   []
   [xy_fix_rot_z]
     type = DirichletBC
     variable = rot_z
-    boundary = '3 2 1 0' #'6' #LeftEdge
+    boundary = '0 1 2 3'
     value = 0.0
   []
 []

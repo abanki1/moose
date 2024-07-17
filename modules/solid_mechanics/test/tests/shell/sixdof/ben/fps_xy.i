@@ -3,7 +3,7 @@
   #   type = FileMeshGenerator
   #   file = flatplates_xy.e
   # []
-  [mesh]
+  [gmg]
     type = GeneratedMeshGenerator
     dim = 2
     nx = 1
@@ -17,16 +17,28 @@
 
 [Variables]
   [disp_x]
+    order = FIRST
+    family = LAGRANGE
   []
   [disp_y]
+    order = FIRST
+    family = LAGRANGE
   []
   [disp_z]
+    order = FIRST
+    family = LAGRANGE
   []
   [rot_x]
+    order = FIRST
+    family = LAGRANGE
   []
   [rot_y]
+    order = FIRST
+    family = LAGRANGE
   []
   [rot_z]
+    order = FIRST
+    family = LAGRANGE
   []
 []
 
@@ -118,6 +130,9 @@
   line_search = 'none'
   petsc_options_iname = '-pc_type'
   petsc_options_value = 'lu'
+  # petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
+  # petsc_options_value = 'lu NONZERO   1e1'
+  petsc_options = '-ksp_view_pmat'
   nl_rel_tol = 1e-10
   nl_abs_tol = 1e-8
   dt = 1.0
@@ -153,7 +168,7 @@
     variable = rot_x
     save_in = react_rot_x
     through_thickness_order = SECOND
-    penalty = 1e-6
+    penalty = 0
   []
   [solid_rot_y]
     type = ADStressDivergenceShell2
@@ -161,7 +176,7 @@
     variable = rot_y
     save_in = react_rot_y
     through_thickness_order = SECOND
-    penalty = 1e-6
+    penalty = 0
   []
   [solid_rot_z]
     type = ADStressDivergenceShell2
@@ -169,7 +184,7 @@
     variable = rot_z
     save_in = react_rot_z
     through_thickness_order = SECOND
-    penalty = 1e-6
+    penalty = 0
   []
 []
 
@@ -194,24 +209,24 @@
 []
 
 [Postprocessors]
-  [xdisp1]
+  [xdisp_1]
     type = PointValue
     point = '1 0 0'
     variable = disp_x
   []
-  [xdisp2]
+  [xdisp_2]
     type = PointValue
     point = '1 1 0'
     variable = disp_x
   []
-  [xreact_right]
-    type = NodalSum
-    boundary = '1'
-    variable = react_disp_x
-  []
   [xreact_left]
     type = NodalSum
     boundary = '3'
+    variable = react_disp_x
+  []
+  [xreact_right]
+    type = NodalSum
+    boundary = '1'
     variable = react_disp_x
   []
 []
