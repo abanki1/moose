@@ -11,7 +11,7 @@
     nx = 1
     ny = 1
     xmin = 0
-    xmax = 1
+    xmax = 2
     ymin = 0
     ymax = 1
     show_info = true
@@ -70,47 +70,48 @@
   [xy_fix_y]
     type = DirichletBC
     variable = disp_y
-    boundary = '3' #'6'#'LeftEdge'
+    boundary = '3 2 1 0' #'6'#'LeftEdge'
     value = 0.0
   []
   [xy_fix_z]
     type = DirichletBC
     variable = disp_z
-    boundary = '3' #'6' #LeftEdge
+    boundary = '3 2 1 0' #'6' #LeftEdge
     value = 0.0
   []
   [xy_fix_rot_x]
     type = DirichletBC
     variable = rot_x
-    boundary = '3' #'6' #LeftEdge
+    boundary = '3 2 1 0' #'6' #LeftEdge
     value = 0.0
   []
   [xy_fix_rot_y]
     type = DirichletBC
     variable = rot_y
-    boundary = '3' #'6' #LeftEdge
+    boundary = '3 2 1 0' #'6' #LeftEdge
     value = 0.0
   []
   [xy_fix_rot_z]
     type = DirichletBC
     variable = rot_z
-    boundary = '3' #'6' #LeftEdge
+    boundary = '3 2 1 0' #'6' #LeftEdge
     value = 0.0
   []
-  [xy_pull_x]
-    type = DirichletBC
-    variable = disp_x
-    boundary = '1' #'8' #RightEdge
-    value = 0.01
-  []
+  # [xy_pull_x]
+  #   type = DirichletBC
+  #   variable = disp_x
+  #   boundary = '1' #'8' #RightEdge
+  #   value = 0.001
+  # []
 []
 
 # [DiracKernels]
 #  [point1]
 #    type = ConstantPointSource
 #    variable = disp_x
-#    point = '1 0 1'
-#    value = -2.5 # P = 10
+#   #  point = '1 0 1'
+#   point = '1 1 0'
+#    value = 2.5 # P = 10
 #  []
 # []
 
@@ -118,7 +119,7 @@
  [fx]
    type = UserForcingFunctionNodalKernel
    boundary = '1'
-   function = 1
+   function = -10
    variable = 'disp_x'
  []
 []
@@ -137,11 +138,11 @@
   type = Transient
   solve_type = NEWTON
   line_search = 'none'
-  # petsc_options_iname = '-pc_type'
-  # petsc_options_value = 'lu'
-  petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
-  petsc_options_value = 'lu NONZERO   1e1'
-  # petsc_options = '-ksp_view_pmat'
+  petsc_options_iname = '-pc_type'
+  petsc_options_value = 'lu'
+  # petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
+  # petsc_options_value = 'lu NONZERO   1e1'
+  petsc_options = '-ksp_view_pmat'
   nl_rel_tol = 1e-10
   nl_abs_tol = 1e-8
   dt = 1.0
@@ -274,12 +275,12 @@
 [Postprocessors]
   [xdisp_1]
     type = PointValue
-    point = '1 0 0'
+    point = '2 0 0'
     variable = disp_x
   []
   [xdisp_2]
     type = PointValue
-    point = '1 1 0'
+    point = '2 1 0'
     variable = disp_x
   []
   [xreact_left]
