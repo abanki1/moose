@@ -155,7 +155,7 @@ void
 NodalRankTwoPD::computeRankTwoTensors()
 {
   _total_strain.zero();
-  _mechanical_strain.zero();
+  _.zero();
   _stress.zero();
 
   std::vector<dof_id_type> neighbors = _pdmesh.getNeighbors(_current_node->id());

@@ -1,22 +1,22 @@
-[Mesh]
-  [mesh]
-    type = FileMeshGenerator
-    file = flatplates_xy.e
-  []
-[]
 # [Mesh]
-#   [gmg]
-#     type = GeneratedMeshGenerator
-#     dim = 2
-#     nx = 1
-#     ny = 1
-#     xmin = 0
-#     xmax = 1
-#     ymin = 0
-#     ymax = 1
-#     show_info = true
+#   [mesh]
+#     type = FileMeshGenerator
+#     file = flatplates_xy.e
 #   []
 # []
+[Mesh]
+  [gmg]
+    type = GeneratedMeshGenerator #In 2D, bottom =0, right = 1, top = 2, left = 3
+    dim = 2
+    nx = 1
+    ny = 1
+    xmin = 0
+    xmax = 1
+    ymin = 0
+    ymax = 1
+    show_info = true
+  []
+[]
 
 [Variables]
   [disp_x]
@@ -64,43 +64,43 @@
   [xy_fix_x]
     type = DirichletBC
     variable = disp_x
-    boundary = '6' #LeftEdge
+    boundary = '3' #LeftEdge
     value = 0.0
   []
   [xy_fix_y]
     type = DirichletBC
     variable = disp_y
-    boundary = '6' #'LeftBottomNode'
+    boundary = '3' #'6'#'LeftEdge'
     value = 0.0
   []
   [xy_fix_z]
     type = DirichletBC
     variable = disp_z
-    boundary = '6' #LeftEdge
+    boundary = '3' #'6' #LeftEdge
     value = 0.0
   []
   [xy_fix_rot_x]
     type = DirichletBC
     variable = rot_x
-    boundary = '6' #LeftEdge
+    boundary = '3' #'6' #LeftEdge
     value = 0.0
   []
   [xy_fix_rot_y]
     type = DirichletBC
     variable = rot_y
-    boundary = '6' #LeftEdge
+    boundary = '3' #'6' #LeftEdge
     value = 0.0
   []
   [xy_fix_rot_z]
     type = DirichletBC
     variable = rot_z
-    boundary = '6' #LeftEdge
+    boundary = '3' #'6' #LeftEdge
     value = 0.0
   []
   [xy_pull_x]
     type = DirichletBC
     variable = disp_x
-    boundary = '8' #RightEdge
+    boundary = '1' #'8' #RightEdge
     value = 0.01
   []
 []
@@ -117,7 +117,7 @@
 [NodalKernels]
  [fx]
    type = UserForcingFunctionNodalKernel
-   boundary = '3 4'
+   boundary = '1'
    function = 1
    variable = 'disp_x'
  []
@@ -137,8 +137,10 @@
   type = Transient
   solve_type = NEWTON
   line_search = 'none'
-  petsc_options_iname = '-pc_type'
-  petsc_options_value = 'lu'
+  # petsc_options_iname = '-pc_type'
+  # petsc_options_value = 'lu'
+  petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
+  petsc_options_value = 'lu NONZERO   1e1'
   # petsc_options = '-ksp_view_pmat'
   nl_rel_tol = 1e-10
   nl_abs_tol = 1e-8
@@ -175,7 +177,7 @@
     variable = rot_x
     save_in = react_rot_x
     through_thickness_order = SECOND
-    penalty = 1e6
+    penalty = 0
   []
   [solid_rot_y]
     type = ADStressDivergenceShell2
@@ -183,7 +185,7 @@
     variable = rot_y
     save_in = react_rot_y
     through_thickness_order = SECOND
-    penalty = 1e6
+    penalty = 0
   []
   [solid_rot_z]
     type = ADStressDivergenceShell2
@@ -191,7 +193,7 @@
     variable = rot_z
     save_in = react_rot_z
     through_thickness_order = SECOND
-    penalty = 1e6
+    penalty = 0
   []
 []
 
@@ -228,18 +230,6 @@
   #   base_name = t_points_0
   #   rank_two_tensor = t_points_0_total_strain
   #   property_name = 'total_strain_xx_0t'
-  #   displacements = 'disp_x disp_y disp_z'
-  #   rotations = 'rot_x rot_y rot_z'
-  #   thickness = 0.01
-  #   through_thickness_order = SECOND
-  #   index_i = 0
-  #   index_j = 0
-  #   outputs = all
-  # []
-  # [mech_strain_xx_0]
-  #   type = ADComputeIncrementalShellStrain2
-  #   rank_two_tensor = t_points_0_total_strain
-  #   property_name = 'mechanical_strain'
   #   displacements = 'disp_x disp_y disp_z'
   #   rotations = 'rot_x rot_y rot_z'
   #   thickness = 0.01
@@ -294,12 +284,12 @@
   []
   [xreact_left]
     type = NodalSum
-    boundary = 6
+    boundary = '3'
     variable = react_disp_x
   []
   [xreact_right]
     type = NodalSum
-    boundary = 8
+    boundary = '1'
     variable = react_disp_x
   []
 []
