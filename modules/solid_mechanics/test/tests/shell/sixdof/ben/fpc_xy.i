@@ -1,21 +1,22 @@
-# [Mesh]
-  # [mesh]
-  #   type = FileMeshGenerator
-  #   file = flatplates_xy.e
-  # []
 [Mesh]
-  [gmg]
-    type = GeneratedMeshGenerator
-    dim = 2
-    nx = 1
-    ny = 1
-    xmin = 0
-    xmax = 1
-    ymin = 0
-    ymax = 1
-    show_info = true
+  [mesh]
+    type = FileMeshGenerator
+    file = flatplates_xy.e
   []
 []
+# [Mesh]
+#   [gmg]
+#     type = GeneratedMeshGenerator
+#     dim = 2
+#     nx = 1
+#     ny = 1
+#     xmin = 0
+#     xmax = 1
+#     ymin = 0
+#     ymax = 1
+#     show_info = true
+#   []
+# []
 
 [Variables]
   [disp_x]
@@ -63,39 +64,45 @@
   [xy_fix_x]
     type = DirichletBC
     variable = disp_x
-    boundary = 'left' #'6'
+    boundary = '6' #LeftEdge
     value = 0.0
   []
   [xy_fix_y]
     type = DirichletBC
     variable = disp_y
-    boundary = 'left top bottom' #'1'
+    boundary = '6' #'LeftBottomNode'
     value = 0.0
   []
   [xy_fix_z]
     type = DirichletBC
     variable = disp_z
-    boundary = 'left top bottom'
+    boundary = '6' #LeftEdge
+    value = 0.0
+  []
+  [xy_fix_rot_x]
+    type = DirichletBC
+    variable = rot_x
+    boundary = '6' #LeftEdge
     value = 0.0
   []
   [xy_fix_rot_y]
     type = DirichletBC
     variable = rot_y
-    boundary = 'left top bottom'
+    boundary = '6' #LeftEdge
     value = 0.0
   []
   [xy_fix_rot_z]
     type = DirichletBC
     variable = rot_z
-    boundary = 'left top bottom'
+    boundary = '6' #LeftEdge
     value = 0.0
   []
-  # [xy_pull_x]
-  #   type = DirichletBC
-  #   variable = disp_x
-  #   boundary = 'right'
-  #   value = 0.01
-  # []
+  [xy_pull_x]
+    type = DirichletBC
+    variable = disp_x
+    boundary = '8' #RightEdge
+    value = 0.01
+  []
 []
 
 # [DiracKernels]
@@ -110,7 +117,7 @@
 [NodalKernels]
  [fx]
    type = UserForcingFunctionNodalKernel
-   boundary = 'right'
+   boundary = '3 4'
    function = 1
    variable = 'disp_x'
  []
@@ -201,21 +208,21 @@
     poissons_ratio = 0.0
     base_name = t_points_1
   []
-  # [strain]
-  #   type = ADComputeIncrementalShellStrain2
-  #   displacements = 'disp_x disp_y disp_z'
-  #   rotations = 'rot_x rot_y rot_z'
-  #   thickness = 0.01
-  #   through_thickness_order = SECOND
-  # []
-  # [stress_t0]
-  #   type = ADComputeLinearElasticStress
-  #   base_name = t_points_0
-  # []
-  # [stress_t1]
-  #   type = ADComputeLinearElasticStress
-  #   base_name = t_points_1
-  # []
+  [strain]
+    type = ADComputeIncrementalShellStrain2
+    displacements = 'disp_x disp_y disp_z'
+    rotations = 'rot_x rot_y rot_z'
+    thickness = 0.01
+    through_thickness_order = SECOND
+  []
+  [stress_t0]
+    type = ADComputeLinearElasticStress
+    base_name = t_points_0
+  []
+  [stress_t1]
+    type = ADComputeLinearElasticStress
+    base_name = t_points_1
+  []
   [total_strain_xx_0]
     type = ADComputeIncrementalShellStrain2
     rank_two_tensor = t_points_0_total_strain
@@ -244,17 +251,17 @@
     type = ADComputeLinearElasticStress
     rank_two_tensor = t_points_0_stress
     property_name = 'stress_xx_0t'
-    # index_i = 0
-    # index_j = 0
-    # outputs = all
+    index_i = 0
+    index_j = 0
+    outputs = all
   []
   [stress_xx_1]
     type = ADComputeLinearElasticStress
     rank_two_tensor = t_points_1_stress
     property_name = 'stress_xx_1t'
-    # index_i = 0
-    # index_j = 0
-    # outputs = all
+    index_i = 0
+    index_j = 0
+    outputs = all
   []
 []
 

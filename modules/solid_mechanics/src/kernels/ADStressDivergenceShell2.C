@@ -160,7 +160,8 @@ ADStressDivergenceShell2::computeQpResidual()
         // std::cout << "PENx: AB: _penalty * (*_gamma_z[_qp_z])[_qp]: "
         //           << _penalty * (*_gamma_z[_qp_z])[_qp] << std::endl; // AB: print out first step
 
-        residual1 += _penalty * (*_gamma_z[_qp_z])[_qp] / (_ad_JxW[_qp] * _ad_coord[_qp]); //original implementation
+        residual1 += _penalty * (*_gamma_z[_qp_z])[_qp] /
+                     (_ad_JxW[_qp] * _ad_coord[_qp]); // original implementation
 
         // auto addDiag = _penalty * (*_gamma_z[_qp_z])[_qp] * (*_gamma_z[_qp_z])[_qp] *
         //                (_ad_JxW[_qp]) * (_ad_coord[_qp]);
@@ -168,7 +169,7 @@ ADStressDivergenceShell2::computeQpResidual()
         //                 (_ad_JxW[_qp] * _ad_coord[_qp]); // original implementation
         // residual1 += addDiag0;
         // std::cout << "DIAGz AB: Diagonal addition0 to residual1 : after penalising rot_z"
-                  // << addDiag0 << std::endl;
+        // << addDiag0 << std::endl;
         // residual1 += _penalty * (*_gamma_z[_qp_z])[_qp] * (_ad_JxW[_qp] * _ad_coord[_qp]);
         // //atempting to fix the penalty
       }
