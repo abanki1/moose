@@ -94,6 +94,12 @@
     boundary = '0 1 2 3'
     value = 0.0
   []
+  [xy_pull]
+    type = DirichletBC
+    variable = disp_x
+    boundary = '1'
+    value = 1.0
+  []
 []
 
 #[DiracKernels]
