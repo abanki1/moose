@@ -143,6 +143,7 @@
   # petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
   # petsc_options_value = 'lu NONZERO   1e1'
   petsc_options = '-ksp_view_pmat'
+  # petsc_options = '-ksp_view_rhs'
   nl_rel_tol = 1e-10
   nl_abs_tol = 1e-8
   dt = 1.0

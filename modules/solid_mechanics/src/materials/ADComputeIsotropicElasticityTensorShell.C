@@ -86,4 +86,8 @@ ADComputeIsotropicElasticityTensorShell::computeQpProperties()
                         (*_ge[t])[_qp](i, m) * (*_ge[t])[_qp](j, n) * (*_ge[t])[_qp](k, o) *
                         (*_ge[t])[_qp](l, p) * _Cijkl(m, n, o, p);
   }
+  // std::cout << "CCCC: AB Elasticity tensor in the Shellkernel " << (_elasticity_tensor)
+  //           << std::endl;
+  // std::cout << std::endl << "CCCC: AB Elasticity tensor " << std::endl;
+  // //      (*_covariant_transformation_matrix[j])[i].printReal();
 }
