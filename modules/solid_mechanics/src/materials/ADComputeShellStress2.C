@@ -46,11 +46,12 @@ ADComputeShellStress2::ADComputeShellStress2(const InputParameters & parameters)
   _strain_increment.resize(_t_points.size());
   _covariant_transformation_matrix.resize(_t_points.size());
   _global_stress.resize(_t_points.size());
-  // std::cout << "TTTT AB: t_points_size : " << _t_points.size() << std::endl;
+  std::cout << "TTTT AB: t_points_size : " << _t_points.size() << std::endl;
   for (unsigned int t = 0; t < _t_points.size(); ++t)
   {
     _elasticity_tensor[t] =
         &getADMaterialProperty<RankFourTensor>("elasticity_tensor_t_points_" + std::to_string(t));
+    std::cout << "CCCC: AB Elasticity tensor " << _elasticity_tensor[t] << std::endl;
     _stress[t] = &declareADProperty<RankTwoTensor>("t_points_" + std::to_string(t) + "_stress");
     _stress_old[t] =
         &getMaterialPropertyOldByName<RankTwoTensor>("t_points_" + std::to_string(t) + "_stress");
@@ -63,7 +64,6 @@ ADComputeShellStress2::ADComputeShellStress2(const InputParameters & parameters)
         &declareADProperty<RankTwoTensor>("global_stress_t_points_" + std::to_string(t));
     // _global_stress[t] =
     // &declareADProperty<RankTwoTensor>("_t_points"+std::to_string(t)+"_global_stress");
-    std::cout << "CCCC: AB Elasticity tensor " << _elasticity_tensor[t] << std::endl;
   }
 }
 
@@ -94,6 +94,13 @@ ADComputeShellStress2::computeQpProperties()
 
     (*_global_stress[i])[_qp] = (*_covariant_transformation_matrix[i])[_qp].transpose() *
                                 _unrotated_stress * (*_covariant_transformation_matrix[i])[_qp];
+
+    std::cout << std::endl << "SSSS AB: Stress:" << std::endl;
+    (*_stress[i])[_qp].printReal();
+    std::cout << std::endl << "CCCC AB: Elasticity Tensor:" << std::endl;
+    (*_elasticity_tensor[i])[_qp].printReal();
+    std::cout << std::endl << "eeee AB: Strain Increment:" << std::endl;
+    (*_strain_increment[i])[_qp].printReal();
     // const auto test = (*_global_stress[i])[_qp] =
     //     (*_covariant_transformation_matrix[i])[_qp].transpose() * _unrotated_stress *
     //     (*_covariant_transformation_matrix[i])[_qp];

@@ -55,6 +55,40 @@
   []
   [react_rot_z]
   []
+  [stress_xx]
+    order = CONSTANT
+    family = MONOMIAL
+  []
+  [stress_yy]
+    order = CONSTANT
+    family = MONOMIAL
+  []
+  [stress_zz]
+    order = CONSTANT
+    family = MONOMIAL
+  []
+  [stress_xy]
+    order = CONSTANT
+    family = MONOMIAL
+  []
+  [stress_yz]
+    order = CONSTANT
+    family = MONOMIAL
+  []
+  [stress_xz]
+    order = CONSTANT
+    family = MONOMIAL
+  []
+[]
+
+[AuxKernels]
+  [stress_xx]
+    type = RankTwoAux
+    rank_two_tensor = stress
+    variable = stress_xx
+    index_i = 0
+    index_j = 0
+  []
 []
 
 [BCs]
@@ -234,6 +268,12 @@
     type = NodalSum
     boundary = '1'
     variable = react_disp_x
+  []
+  [stress_xx]
+    type= PointValue
+    outputs = csv
+    point = '1 1 0'
+    variable = stress_xx
   []
 []
 
