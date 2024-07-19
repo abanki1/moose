@@ -143,7 +143,6 @@
 #  []
 # []
 
-
 # [AuxKernels]
 #   [stress_xx]
 #     type = RankTwoAux
@@ -333,26 +332,26 @@
     boundary = '1'
     variable = react_disp_x
   []
-  [stress_xx]
-    type = ElementalVariableValue
-    variable = 'stress_xx'
-    elementid = 0
-  []
-  # [stress_yy]
+  # [stress_xx]
   #   type = ElementalVariableValue
-  #   variable = 'stress_yy'
+  #   variable = 'stress_xx'
   #   elementid = 0
   # []
-  # [stress_xy]
+  # # [stress_yy]
+  # #   type = ElementalVariableValue
+  # #   variable = 'stress_yy'
+  # #   elementid = 0
+  # # []
+  # # [stress_xy]
+  # #   type = ElementalVariableValue
+  # #   variable = 'stress_xy'
+  # #   elementid = 0
+  # # []
+  # [strain_xx]
   #   type = ElementalVariableValue
-  #   variable = 'stress_xy'
+  #   variable = 'strain_xx'
   #   elementid = 0
   # []
-  [strain_xx]
-    type = ElementalVariableValue
-    variable = 'strain_xx'
-    elementid = 0
-  []
 []
 
 [Outputs]

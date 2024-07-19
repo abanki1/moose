@@ -85,16 +85,16 @@
   []
 []
 
-[AuxKernels]
-  [stress_xx]
-    # type = MaterialRankTwoTensorAux
-    type = ADRankTwoAux
-    rank_two_tensor = stress
-    index_i = 0
-    index_j = 0
-    variable = stress_xx
-  []
-[]
+# [AuxKernels]
+#   [stress_xx]
+#     # type = MaterialRankTwoTensorAux
+#     type = ADRankTwoAux
+#     rank_two_tensor = stress
+#     index_i = 0
+#     index_j = 0
+#     variable = stress_xx
+#   []
+# []
 
 [BCs]
   [fix_x]
@@ -279,26 +279,26 @@
     boundary = '1'
     variable = react_disp_x
   []
-  [stress_xx]
-    type = ElementalVariableValue
-    variable = 'stress_xx'
-    elementid = 0
-  []
-  [stress_yy]
-    type = ElementalVariableValue
-    variable = 'stress_yy'
-    elementid = 0
-  []
-  [stress_xy]
-    type = ElementalVariableValue
-    variable = 'stress_xy'
-    elementid = 0
-  []
-  [strain_xx]
-    type = ElementalVariableValue
-    variable = 'strain_xx'
-    elementid = 0
-  []
+  # [stress_xx]
+  #   type = ElementalVariableValue
+  #   variable = 'stress_xx'
+  #   elementid = 0
+  # []
+  # [stress_yy]
+  #   type = ElementalVariableValue
+  #   variable = 'stress_yy'
+  #   elementid = 0
+  # []
+  # [stress_xy]
+  #   type = ElementalVariableValue
+  #   variable = 'stress_xy'
+  #   elementid = 0
+  # []
+  # [strain_xx]
+  #   type = ElementalVariableValue
+  #   variable = 'strain_xx'
+  #   elementid = 0
+  # []
 []
 
 [Outputs]
