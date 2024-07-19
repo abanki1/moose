@@ -53,6 +53,12 @@ ADComputeLinearElasticStressTempl<R2, R4>::computeQpStress()
 
   // Assign value for elastic strain, which is equal to the mechanical strain
   _elastic_strain[_qp] = _mechanical_strain[_qp];
+  std::cout << std::endl << "CCCC AB: Elasticity Tensor:" << std::endl;
+  _elasticity_tensor[_qp].printReal();
+  std::cout << std::endl << "eeee AB: Strain Increment:" << std::endl;
+  _mechanical_strain[_qp].printReal();
+  std::cout << std::endl << "GGGG AB: Stress:" << std::endl;
+  _stress[_qp].printReal();
 }
 
 template class ADComputeLinearElasticStressTempl<RankTwoTensor, RankFourTensor>;

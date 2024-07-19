@@ -9,7 +9,7 @@
     nx = 1
     ny = 1
     xmin = 0.0
-    xmax = 2.0
+    xmax = 1.0
     ymin = 0.0
     ymax = 1.0
   []
@@ -85,45 +85,55 @@
   []
 []
 
+[AuxKernels]
+  [stress_xx]
+    # type = MaterialRankTwoTensorAux
+    type = ADRankTwoAux
+    rank_two_tensor = stress
+    index_i = 0
+    index_j = 0
+    variable = stress_xx
+  []
+[]
 
 [BCs]
-  [xy_fix_x]
+  [fix_x]
     type = DirichletBC
     variable = disp_x
     boundary = '3'
     value = 0.0
   []
-  [xy_fix_y]
+  [fix_y]
     type = DirichletBC
     variable = disp_y
-    boundary = '0 1'
+    boundary = '0 1 2 3'
     value = 0.0
   []
-  [xy_fix_z]
+  [fix_z]
     type = DirichletBC
     variable = disp_z
     boundary = ' 0 1 2 3'
     value = 0.0
   []
-  [xy_fix_rot_x]
+  [fix_rot_x]
     type = DirichletBC
     variable = rot_x
     boundary = '0 1 2 3'
     value = 0.0
   []
-  [xy_fix_rot_y]
+  [fix_rot_y]
     type = DirichletBC
     variable = rot_y
     boundary = '0 1 2 3'
     value = 0.0
   []
-  [xy_fix_rot_z]
+  [fix_rot_z]
     type = DirichletBC
     variable = rot_z
     boundary = '0 1 2 3'
     value = 0.0
   []
-  # [xy_pull]
+  # [pull_x]
   #   type = DirichletBC
   #   variable = disp_x
   #   boundary = '1'
@@ -229,6 +239,7 @@
     youngs_modulus = 1e6
     poissons_ratio = 0.0
     through_thickness_order = SECOND
+    block = 0
   []
   [strain_shell]
     type = ADComputeIncrementalShellStrain2
@@ -236,10 +247,14 @@
     rotations = 'rot_x rot_y rot_z'
     thickness = 0.01
     through_thickness_order = SECOND
+    block = 0 
   []
   [stress_shell]
     type = ADComputeShellStress2
     through_thickness_order = SECOND
+    block = 0
+    # generate_output = 'stress_xx strain_xx'
+    # outputs = exodus
   []
 []
 

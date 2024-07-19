@@ -58,6 +58,34 @@
   []
   [react_rot_z]
   []
+  [stress_xx]
+    order = CONSTANT
+    family = MONOMIAL
+  []
+  [stress_yy]
+    order = CONSTANT
+    family = MONOMIAL
+  []
+  [stress_zz]
+    order = CONSTANT
+    family = MONOMIAL
+  []
+  [stress_xy]
+    order = CONSTANT
+    family = MONOMIAL
+  []
+  [stress_yz]
+    order = CONSTANT
+    family = MONOMIAL
+  []
+  [stress_xz]
+    order = CONSTANT
+    family = MONOMIAL
+  []
+  [strain_xx]
+    order = CONSTANT
+    family = MONOMIAL
+  []
 []
 
 [BCs]
@@ -97,12 +125,12 @@
     boundary = '0 1 2 3'
     value = 0.0
   []
-  [xy_pull]
-    type = DirichletBC
-    variable = disp_x
-    boundary = '1' #RightEdge
-    value = 1.0
-  []
+  # [xy_pull]
+  #   type = DirichletBC
+  #   variable = disp_x
+  #   boundary = '1' #RightEdge
+  #   value = 1.0
+  # []
 []
 
 # [DiracKernels]
@@ -115,14 +143,25 @@
 #  []
 # []
 
-# [NodalKernels]
-#  [fx]
-#    type = UserForcingFunctionNodalKernel
-#    boundary = '1'
-#    function = 10
-#    variable = 'disp_x'
-#  []
+
+# [AuxKernels]
+#   [stress_xx]
+#     type = RankTwoAux
+#     rank_two_tensor = stress
+#     index_i = 0
+#     index_j = 0
+#     variable = stress_xx
+#   []
 # []
+
+[NodalKernels]
+ [fx]
+   type = UserForcingFunctionNodalKernel
+   boundary = '1'
+   function = 10
+   variable = 'disp_x'
+ []
+[]
 
 [Preconditioning]
   # [./smp]
@@ -142,7 +181,7 @@
   petsc_options_value = 'lu'
   # petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
   # petsc_options_value = 'lu NONZERO   1e1'
-  petsc_options = '-ksp_view_pmat'
+  # petsc_options = '-ksp_view_pmat'
   # petsc_options = '-ksp_view_rhs'
   nl_rel_tol = 1e-10
   nl_abs_tol = 1e-8
@@ -293,6 +332,26 @@
     type = NodalSum
     boundary = '1'
     variable = react_disp_x
+  []
+  [stress_xx]
+    type = ElementalVariableValue
+    variable = 'stress_xx'
+    elementid = 0
+  []
+  # [stress_yy]
+  #   type = ElementalVariableValue
+  #   variable = 'stress_yy'
+  #   elementid = 0
+  # []
+  # [stress_xy]
+  #   type = ElementalVariableValue
+  #   variable = 'stress_xy'
+  #   elementid = 0
+  # []
+  [strain_xx]
+    type = ElementalVariableValue
+    variable = 'strain_xx'
+    elementid = 0
   []
 []
 
