@@ -79,17 +79,21 @@
     order = CONSTANT
     family = MONOMIAL
   []
-[]
-
-[AuxKernels]
-  [stress_xx]
-    type = RankTwoAux
-    rank_two_tensor = stress
-    variable = stress_xx
-    index_i = 0
-    index_j = 0
+  [strain_xx]
+    order = CONSTANT
+    family = MONOMIAL
   []
 []
+
+# [AuxKernels]
+#   [stress_xx]
+#     type = RankTwoAux
+#     rank_two_tensor = stress
+#     variable = stress_xx
+#     index_i = 0
+#     index_j = 0
+#   []
+# []
 
 [BCs]
   [xy_fix_x]
@@ -101,7 +105,7 @@
   [xy_fix_y]
     type = DirichletBC
     variable = disp_y
-    boundary = '0 1 2 3'
+    boundary = '0 1'
     value = 0.0
   []
   [xy_fix_z]
@@ -145,14 +149,14 @@
 #  []
 #[]
 
-[NodalKernels]
- [fx]
-   type = UserForcingFunctionNodalKernel
-   boundary = '1'
-   function = 10
-   variable = 'disp_x'
- []
-[]
+# [NodalKernels]
+#  [fx]
+#    type = UserForcingFunctionNodalKernel
+#    boundary = '1'
+#    function = 10
+#    variable = 'disp_x'
+#  []
+# []
 
 [Preconditioning]
   # [./smp]
@@ -235,7 +239,7 @@
     poissons_ratio = 0.0
     through_thickness_order = SECOND
   []
-  [strain]
+  [strain_shell]
     type = ADComputeIncrementalShellStrain2
     displacements = 'disp_x disp_y disp_z'
     rotations = 'rot_x rot_y rot_z'
@@ -270,10 +274,14 @@
     variable = react_disp_x
   []
   [stress_xx]
-    type= PointValue
-    outputs = csv
-    point = '1 1 0'
-    variable = stress_xx
+    type = ElementalVariableValue
+    variable = 'stress_xx'
+    elementid = 0
+  []
+  [strain_xx]
+    type = ElementalVariableValue
+    variable = 'strain_xx'
+    elementid = 0
   []
 []
 
