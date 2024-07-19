@@ -51,7 +51,7 @@ ADComputeShellStress2::ADComputeShellStress2(const InputParameters & parameters)
   {
     _elasticity_tensor[t] =
         &getADMaterialProperty<RankFourTensor>("elasticity_tensor_t_points_" + std::to_string(t));
-    std::cout << "CCCC: AB Elasticity tensor " << _elasticity_tensor[t] << std::endl;
+    // std::cout << "CCCC: AB Elasticity tensor " << _elasticity_tensor[t] << std::endl;
     _stress[t] = &declareADProperty<RankTwoTensor>("t_points_" + std::to_string(t) + "_stress");
     _stress_old[t] =
         &getMaterialPropertyOldByName<RankTwoTensor>("t_points_" + std::to_string(t) + "_stress");
@@ -95,12 +95,15 @@ ADComputeShellStress2::computeQpProperties()
     (*_global_stress[i])[_qp] = (*_covariant_transformation_matrix[i])[_qp].transpose() *
                                 _unrotated_stress * (*_covariant_transformation_matrix[i])[_qp];
 
-    std::cout << std::endl << "SSSS AB: Stress:" << std::endl;
-    (*_stress[i])[_qp].printReal();
+    
     std::cout << std::endl << "CCCC AB: Elasticity Tensor:" << std::endl;
     (*_elasticity_tensor[i])[_qp].printReal();
     std::cout << std::endl << "eeee AB: Strain Increment:" << std::endl;
     (*_strain_increment[i])[_qp].printReal();
+    std::cout << std::endl << "GGGG AB: Global Stress:" << std::endl;
+    (*_global_stress[i])[_qp].printReal();
+    std::cout << std::endl << "LLLL AB: Local Stress:" << std::endl;
+    (*_stress[i])[_qp].printReal();
     // const auto test = (*_global_stress[i])[_qp] =
     //     (*_covariant_transformation_matrix[i])[_qp].transpose() * _unrotated_stress *
     //     (*_covariant_transformation_matrix[i])[_qp];

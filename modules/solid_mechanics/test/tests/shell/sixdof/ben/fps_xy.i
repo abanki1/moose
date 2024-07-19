@@ -9,7 +9,7 @@
     nx = 1
     ny = 1
     xmin = 0.0
-    xmax = 1.0
+    xmax = 2.0
     ymin = 0.0
     ymax = 1.0
   []
@@ -85,15 +85,6 @@
   []
 []
 
-# [AuxKernels]
-#   [stress_xx]
-#     type = RankTwoAux
-#     rank_two_tensor = stress
-#     variable = stress_xx
-#     index_i = 0
-#     index_j = 0
-#   []
-# []
 
 [BCs]
   [xy_fix_x]
@@ -132,12 +123,12 @@
     boundary = '0 1 2 3'
     value = 0.0
   []
-  [xy_pull]
-    type = DirichletBC
-    variable = disp_x
-    boundary = '1'
-    value = 1.0
-  []
+  # [xy_pull]
+  #   type = DirichletBC
+  #   variable = disp_x
+  #   boundary = '1'
+  #   value = 1.0
+  # []
 []
 
 #[DiracKernels]
@@ -149,14 +140,14 @@
 #  []
 #[]
 
-# [NodalKernels]
-#  [fx]
-#    type = UserForcingFunctionNodalKernel
-#    boundary = '1'
-#    function = 10
-#    variable = 'disp_x'
-#  []
-# []
+[NodalKernels]
+ [fx]
+   type = UserForcingFunctionNodalKernel
+   boundary = '1'
+   function = 10
+   variable = 'disp_x'
+ []
+[]
 
 [Preconditioning]
   # [./smp]
@@ -276,6 +267,16 @@
   [stress_xx]
     type = ElementalVariableValue
     variable = 'stress_xx'
+    elementid = 0
+  []
+  [stress_yy]
+    type = ElementalVariableValue
+    variable = 'stress_yy'
+    elementid = 0
+  []
+  [stress_xy]
+    type = ElementalVariableValue
+    variable = 'stress_xy'
     elementid = 0
   []
   [strain_xx]
