@@ -170,12 +170,12 @@
     boundary = '0 1 2 3'
     value = 0.0
   []
-  [xy_pull]
-    type = DirichletBC
-    variable = disp_x
-    boundary = '1' #RightEdge
-    value = 0.01
-  []
+  # [xy_pull]
+  #   type = DirichletBC
+  #   variable = disp_x
+  #   boundary = '1' #RightEdge
+  #   value = 0.01
+  # []
 []
 
 # [DiracKernels]
@@ -187,6 +187,15 @@
 #    value = 2.5 # P = 10
 #  []
 # []
+
+[NodalKernels]
+ [fx]
+   type = UserForcingFunctionNodalKernel
+   boundary = '1'
+   function = 10
+   variable = 'disp_x'
+ []
+[]
 
 [AuxKernels]
   [stress_xx]
@@ -334,16 +343,6 @@
     execute_on = TIMESTEP_END
   []
 []
-
-
-# [NodalKernels]
-#  [fx]
-#    type = UserForcingFunctionNodalKernel
-#    boundary = '1'
-#    function = 10
-#    variable = 'disp_x'
-#  []
-# []
 
 [Preconditioning]
   # [./smp]
