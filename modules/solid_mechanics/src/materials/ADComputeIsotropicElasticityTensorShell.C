@@ -64,6 +64,9 @@ ADComputeIsotropicElasticityTensorShell::ADComputeIsotropicElasticityTensorShell
     _elasticity_tensor[t] =
         &declareADProperty<RankFourTensor>("elasticity_tensor_t_points_" + std::to_string(t));
     _ge[t] = &getADMaterialProperty<RankTwoTensor>("ge_t_points_" + std::to_string(t));
+    std::cout << std::endl;
+    // std::cout << "BBBB: Shell transformation basis:" << std::endl;
+    // (*_ge[t])[_qp].printReal();
   }
 }
 
@@ -85,9 +88,14 @@ ADComputeIsotropicElasticityTensorShell::computeQpProperties()
                     (*_elasticity_tensor[t])[_qp](i, j, k, l) +=
                         (*_ge[t])[_qp](i, m) * (*_ge[t])[_qp](j, n) * (*_ge[t])[_qp](k, o) *
                         (*_ge[t])[_qp](l, p) * _Cijkl(m, n, o, p);
+
+    std::cout << std::endl << "CCCC: Shell Elasticity tensor before transformation" << std::endl;
+    (_Cijkl).printReal();
+    std::cout << std::endl << "CCCC: Shell Elasticity tensor after transformation" << std::endl;
+    ((*_elasticity_tensor[t])[_qp]).printReal();
+    std::cout << std::endl << "TTTT: Shell transformation basis:" << std::endl;
+    ((*_ge[t])[_qp]).printReal();
   }
   // std::cout << "CCCC: AB Elasticity tensor in the Shellkernel " << (_elasticity_tensor)
   //           << std::endl;
-  // std::cout << std::endl << "CCCC: AB Elasticity tensor " << std::endl;
-  // //      (*_covariant_transformation_matrix[j])[i].printReal();
 }
