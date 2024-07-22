@@ -97,12 +97,12 @@ ADComputeShellStress2::computeQpProperties()
 
     // std::cout << std::endl << "CCCC AB: Elasticity Tensor:" << std::endl;
     // (*_elasticity_tensor[i])[_qp].printReal();
-    std::cout << std::endl << "eeee AB: Strain Increment:" << std::endl;
-    (*_strain_increment[i])[_qp].printReal();
-    std::cout << std::endl << "GGGG AB: Global Stress:" << std::endl;
-    (*_global_stress[i])[_qp].printReal();
-    std::cout << std::endl << "LLLL AB: Local Stress:" << std::endl;
-    (*_stress[i])[_qp].printReal();
+    // std::cout << std::endl << "eeee AB: Strain Increment:" << std::endl;
+    // (*_strain_increment[i])[_qp].printReal();
+    // std::cout << std::endl << "GGGG AB: Global Stress:" << std::endl;
+    // (*_global_stress[i])[_qp].printReal();
+    // std::cout << std::endl << "LLLL AB: Local Stress:" << std::endl;
+    // (*_stress[i])[_qp].printReal();
     // const auto test = (*_global_stress[i])[_qp] =
     //     (*_covariant_transformation_matrix[i])[_qp].transpose() * _unrotated_stress *
     //     (*_covariant_transformation_matrix[i])[_qp];
