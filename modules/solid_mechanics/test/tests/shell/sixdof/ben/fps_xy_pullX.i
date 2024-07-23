@@ -1,19 +1,19 @@
 [Mesh]
-  # [mesh]
-  #   type = FileMeshGenerator
-  #   file = flatplates_xy.e
-  # []
-  [gmg]
-    type = GeneratedMeshGenerator
-    dim = 2
-    nx = 1
-    ny = 1
-    xmin = 0.0
-    xmax = 1.0
-    ymin = 0.0
-    ymax = 1.0
-    show_info = true
+  [mesh]
+    type = FileMeshGenerator
+    file = flatplates_xy.e
   []
+  # [gmg]
+  #   type = GeneratedMeshGenerator
+  #   dim = 2
+  #   nx = 1
+  #   ny = 1
+  #   xmin = 0.0
+  #   xmax = 1.0
+  #   ymin = 0.0
+  #   ymax = 1.0
+  #   show_info = true
+  # []
 []
 
 [Variables]
@@ -282,43 +282,43 @@
   [fix_x]
     type = DirichletBC
     variable = disp_x
-    boundary = '3'
+    boundary = '6'
     value = 0.0
   []
   [fix_y]
     type = DirichletBC
     variable = disp_y
-    boundary = '0 1 2 3'
+    boundary = '5 6 7 8'
     value = 0.0
   []
   [fix_z]
     type = DirichletBC
     variable = disp_z
-    boundary = ' 0 1 2 3'
+    boundary = '5 6 7 8'
     value = 0.0
   []
   [fix_rot_x]
     type = DirichletBC
     variable = rot_x
-    boundary = '0 1 2 3'
+    boundary = '5 6 7 8'
     value = 0.0
   []
   [fix_rot_y]
     type = DirichletBC
     variable = rot_y
-    boundary = '0 1 2 3'
+    boundary = '5 6 7 8'
     value = 0.0
   []
   [fix_rot_z]
     type = DirichletBC
     variable = rot_z
-    boundary = '0 1 2 3'
+    boundary = '5 6 7 8'
     value = 0.0
   []
   [xy_pull_x]
     type = DirichletBC
     variable = disp_x
-    boundary = '1'
+    boundary = '8'
     value = 0.01
   []
 []
@@ -332,14 +332,14 @@
 #  []
 #[]
 
-[NodalKernels]
- [fx]
-   type = UserForcingFunctionNodalKernel
-   boundary = '1'
-   function = 10
-   variable = 'disp_x'
- []
-[]
+# [NodalKernels]
+#  [fx]
+#    type = UserForcingFunctionNodalKernel
+#    boundary = '1'
+#    function = 10
+#    variable = 'disp_x'
+#  []
+# []
 
 [Preconditioning]
   # [./smp]
@@ -359,7 +359,7 @@
   petsc_options_value = 'lu'
   # petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
   # petsc_options_value = 'lu NONZERO   1e1'
-  petsc_options = '-ksp_view_pmat'
+  # petsc_options = '-ksp_view_pmat'
   nl_rel_tol = 1e-10
   nl_abs_tol = 1e-8
   dt = 1.0
@@ -421,7 +421,7 @@
     youngs_modulus = 1e6
     poissons_ratio = 0.0
     through_thickness_order = SECOND
-    block = 0
+    block = 1
   []
   [strain_shell]
     type = ADComputeIncrementalShellStrain2
@@ -429,12 +429,12 @@
     rotations = 'rot_x rot_y rot_z'
     thickness = 0.01
     through_thickness_order = SECOND
-    block = 0 
+    block = 1
   []
   [stress_shell]
     type = ADComputeShellStress2
     through_thickness_order = SECOND
-    block = 0
+    block = 1
     # generate_output = 'stress_xx strain_xx'
     # outputs = exodus
   []
@@ -453,12 +453,12 @@
   []
   [xreact_left]
     type = NodalSum
-    boundary = '3'
+    boundary = '6'
     variable = react_disp_x
   []
   [xreact_right]
     type = NodalSum
-    boundary = '1'
+    boundary = '8'
     variable = react_disp_x
   []
   [stress_xx]
