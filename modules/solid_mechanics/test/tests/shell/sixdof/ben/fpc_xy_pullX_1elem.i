@@ -32,7 +32,7 @@
     family = LAGRANGE
   []
   [rot_x]
-    order = FIRST 
+    order = FIRST
     family = LAGRANGE
   []
   [rot_y]
@@ -130,7 +130,7 @@
     order = CONSTANT
     family = MONOMIAL
   []
-  
+
 []
 
 [BCs]
@@ -155,13 +155,13 @@
 #   [xy_fix_rot_x]
 #     type = DirichletBC
 #     variable = rot_x
-#     boundary = '0 1 2 3' 
+#     boundary = '0 1 2 3'
 #     value = 0.0
 #   []
   [xy_fix_rot_y]
     type = DirichletBC
     variable = rot_y
-    boundary = '0' 
+    boundary = '0'
     value = 0.0
   []
 #   [xy_fix_rot_z]

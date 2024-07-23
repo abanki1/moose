@@ -22,7 +22,7 @@
 #include "libmesh/enum_quadrature_type.h"
 #include "libmesh/string_to_enum.h"
 
-registerMooseObject("TensorMechanicsApp", ADStressDivergenceShell4);
+registerMooseObject("SolidMechanicsApp", ADStressDivergenceShell4);
 
 InputParameters
 ADStressDivergenceShell4::validParams()
@@ -40,8 +40,7 @@ ADStressDivergenceShell4::validParams()
   params.addParam<bool>(
       "large_strain", false, "Set to true to turn on finite strain calculations.");
   params.set<bool>("use_displaced_mesh") = false;
-  params.addParam<Real>(
-      "penalty", 1e4, "Penalty parameter for out of plane stress");
+  params.addParam<Real>("penalty", 1e4, "Penalty parameter for out of plane stress");
   return params;
 }
 
@@ -69,22 +68,18 @@ ADStressDivergenceShell4::ADStressDivergenceShell4(const InputParameters & param
 
   for (unsigned int i = 0; i < _t_weights.size(); ++i)
   {
-    _stress[i] = &getADMaterialProperty<RankTwoTensor>("stress_t_points_" + std::to_string(i));
+    _stress[i] = &getADMaterialProperty<RankTwoTensor>("t_points_" + std::to_string(i) + "_stress");
     _stress_old[i] =
-        &getMaterialPropertyOldByName<RankTwoTensor>("stress_t_points_" + std::to_string(i));
+        &getMaterialPropertyOldByName<RankTwoTensor>("t_points_" + std::to_string(i) + "_stress");
     _B_mat[i] = &getADMaterialProperty<DenseMatrix<Real>>("B_t_points_" + std::to_string(i));
     if (_large_strain)
       _B_nl[i] = &getADMaterialProperty<DenseMatrix<Real>>("B_nl_t_points_" + std::to_string(i));
 
     _J_map[i] = &getADMaterialProperty<Real>("J_mapping_t_points_" + std::to_string(i));
-    _gamma_x[i] =
-        &getADMaterialProperty<Real>("gamma_test_x_t_points_" + std::to_string(i));
-    _gamma_y[i] =
-        &getADMaterialProperty<Real>("gamma_test_y_t_points_" + std::to_string(i));
-    _gamma_z[i] =
-        &getADMaterialProperty<Real>("gamma_test_z_t_points_" + std::to_string(i));
-    _gamma[i] =
-        &getADMaterialProperty<Real>("gamma_test_t_points_" + std::to_string(i));
+    _gamma_x[i] = &getADMaterialProperty<Real>("gamma_test_x_t_points_" + std::to_string(i));
+    _gamma_y[i] = &getADMaterialProperty<Real>("gamma_test_y_t_points_" + std::to_string(i));
+    _gamma_z[i] = &getADMaterialProperty<Real>("gamma_test_z_t_points_" + std::to_string(i));
+    _gamma[i] = &getADMaterialProperty<Real>("gamma_test_t_points_" + std::to_string(i));
   }
 }
 
@@ -99,25 +94,25 @@ ADStressDivergenceShell4::computeQpResidual()
   {
     ADRankTwoTensor _local_global_rotation = _global_local_rotation[_qp].transpose();
     ADReal residual_global = 0.0;
-//    std::cout<<"BWS local_rotation: "<<std::endl;
-//    _local_global_rotation.printReal();
-//    if (_component < 3)
+    //    std::cout<<"BWS local_rotation: "<<std::endl;
+    //    _local_global_rotation.printReal();
+    //    if (_component < 3)
     if (false)
     {
       ADReal residual_loc =
-        (*_stress[_qp_z])[_qp](0, 0) * (*_B_mat[_qp_z])[_qp](0, _i + _component * 4) +
-        (*_stress[_qp_z])[_qp](1, 1) * (*_B_mat[_qp_z])[_qp](1, _i + _component * 4) +
-        2.0 * (*_stress[_qp_z])[_qp](0, 1) * (*_B_mat[_qp_z])[_qp](2, _i + _component * 4) +
-        2.0 * (*_stress[_qp_z])[_qp](0, 2) * (*_B_mat[_qp_z])[_qp](3, _i + _component * 4) +
-        2.0 * (*_stress[_qp_z])[_qp](1, 2) * (*_B_mat[_qp_z])[_qp](4, _i + _component * 4);
+          (*_stress[_qp_z])[_qp](0, 0) * (*_B_mat[_qp_z])[_qp](0, _i + _component * 4) +
+          (*_stress[_qp_z])[_qp](1, 1) * (*_B_mat[_qp_z])[_qp](1, _i + _component * 4) +
+          2.0 * (*_stress[_qp_z])[_qp](0, 1) * (*_B_mat[_qp_z])[_qp](2, _i + _component * 4) +
+          2.0 * (*_stress[_qp_z])[_qp](0, 2) * (*_B_mat[_qp_z])[_qp](3, _i + _component * 4) +
+          2.0 * (*_stress[_qp_z])[_qp](1, 2) * (*_B_mat[_qp_z])[_qp](4, _i + _component * 4);
 
       if (_large_strain)
         residual_loc +=
-          (*_stress_old[_qp_z])[_qp](0, 0) * (*_B_nl[_qp_z])[_qp](0, _i + _component * 4) +
-          (*_stress_old[_qp_z])[_qp](1, 1) * (*_B_nl[_qp_z])[_qp](1, _i + _component * 4) +
-          2.0 * (*_stress_old[_qp_z])[_qp](0, 1) * (*_B_nl[_qp_z])[_qp](2, _i + _component * 4) +
-          2.0 * (*_stress_old[_qp_z])[_qp](0, 2) * (*_B_nl[_qp_z])[_qp](3, _i + _component * 4) +
-          2.0 * (*_stress_old[_qp_z])[_qp](1, 2) * (*_B_nl[_qp_z])[_qp](4, _i + _component * 4);
+            (*_stress_old[_qp_z])[_qp](0, 0) * (*_B_nl[_qp_z])[_qp](0, _i + _component * 4) +
+            (*_stress_old[_qp_z])[_qp](1, 1) * (*_B_nl[_qp_z])[_qp](1, _i + _component * 4) +
+            2.0 * (*_stress_old[_qp_z])[_qp](0, 1) * (*_B_nl[_qp_z])[_qp](2, _i + _component * 4) +
+            2.0 * (*_stress_old[_qp_z])[_qp](0, 2) * (*_B_nl[_qp_z])[_qp](3, _i + _component * 4) +
+            2.0 * (*_stress_old[_qp_z])[_qp](1, 2) * (*_B_nl[_qp_z])[_qp](4, _i + _component * 4);
       residual_global = residual_loc;
     }
     else
@@ -126,34 +121,37 @@ ADStressDivergenceShell4::computeQpResidual()
       {
         const unsigned int local_comp = comp5 < 3 ? comp5 : comp5 - 3;
         ADReal residual_loc =
-          (*_stress[_qp_z])[_qp](0, 0) * (*_B_mat[_qp_z])[_qp](0, _i + comp5 * 4) +
-          (*_stress[_qp_z])[_qp](1, 1) * (*_B_mat[_qp_z])[_qp](1, _i + comp5 * 4) +
-          2.0 * (*_stress[_qp_z])[_qp](0, 1) * (*_B_mat[_qp_z])[_qp](2, _i + comp5 * 4) +
-          2.0 * (*_stress[_qp_z])[_qp](0, 2) * (*_B_mat[_qp_z])[_qp](3, _i + comp5 * 4) +
-          2.0 * (*_stress[_qp_z])[_qp](1, 2) * (*_B_mat[_qp_z])[_qp](4, _i + comp5 * 4);
+            (*_stress[_qp_z])[_qp](0, 0) * (*_B_mat[_qp_z])[_qp](0, _i + comp5 * 4) +
+            (*_stress[_qp_z])[_qp](1, 1) * (*_B_mat[_qp_z])[_qp](1, _i + comp5 * 4) +
+            2.0 * (*_stress[_qp_z])[_qp](0, 1) * (*_B_mat[_qp_z])[_qp](2, _i + comp5 * 4) +
+            2.0 * (*_stress[_qp_z])[_qp](0, 2) * (*_B_mat[_qp_z])[_qp](3, _i + comp5 * 4) +
+            2.0 * (*_stress[_qp_z])[_qp](1, 2) * (*_B_mat[_qp_z])[_qp](4, _i + comp5 * 4);
 
         if (_large_strain)
           residual_loc +=
-            (*_stress_old[_qp_z])[_qp](0, 0) * (*_B_nl[_qp_z])[_qp](0, _i + comp5 * 4) +
-            (*_stress_old[_qp_z])[_qp](1, 1) * (*_B_nl[_qp_z])[_qp](1, _i + comp5 * 4) +
-            2.0 * (*_stress_old[_qp_z])[_qp](0, 1) * (*_B_nl[_qp_z])[_qp](2, _i + comp5 * 4) +
-            2.0 * (*_stress_old[_qp_z])[_qp](0, 2) * (*_B_nl[_qp_z])[_qp](3, _i + comp5 * 4) +
-            2.0 * (*_stress_old[_qp_z])[_qp](1, 2) * (*_B_nl[_qp_z])[_qp](4, _i + comp5 * 4);
-//        std::cout<<"BWS component: "<<_component<<" cart_comp: "<<cart_comp<<" comp5: "<<comp5<<" local_comp: "<<local_comp<<std::endl;
-//        std::cout<<"BWS rloc: "<<MetaPhysicL::raw_value(residual_loc)<<
-//          " rglob: "<<MetaPhysicL::raw_value(_local_global_rotation(cart_comp, local_comp) * residual_loc) <<std::endl;
+              (*_stress_old[_qp_z])[_qp](0, 0) * (*_B_nl[_qp_z])[_qp](0, _i + comp5 * 4) +
+              (*_stress_old[_qp_z])[_qp](1, 1) * (*_B_nl[_qp_z])[_qp](1, _i + comp5 * 4) +
+              2.0 * (*_stress_old[_qp_z])[_qp](0, 1) * (*_B_nl[_qp_z])[_qp](2, _i + comp5 * 4) +
+              2.0 * (*_stress_old[_qp_z])[_qp](0, 2) * (*_B_nl[_qp_z])[_qp](3, _i + comp5 * 4) +
+              2.0 * (*_stress_old[_qp_z])[_qp](1, 2) * (*_B_nl[_qp_z])[_qp](4, _i + comp5 * 4);
+        //        std::cout<<"BWS component: "<<_component<<" cart_comp: "<<cart_comp<<" comp5:
+        //        "<<comp5<<" local_comp: "<<local_comp<<std::endl; std::cout<<"BWS rloc:
+        //        "<<MetaPhysicL::raw_value(residual_loc)<<
+        //          " rglob: "<<MetaPhysicL::raw_value(_local_global_rotation(cart_comp, local_comp)
+        //          * residual_loc) <<std::endl;
         residual_global += _local_global_rotation(cart_comp, local_comp) * residual_loc;
       }
     }
-//    if (_component > 2  && _i == _qp)
-//      residual_global += _local_global_rotation(cart_comp, 2) * _penalty * (*_gamma[_qp_z])[_qp] / (_ad_JxW[_qp] * _ad_coord[_qp]);
+    //    if (_component > 2  && _i == _qp)
+    //      residual_global += _local_global_rotation(cart_comp, 2) * _penalty *
+    //      (*_gamma[_qp_z])[_qp] / (_ad_JxW[_qp] * _ad_coord[_qp]);
 
-    if(_component == 3 && _i == _qp)
-      residual_global += _penalty * (*_gamma_x[_qp_z])[_qp];// / (_ad_JxW[_qp] * _ad_coord[_qp]);
-    if(_component == 4 && _i == _qp)
-      residual_global += _penalty * (*_gamma_y[_qp_z])[_qp];// / (_ad_JxW[_qp] * _ad_coord[_qp]);
-    if(_component == 5 && _i == _qp)
-      residual_global += _penalty * (*_gamma_z[_qp_z])[_qp];// / (_ad_JxW[_qp] * _ad_coord[_qp]);
+    if (_component == 3 && _i == _qp)
+      residual_global += _penalty * (*_gamma_x[_qp_z])[_qp]; // / (_ad_JxW[_qp] * _ad_coord[_qp]);
+    if (_component == 4 && _i == _qp)
+      residual_global += _penalty * (*_gamma_y[_qp_z])[_qp]; // / (_ad_JxW[_qp] * _ad_coord[_qp]);
+    if (_component == 5 && _i == _qp)
+      residual_global += _penalty * (*_gamma_z[_qp_z])[_qp]; // / (_ad_JxW[_qp] * _ad_coord[_qp]);
 
     residual += residual_global * (*_J_map[_qp_z])[_qp] * _q_weights[_qp] * _t_weights[_qp_z] /
                 (_ad_JxW[_qp] * _ad_coord[_qp]);
