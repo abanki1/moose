@@ -288,7 +288,7 @@
   [fix_y]
     type = DirichletBC
     variable = disp_y
-    boundary = '5 6 7 8'
+    boundary = '5 6 7'
     value = 0.0
   []
   [fix_z]
