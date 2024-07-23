@@ -282,13 +282,13 @@
   [fix_x]
     type = DirichletBC
     variable = disp_x
-    boundary = '0 1 3'
+    boundary = '0 1 2 3'
     value = 0.0
   []
   [fix_y]
     type = DirichletBC
     variable = disp_y
-    boundary = '2'
+    boundary = '0'
     value = 0.0
   []
   [fix_z]
