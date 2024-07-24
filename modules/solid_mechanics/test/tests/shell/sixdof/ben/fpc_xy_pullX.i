@@ -1,22 +1,22 @@
-# [Mesh]
-#   [mesh]
-#     type = FileMeshGenerator
-#     file = flatplates_xy.e
-#   []
-# []
 [Mesh]
-  [gmg]
-    type = GeneratedMeshGenerator #In 2D, bottom =0, right = 1, top = 2, left = 3
-    dim = 2
-    nx = 1
-    ny = 1
-    xmin = 0.0
-    xmax = 1.0
-    ymin = 0.0
-    ymax = 1.0
-    show_info = true
+  [mesh]
+    type = FileMeshGenerator
+    file = flatplates_xy.e
   []
 []
+# [Mesh]
+#   [gmg]
+#     type = GeneratedMeshGenerator #In 2D, bottom =0, right = 1, top = 2, left = 3
+#     dim = 2
+#     nx = 1
+#     ny = 1
+#     xmin = 0.0
+#     xmax = 1.0
+#     ymin = 0.0
+#     ymax = 1.0
+#     show_info = true
+#   []
+#[]
 
 [Variables]
   [disp_x]
@@ -137,43 +137,43 @@
   [xy_fix_x]
     type = DirichletBC
     variable = disp_x
-    boundary = '3' #LeftEdge
+    boundary = '6' #LeftEdge
     value = 0.0
   []
   [xy_fix_y]
     type = DirichletBC
     variable = disp_y
-    boundary = '0 2' #'6'#'LeftEdge'
+    boundary = '5 7'#'LeftEdge'
     value = 0.0
   []
   [xy_fix_z]
     type = DirichletBC
     variable = disp_z
-    boundary = '0' #'6' #LeftEdge
+    boundary = '6' #LeftEdge
     value = 0.0
   []
-#   [xy_fix_rot_x]
-#     type = DirichletBC
-#     variable = rot_x
-#     boundary = '0 1 2 3' 
-#     value = 0.0
-#   []
+  [xy_fix_rot_x]
+    type = DirichletBC
+    variable = rot_x
+    boundary = '5 6 7 8'
+    value = 0.0
+  []
   [xy_fix_rot_y]
     type = DirichletBC
     variable = rot_y
-    boundary = '0' 
+    boundary = '5 6 7 8'
     value = 0.0
   []
-#   [xy_fix_rot_z]
-#     type = DirichletBC
-#     variable = rot_z
-#     boundary = '0 1 2 3'
-#     value = 0.0
-#   []
+  [xy_fix_rot_z]
+    type = DirichletBC
+    variable = rot_z
+    boundary = '5 6 7 8'
+    value = 0.0
+  []
   [xy_pull]
     type = DirichletBC
     variable = disp_x
-    boundary = '1' #RightEdge
+    boundary = '8' #RightEdge
     value = 0.01
   []
 []

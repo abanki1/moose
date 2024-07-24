@@ -93,16 +93,26 @@ ADComputeShellStress2::computeQpProperties()
     // _unrotated_stress(ii, jj) = (*_stress[i])[_qp](ii, jj);
 
     // _unrotated_stress(ii, jj) = MetaPhysicL::raw_value((*_stress[i])[_qp](ii, jj));
-    (*_global_stress[i])[_qp] = (*_covariant_transformation_matrix[i])[_qp].transpose() *
-                                _unrotated_stress * (*_covariant_transformation_matrix[i])[_qp];
-    // (*_stress[i])[_qp] = (*_global_stress[i])[_qp]; //save the global stress as _stress from the
-    // shell material model std::cout << std::endl << "CCCC AB: Elasticity Tensor:" << std::endl;
-    // (*_elasticity_tensor[i])[_qp].printReal();
+    (*_global_stress[i])[_qp] =
+        (*_covariant_transformation_matrix[i])[_qp].transpose() * _unrotated_stress *
+        (*_covariant_transformation_matrix[i])[_qp]; // original gobal stress
+    // (*_stress_map[i])[_qp] = (*_contravariant_transformation_matrix[i])[_qp].transpose() *
+    //                          (*_global_stress[i])[_qp] *
+    //                          (*_contravariant_transformation_matrix[i])[_qp];
+
+    // stress as _stress from the shell material model std::cout <<
+    (*_stress[i])[_qp] = (*_global_stress[i])[_qp]; // shell model
     std::cout << std::endl << "eeee AB: Strain Increment:" << std::endl;
     (*_strain_increment[i])[_qp].printReal();
-    std::cout << std::endl << "LLLL AB: Local Stress:" << std::endl;
+    std::cout << std::endl << "TTTT AB: Covariant matrix:" << std::endl;
+    (*_covariant_transformation_matrix[i])[_qp].printReal();
+    std::cout << std::endl << "UUUU AB: Stress:" << std::endl;
     (*_stress[i])[_qp].printReal();
     std::cout << std::endl << "GGGG AB: Global Stress:" << std::endl;
     (*_global_stress[i])[_qp].printReal();
+    // std::cout << "tttt AB: Contravariant Tensor:" << std::endl;
+    // (*_contravariant_transformation_matrix[i])[_qp].printReal();
+    // std::cout << std::endl << "RRRR AB: Reverse map Stress:" << std::endl;
+    // (*_stress_map[i])[_qp].printReal();
   }
 }
