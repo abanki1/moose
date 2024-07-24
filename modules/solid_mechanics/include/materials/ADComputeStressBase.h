@@ -13,6 +13,7 @@
 #include "Function.h"
 #include "ADRankTwoTensorForward.h"
 #include "ADSymmetricRankTwoTensorForward.h"
+#include "MaterialProperty.h"
 
 #define usingComputeStressBaseMembers                                                              \
   usingMaterialMembers;                                                                            \
@@ -46,6 +47,7 @@ protected:
 
   /// The stress tensor to be calculated
   ADMaterialProperty<R2> & _stress;
+  // ADMaterialProperty<R2> & _global_stress;
   ADMaterialProperty<R2> & _elastic_strain;
 
   /// Extra stress tensors

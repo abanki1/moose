@@ -69,6 +69,9 @@ ADStressDivergenceShell2::ADStressDivergenceShell2(const InputParameters & param
   for (unsigned int i = 0; i < _t_weights.size(); ++i)
   {
     _stress[i] = &getADMaterialProperty<RankTwoTensor>("t_points_" + std::to_string(i) + "_stress");
+    // "_stress");
+    // _global_stress[i] =
+    //     &getADMaterialProperty<RankTwoTensor>("global_stress_t_points_" + std::to_string(i));
     _stress_old[i] =
         &getMaterialPropertyOldByName<RankTwoTensor>("t_points_" + std::to_string(i) + "_stress");
     _contravariant_transformation_matrix[i] = &getADMaterialProperty<RankTwoTensor>(
@@ -101,18 +104,25 @@ ADStressDivergenceShell2::computeQpResidual()
   {
     // std::cout << std::endl;
     // std::cout << " AB: I am _qp_z : " << _qp_z << std::endl;
-    // _stress_covariant = (*_contravariant_transformation_matrix[_qp_z])[_qp].transpose() *
-    //                     (*_stress[_qp_z])[_qp] *
-    //                     (*_contravariant_transformation_matrix[_qp_z])[_qp]; //shell constitutive model
-    // _stress_covariant = (*_stress[_qp_z])[_qp]; //continuum model
-    // std::cout<<"BWS stress pre: "<<std::endl;
-    // (*_stress[_qp_z])[_qp].printReal();
+    // if (_stress) //continuum constitutive model - transform global stress to local coordinate
+    // system
+    // _stress_covariant =
+    //     (*_contravariant_transformation_matrix[_qp_z])[_qp].transpose() * (*_stress[_qp_z])[_qp]
+    //     *
+    //     (*_contravariant_transformation_matrix[_qp_z])[_qp]; // continuum constitutive model -
+    //     transform global stress to local coordinate
+    // else
+    _stress_covariant = (*_stress[_qp_z])[_qp];
+
+    // _stress_covariant = (*_stress[_qp_z])[_qp]; //shell model
+    std::cout << "BWS stress pre: " << std::endl;
+    (*_stress[_qp_z])[_qp].printReal();
     // std::cout<<"BWS kernel contrav: "<<std::endl;
     // (*_contravariant_transformation_matrix[_qp_z])[_qp].printReal();
-    // // std::cout<<"BWS kernel transf: "<<std::endl;
-    // // (*_contravariant_transformation_matrix[_qp_z])[_qp].printReal();
-    // std::cout<<"BWS stress post: "<<std::endl;
-    // _stress_covariant.printReal();
+    std::cout << "BWS kernel transf: " << std::endl;
+    (*_contravariant_transformation_matrix[_qp_z])[_qp].printReal();
+    std::cout << "BWS stress post: " << std::endl;
+    _stress_covariant.printReal();
     // std::cout<<std::endl;
 
     residual1 = _stress_covariant(0, 0) * (*_B_mat[_qp_z])[_qp](0, _i + _component * 4) +
@@ -120,7 +130,8 @@ ADStressDivergenceShell2::computeQpResidual()
                 2.0 * _stress_covariant(0, 1) * (*_B_mat[_qp_z])[_qp](2, _i + _component * 4) +
                 2.0 * _stress_covariant(0, 2) * (*_B_mat[_qp_z])[_qp](3, _i + _component * 4) +
                 2.0 * _stress_covariant(1, 2) * (*_B_mat[_qp_z])[_qp](4, _i + _component * 4);
-    // std::cout << " AB: I am _residual1 : before penalty" << residual1 << std::endl; // AB: print out the residual before any penalty
+    // std::cout << " AB: I am _residual1 : before penalty" << residual1 << std::endl; // AB: print
+    // out the residual before any penalty
     if (_large_strain)
     {
       _stress_covariant_old = (*_contravariant_transformation_matrix[_qp_z])[_qp] *
@@ -137,20 +148,22 @@ ADStressDivergenceShell2::computeQpResidual()
     // _stress_covariant.printReal();
     // std::cout<<"AB residual1: "<<residual<<std::endl;
     // std::cout << std::endl;                                         // AB segregate the block
-    // std::cout << "AB:I am _component: " << _component << std::endl; // AB: print out shear strains
-    // rot_Z
-    // std::cout << "AB:I am in plane qp: " << _qp << std::endl; // AB: print out the inplane _qp loop
-    // std::cout << "AB:I am _i: " << _i << std::endl; // AB: print out the inplane _qp loop
-    //commenting the penalty additions for debugging purposes
+    // std::cout << "AB:I am _component: " << _component << std::endl; // AB: print out shear
+    // strains rot_Z std::cout << "AB:I am in plane qp: " << _qp << std::endl; // AB: print out the
+    // inplane _qp loop std::cout << "AB:I am _i: " << _i << std::endl; // AB: print out the inplane
+    // _qp loop
+    // commenting the penalty additions for debugging purposes
     if (_component == 5)
     {
       if (_i == _qp)
       {
-        // std::cout << "AB:_gamma_z: " << (*_gamma_z[_qp_z])[_qp] << std::endl; // AB: print out shear strain Z
-        // std::cout << "AB:_ad_JxW[_qp]: " << _ad_JxW[_qp] << std::endl; // AB: print out geometric Jacobian
-        // std::cout << "AB:_ad_coord[_qp]: " << _ad_coord[_qp] << std::endl; // AB: print out the quadrature points
+        // std::cout << "AB:_gamma_z: " << (*_gamma_z[_qp_z])[_qp] << std::endl; // AB: print out
+        // shear strain Z std::cout << "AB:_ad_JxW[_qp]: " << _ad_JxW[_qp] << std::endl; // AB:
+        // print out geometric Jacobian std::cout << "AB:_ad_coord[_qp]: " << _ad_coord[_qp] <<
+        // std::endl; // AB: print out the quadrature points
         residual1 += _penalty * (*_gamma_z[_qp_z])[_qp] / (_ad_JxW[_qp] * _ad_coord[_qp]);
-        // residual1 += _penalty * (*_gamma_z[_qp_z])[_qp] * (_ad_JxW[_qp] * _ad_coord[_qp]); //atempting to fix the penalty
+        // residual1 += _penalty * (*_gamma_z[_qp_z])[_qp] * (_ad_JxW[_qp] * _ad_coord[_qp]);
+        // //atempting to fix the penalty
       }
     }
 
@@ -158,37 +171,42 @@ ADStressDivergenceShell2::computeQpResidual()
     {
       if (_i == _qp)
       {
-        // std::cout << "AB:_gamma_y: " << (*_gamma_y[_qp_z])[_qp] << std::endl; // AB: print out shear
-        // strains rot_Y
+        // std::cout << "AB:_gamma_y: " << (*_gamma_y[_qp_z])[_qp] << std::endl; // AB: print out
+        // shear strains rot_Y
         residual1 += _penalty * (*_gamma_y[_qp_z])[_qp] / (_ad_JxW[_qp] * _ad_coord[_qp]);
-        // residual1 += _penalty * 4/9 * (_ad_JxW[_qp] * _ad_coord[_qp]); //atempting to fix the penalty //atempting to fix the penalty
+        // residual1 += _penalty * 4/9 * (_ad_JxW[_qp] * _ad_coord[_qp]); //atempting to fix the
+        // penalty //atempting to fix the penalty
       }
     }
-    // std::cout << " AB: I am _residual1 : before penalising rot_x" << residual1 << std::endl; // AB: print out the residual before penalty
+    // std::cout << " AB: I am _residual1 : before penalising rot_x" << residual1 << std::endl; //
+    // AB: print out the residual before penalty
     if (_component == 3)
     {
       if (_i == _qp)
       {
-        // std::cout << "DDDDD AB:I am _gamma_x: " << (*_gamma_x[_qp_z])[_qp] << std::endl; // AB: print out shear
-        // strains rot_x
-        // std::cout << "AB:_ad_JxW[_qp] Jacobian: " << _ad_JxW[_qp] << std::endl; // AB: print out geometric JxW
-        // std::cout << "AB:I am _ad_coord[_qp] coordinate: " << _ad_coord[_qp] << std::endl; // AB: print out the ad coordinate
-        // strains rot_X
-        // auto penaltyResidual = 1.0e6 * (*_gamma_x[_qp_z])[_qp];// / (_ad_JxW[_qp] * _ad_coord[_qp]);
-        // WhatType<decltype(penaltyResidual)>{};
+        // std::cout << "DDDDD AB:I am _gamma_x: " << (*_gamma_x[_qp_z])[_qp] << std::endl; // AB:
+        // print out shear strains rot_x std::cout << "AB:_ad_JxW[_qp] Jacobian: " << _ad_JxW[_qp]
+        // << std::endl; // AB: print out geometric JxW std::cout << "AB:I am _ad_coord[_qp]
+        // coordinate: " << _ad_coord[_qp] << std::endl; // AB: print out the ad coordinate strains
+        // rot_X auto penaltyResidual = 1.0e6 * (*_gamma_x[_qp_z])[_qp];// / (_ad_JxW[_qp] *
+        // _ad_coord[_qp]); WhatType<decltype(penaltyResidual)>{};
         residual1 += _penalty * (*_gamma_x[_qp_z])[_qp] / (_ad_JxW[_qp] * _ad_coord[_qp]);
-        // residual1 += _penalty * 4.0/9.0 * (_ad_JxW[_qp] * _ad_coord[_qp]); //atempting to fix the penalty manually
-        // auto penaltyResidual= _penalty * 4.0/9.0 * (_ad_JxW[_qp] * _ad_coord[_qp]); //atempting to fix the penalty
+        // residual1 += _penalty * 4.0/9.0 * (_ad_JxW[_qp] * _ad_coord[_qp]); //atempting to fix the
+        // penalty manually auto penaltyResidual= _penalty * 4.0/9.0 * (_ad_JxW[_qp] *
+        // _ad_coord[_qp]); //atempting to fix the penalty
 
-        // std::cout << "DDDDD AB: I am the difference in residual1 : after penalising rot_x" << (1.0e6 * (*_gamma_x[_qp_z])[_qp]) << " do derivs=" << ADReal::do_derivatives << std::endl; // AB: print out the change in residual after penalty
-        // std::cout << " AB: I am _residual1 : after all penalties" << residual1 << std::endl; // AB: print out the residual after penalty
+        // std::cout << "DDDDD AB: I am the difference in residual1 : after penalising rot_x" <<
+        // (1.0e6 * (*_gamma_x[_qp_z])[_qp]) << " do derivs=" << ADReal::do_derivatives <<
+        // std::endl; // AB: print out the change in residual after penalty std::cout << " AB: I am
+        // _residual1 : after all penalties" << residual1 << std::endl; // AB: print out the
+        // residual after penalty
       }
-
     }
 
     residual += residual1 * (*_J_map[_qp_z])[_qp] * _q_weights[_qp] * _t_weights[_qp_z] /
                 (_ad_JxW[_qp] * _ad_coord[_qp]);
   }
-  // std::cout << " AB: I am _residual1 : after all penalties" << residual1 << std::endl; // AB: print out the residual after penalty
+  // std::cout << " AB: I am _residual1 : after all penalties" << residual1 << std::endl; // AB:
+  // print out the residual after penalty
   return residual;
 }
