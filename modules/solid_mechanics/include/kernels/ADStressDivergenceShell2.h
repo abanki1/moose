@@ -39,7 +39,7 @@ protected:
   const Real _penalty;
 
   std::vector<const ADMaterialProperty<RankTwoTensor> *> _stress;
-    std::vector<const ADMaterialProperty<RankTwoTensor> *> _global_stress; //global stress coming from the continuum model
+    // std::vector<const ADMaterialProperty<RankTwoTensor> *> _global_stress; //global stress coming from the continuum model
   std::vector<const MaterialProperty<RankTwoTensor> *> _stress_old;
   std::vector<const ADMaterialProperty<RankTwoTensor> *> _contravariant_transformation_matrix;
   std::vector<const ADMaterialProperty<RankTwoTensor> *> _covariant_transformation_matrix;
