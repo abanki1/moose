@@ -8,7 +8,7 @@
   [gmg]
     type = GeneratedMeshGenerator #In 2D, bottom =0, right = 1, top = 2, left = 3
     dim = 2
-    nx = 1
+    nx = 2
     ny = 1
     xmin = 0.0
     xmax = 1.0
@@ -358,10 +358,10 @@
   type = Transient
   solve_type = NEWTON
   line_search = 'none'
-  petsc_options_iname = '-pc_type'
-  petsc_options_value = 'lu'
-  # petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
-  # petsc_options_value = 'lu NONZERO   1e1'
+  # petsc_options_iname = '-pc_type'
+  # petsc_options_value = 'lu'
+  petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
+  petsc_options_value = 'lu NONZERO   1e1'
   petsc_options = '-ksp_view_pmat'
   # petsc_options = '-ksp_view_rhs'
   nl_rel_tol = 1e-10
