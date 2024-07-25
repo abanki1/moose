@@ -134,48 +134,48 @@
 []
 
 [BCs]
-  [xy_fix_x]
-    type = DirichletBC
-    variable = disp_x
-    boundary = '3' #LeftEdge
-    value = 0.0
-  []
-  [xy_fix_y]
-    type = DirichletBC
-    variable = disp_y
-    boundary = '0 1 3 2' #'6'#'LeftEdge'
-    value = 0.0
-  []
-  [xy_fix_z]
-    type = DirichletBC
-    variable = disp_z
-    boundary = '0 1 2 3' #'6' #LeftEdge
-    value = 0.0
-  []
-  [xy_fix_rot_x]
-    type = DirichletBC
-    variable = rot_x
-    boundary = '0 1 2 3' 
-    value = 0.0
-  []
-  [xy_fix_rot_y]
-    type = DirichletBC
-    variable = rot_y
-    boundary = '0 1 2 3' 
-    value = 0.0
-  []
-  [xy_fix_rot_z]
-    type = DirichletBC
-    variable = rot_z
-    boundary = '0 1 2 3'
-    value = 0.0
-  []
-  [xy_pull]
-    type = DirichletBC
-    variable = disp_x
-    boundary = '1' #RightEdge
-    value = 0.01
-  []
+  # [xy_fix_x]
+  #   type = DirichletBC
+  #   variable = disp_x
+  #   boundary = '3' #LeftEdge
+  #   value = 0.0
+  # []
+  # [xy_fix_y]
+  #   type = DirichletBC
+  #   variable = disp_y
+  #   boundary = '0 1 3 2' #'6'#'LeftEdge'
+  #   value = 0.0
+  # []
+  # [xy_fix_z]
+  #   type = DirichletBC
+  #   variable = disp_z
+  #   boundary = '0 1 2 3' #'6' #LeftEdge
+  #   value = 0.0
+  # []
+  # [xy_fix_rot_x]
+  #   type = DirichletBC
+  #   variable = rot_x
+  #   boundary = '0 1 2 3' 
+  #   value = 0.0
+  # []
+  # [xy_fix_rot_y]
+  #   type = DirichletBC
+  #   variable = rot_y
+  #   boundary = '0 1 2 3' 
+  #   value = 0.0
+  # []
+  # [xy_fix_rot_z]
+  #   type = DirichletBC
+  #   variable = rot_z
+  #   boundary = '0 1 2 3'
+  #   value = 0.0
+  # []
+  # [xy_pull]
+  #   type = DirichletBC
+  #   variable = disp_x
+  #   boundary = '1' #RightEdge
+  #   value = 0.01
+  # []
 []
 
 # [DiracKernels]
@@ -188,14 +188,14 @@
 #  []
 # []
 
-# [NodalKernels]
-#  [fx]
-#    type = UserForcingFunctionNodalKernel
-#    boundary = '1'
-#    function = 10
-#    variable = 'disp_x'
-#  []
-# []
+[NodalKernels]
+ [fx]
+   type = UserForcingFunctionNodalKernel
+   boundary = '1'
+   function = 10
+   variable = 'disp_x'
+ []
+[]
 
 [AuxKernels]
   [stress_xx]

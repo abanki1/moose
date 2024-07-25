@@ -543,10 +543,10 @@ ADComputeIncrementalShellStrain2::computeGMatrix()
       //           << (*_dxyz_dzeta[j])[i](2) << std::endl;
       // std::cout << std::endl << "BWS ge:" << std::endl;
       // (*_ge[j])[i].printReal();
-      // std::cout << std::endl << "BWS covariant:" << std::endl;
-      // (*_covariant_transformation_matrix[j])[i].printReal();
-      // std::cout << std::endl << "BWS contravariant:" << std::endl;
-      // (*_contravariant_transformation_matrix[j])[i].printReal();
+      std::cout << std::endl << "BWS covariant:" << std::endl;
+      (*_covariant_transformation_matrix[j])[i].printReal();
+      std::cout << std::endl << "BWS contravariant:" << std::endl;
+      (*_contravariant_transformation_matrix[j])[i].printReal();
     }
   }
 }

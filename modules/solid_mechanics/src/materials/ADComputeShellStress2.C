@@ -102,14 +102,14 @@ ADComputeShellStress2::computeQpProperties()
 
     // stress as _stress from the shell material model std::cout <<
     (*_stress[i])[_qp] = (*_global_stress[i])[_qp]; // shell model
-    std::cout << std::endl << "eeee AB: Strain Increment:" << std::endl;
-    (*_strain_increment[i])[_qp].printReal();
-    std::cout << std::endl << "TTTT AB: Covariant matrix:" << std::endl;
-    (*_covariant_transformation_matrix[i])[_qp].printReal();
-    std::cout << std::endl << "UUUU AB: Stress:" << std::endl;
-    (*_stress[i])[_qp].printReal();
-    std::cout << std::endl << "GGGG AB: Global Stress:" << std::endl;
-    (*_global_stress[i])[_qp].printReal();
+    // std::cout << std::endl << "eeee AB: Strain Increment:" << std::endl;
+    // (*_strain_increment[i])[_qp].printReal();
+    // std::cout << std::endl << "TTTT AB: Covariant matrix:" << std::endl;
+    // (*_covariant_transformation_matrix[i])[_qp].printReal();
+    // std::cout << std::endl << "UUUU AB: Stress:" << std::endl;
+    // (*_stress[i])[_qp].printReal();
+    // std::cout << std::endl << "GGGG AB: Global Stress:" << std::endl;
+    // (*_global_stress[i])[_qp].printReal();
     // std::cout << "tttt AB: Contravariant Tensor:" << std::endl;
     // (*_contravariant_transformation_matrix[i])[_qp].printReal();
     // std::cout << std::endl << "RRRR AB: Reverse map Stress:" << std::endl;

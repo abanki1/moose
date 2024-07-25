@@ -132,36 +132,36 @@
 []
 
 [BCs]
-  [fix_x]
-    type = DirichletBC
-    variable = disp_x
-    boundary = '3'
-    value = 0.0
-  []
-  [fix_y]
-    type = DirichletBC
-    variable = disp_y
-    boundary = '0 2'
-    value = 0.0
-  []
-  [fix_z]
-    type = DirichletBC
-    variable = disp_z
-    boundary = '0'
-    value = 0.0
-  []
-  # [fix_rot_x]
+  # [fix_x]
   #   type = DirichletBC
-  #   variable = rot_x
-  #   boundary = '0 1 2 3'
+  #   variable = disp_x
+  #   boundary = '3'
   #   value = 0.0
   # []
-  [fix_rot_y]
-    type = DirichletBC
-    variable = rot_y
-    boundary = '0'
-    value = 0.0
-  []
+  # [fix_y]
+  #   type = DirichletBC
+  #   variable = disp_y
+  #   boundary = '0 2'
+  #   value = 0.0
+  # []
+  # [fix_z]
+  #   type = DirichletBC
+  #   variable = disp_z
+  #   boundary = '0'
+  #   value = 0.0
+  # []
+  # # [fix_rot_x]
+  # #   type = DirichletBC
+  # #   variable = rot_x
+  # #   boundary = '0 1 2 3'
+  # #   value = 0.0
+  # # []
+  # [fix_rot_y]
+  #   type = DirichletBC
+  #   variable = rot_y
+  #   boundary = '0'
+  #   value = 0.0
+  # []
   # [fix_rot_z]
   #   type = DirichletBC
   #   variable = rot_z
@@ -450,16 +450,17 @@
     point = '1 1 0'
     variable = disp_x
   []
-  [xreact_right]
-    type = NodalSum
-    boundary = '1'
-    variable = react_disp_x
-  []
   [xreact_left]
     type = NodalSum
     boundary = '3'
     variable = react_disp_x
   []
+  [xreact_right]
+    type = NodalSum
+    boundary = '1'
+    variable = react_disp_x
+  []
+
   [stress_xx]
     type = ElementalVariableValue
     variable = 'stress_xx'

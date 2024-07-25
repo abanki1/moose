@@ -69,7 +69,6 @@ ADStressDivergenceShell2::ADStressDivergenceShell2(const InputParameters & param
   for (unsigned int i = 0; i < _t_weights.size(); ++i)
   {
     _stress[i] = &getADMaterialProperty<RankTwoTensor>("t_points_" + std::to_string(i) + "_stress");
-    // "_stress");
     // _global_stress[i] =
     //     &getADMaterialProperty<RankTwoTensor>("global_stress_t_points_" + std::to_string(i));
     _stress_old[i] =
@@ -77,6 +76,7 @@ ADStressDivergenceShell2::ADStressDivergenceShell2(const InputParameters & param
     _contravariant_transformation_matrix[i] = &getADMaterialProperty<RankTwoTensor>(
         "contravariant_transformation_t_points_" + std::to_string(i));
     _B_mat[i] = &getADMaterialProperty<DenseMatrix<Real>>("B_t_points_" + std::to_string(i));
+    ;
     if (_large_strain)
       _B_nl[i] = &getADMaterialProperty<DenseMatrix<Real>>("B_nl_t_points_" + std::to_string(i));
 
@@ -110,14 +110,12 @@ ADStressDivergenceShell2::computeQpResidual()
     // else
 
     // _stress_covariant = (*_stress[_qp_z])[_qp]; // shell model
-    std::cout << "BWS stress pre: " << std::endl;
-    (*_stress[_qp_z])[_qp].printReal();
-    // std::cout<<"BWS kernel contrav: "<<std::endl;
+    // std::cout << "BWS stress pre: " << std::endl;
+    // (*_stress[_qp_z])[_qp].printReal();
+    // std::cout << "BWS kernel transf: " << std::endl;
     // (*_contravariant_transformation_matrix[_qp_z])[_qp].printReal();
-    std::cout << "BWS kernel transf: " << std::endl;
-    (*_contravariant_transformation_matrix[_qp_z])[_qp].printReal();
-    std::cout << "BWS stress post: " << std::endl;
-    _stress_covariant.printReal();
+    // std::cout << "BWS stress post: " << std::endl;
+    // _stress_covariant.printReal();
     // std::cout<<std::endl;
 
     residual1 = _stress_covariant(0, 0) * (*_B_mat[_qp_z])[_qp](0, _i + _component * 4) +
@@ -139,6 +137,10 @@ ADStressDivergenceShell2::computeQpResidual()
            2.0 * _stress_covariant_old(0, 2) * (*_B_nl[_qp_z])[_qp](3, _i + _component * 4) +
            2.0 * _stress_covariant_old(1, 2) * (*_B_nl[_qp_z])[_qp](4, _i + _component * 4));
     }
+
+    if (_qp_z == 0)
+      std::cout << "BBBB B matrix:" << (*_B_mat[_qp_z])[_qp] << std::endl;
+
     // std::cout<<"AB _stress_covariant: "<<std::endl;
     // _stress_covariant.printReal();
     // std::cout<<"AB residual1: "<<residual<<std::endl;
