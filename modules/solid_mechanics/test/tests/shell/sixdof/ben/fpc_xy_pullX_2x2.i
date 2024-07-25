@@ -132,19 +132,19 @@
   [xy_fix_x]
     type = DirichletBC
     variable = disp_x
-    boundary = '3' #LeftEdge
+    boundary = '0 2 3' #LeftEdge
     value = 0.0
   []
   [xy_fix_y]
     type = DirichletBC
     variable = disp_y
-    boundary = '0 2' #'6'#'LeftEdge'
+    boundary = '0 1 2 3' #'6'#'LeftEdge'
     value = 0.0
   []
   [xy_fix_z]
     type = DirichletBC
     variable = disp_z
-    boundary = '0' #'6' #LeftEdge
+    boundary = '0 1 2 3' #'6' #LeftEdge
     value = 0.0
   []
   [xy_fix_rot_x]
@@ -156,7 +156,7 @@
   [xy_fix_rot_y]
     type = DirichletBC
     variable = rot_y
-    boundary = '0'
+    boundary = '0 1 2 3'
     value = 0.0
   []
   [xy_fix_rot_z]
@@ -183,14 +183,20 @@
 #  []
 # []
 
-# [NodalKernels]
+[NodalKernels]
 #  [fx]
 #    type = UserForcingFunctionNodalKernel
 #    boundary = '1'
 #    function = 10
 #    variable = 'disp_x'
 #  []
-# []
+[./constraint_z]
+  type = PenaltyDirichletNodalKernel
+  variable = rot_z
+  value = 0
+  penalty = 1e6
+[]
+[]
 
 [AuxKernels]
   [stress_xx]
