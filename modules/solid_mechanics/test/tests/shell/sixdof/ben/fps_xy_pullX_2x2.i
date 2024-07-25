@@ -200,12 +200,12 @@
 #    function = 10
 #    variable = 'disp_x'
 #  []
-[./constraint_z]
-  type = PenaltyDirichletNodalKernel
-  variable = rot_z
-  value = 0
-  penalty = 1e6
-[]
+# [./constraint_z]
+#   type = PenaltyDirichletNodalKernel
+#   variable = rot_z
+#   value = 0
+#   penalty = 1e6
+# []
 []
 
 [AuxKernels]

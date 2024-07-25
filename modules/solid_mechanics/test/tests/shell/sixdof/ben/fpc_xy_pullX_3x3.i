@@ -11,6 +11,13 @@
     ymax = 1.0
     show_info = true
   []
+  [all_nodes]
+    type = BoundingBoxNodeSetGenerator
+    input = gmg
+    bottom_left = '-1e6 -1e6 -1e6'
+    top_right = '1e6 1e6 1e6'
+    new_boundary = 'all_nodes'
+  []
 []
 
 [Variables]
@@ -162,7 +169,8 @@
   [xy_fix_rot_z]
     type = DirichletBC
     variable = rot_z
-    boundary = '0 1 2 3'
+    # boundary = '0 1 2 3'
+    boundary = all_nodes
     value = 0.0
   []
   [xy_pull_x]

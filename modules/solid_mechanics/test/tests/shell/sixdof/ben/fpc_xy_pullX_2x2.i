@@ -139,7 +139,7 @@
   [xy_fix_x]
     type = DirichletBC
     variable = disp_x
-    boundary = '0 2 3' #LeftEdge
+    boundary = '3' #LeftEdge
     value = 0.0
   []
   [xy_fix_y]
