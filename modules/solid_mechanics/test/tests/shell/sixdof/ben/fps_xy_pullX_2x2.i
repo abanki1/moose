@@ -1,10 +1,13 @@
-
 [Mesh]
+#   [mesh]
+#     type = FileMeshGenerator
+#     file = flatplates_xy.e
+#   []
   [gmg]
-    type = GeneratedMeshGenerator #In 2D, bottom =0, right = 1, top = 2, left = 3
+    type = GeneratedMeshGenerator
     dim = 2
-    nx = 4
-    ny = 4
+    nx = 2
+    ny = 2
     xmin = 0.0
     xmax = 1.0
     ymin = 0.0
@@ -125,41 +128,41 @@
     order = CONSTANT
     family = MONOMIAL
   []
-
+  
 []
 
 [BCs]
-  [xy_fix_x]
+  [fix_x]
     type = DirichletBC
     variable = disp_x
-    boundary = '0 2 3' #LeftEdge
+    boundary = '3'
     value = 0.0
   []
-  [xy_fix_y]
+  [fix_y]
     type = DirichletBC
     variable = disp_y
-    boundary = '0 1 2 3' #'6'#'LeftEdge'
+    boundary = '0 1 2 3'
     value = 0.0
   []
-  [xy_fix_z]
+  [fix_z]
     type = DirichletBC
     variable = disp_z
-    boundary = '0 1 2 3' #'6' #LeftEdge
+    boundary = '0 1 2 3'
     value = 0.0
   []
-  [xy_fix_rot_x]
+  [fix_rot_x]
     type = DirichletBC
     variable = rot_x
     boundary = '0 1 2 3'
     value = 0.0
   []
-  [xy_fix_rot_y]
+  [fix_rot_y]
     type = DirichletBC
     variable = rot_y
     boundary = '0 1 2 3'
     value = 0.0
   []
-  [xy_fix_rot_z]
+  [fix_rot_z]
     type = DirichletBC
     variable = rot_z
     boundary = '0 1 2 3'
@@ -168,20 +171,19 @@
   [xy_pull_x]
     type = DirichletBC
     variable = disp_x
-    boundary = '1' #RightEdge
+    boundary = '1'
     value = 0.01
   []
 []
 
-# [DiracKernels]
+#[DiracKernels]
 #  [point1]
 #    type = ConstantPointSource
 #    variable = disp_x
-#   #  point = '1 0 1'
-#   point = '1 1 0'
-#    value = 2.5 # P = 10
+#    point = '1 0 1'
+#    value = -2.5 # P = 10
 #  []
-# []
+#[]
 
 [NodalKernels]
 #  [fx]
@@ -191,18 +193,18 @@
 #    variable = 'disp_x'
 #  []
 [./constraint_z]
-    type = PenaltyDirichletNodalKernel
-    variable = rot_z
-    value = 0
-    penalty = 1e6
-  []
+  type = PenaltyDirichletNodalKernel
+  variable = rot_z
+  value = 0
+  penalty = 1e6
+[]
 []
 
 [AuxKernels]
   [stress_xx]
     type = ADRankTwoAux
     variable = stress_xx
-    rank_two_tensor = t_points_0_stress
+    rank_two_tensor = global_stress_t_points_0
     index_i = 0
     index_j = 0
     execute_on = TIMESTEP_END
@@ -218,7 +220,7 @@
   [stress_yy]
     type = ADRankTwoAux
     variable = stress_yy
-    rank_two_tensor = t_points_0_stress
+    rank_two_tensor = global_stress_t_points_0
     index_i = 1
     index_j = 1
     execute_on = TIMESTEP_END
@@ -234,7 +236,7 @@
   [stress_zz]
     type = ADRankTwoAux
     variable = stress_zz
-    rank_two_tensor = t_points_0_stress
+    rank_two_tensor = global_stress_t_points_0
     index_i = 2
     index_j = 2
     execute_on = TIMESTEP_END
@@ -250,7 +252,7 @@
   [stress_xy]
     type = ADRankTwoAux
     variable = stress_xy
-    rank_two_tensor = t_points_0_stress
+    rank_two_tensor = global_stress_t_points_0
     index_i = 0
     index_j = 1
     execute_on = TIMESTEP_END
@@ -266,7 +268,7 @@
   [stress_yx]
     type = ADRankTwoAux
     variable = stress_yx
-    rank_two_tensor = t_points_0_stress
+    rank_two_tensor = global_stress_t_points_0
     index_i = 1
     index_j = 0
     execute_on = TIMESTEP_END
@@ -282,7 +284,7 @@
   [stress_xz]
     type = ADRankTwoAux
     variable = stress_xz
-    rank_two_tensor = t_points_0_stress
+    rank_two_tensor = global_stress_t_points_0
     index_i = 0
     index_j = 2
     execute_on = TIMESTEP_END
@@ -298,7 +300,7 @@
   [stress_zx]
     type = ADRankTwoAux
     variable = stress_zx
-    rank_two_tensor = t_points_0_stress
+    rank_two_tensor = global_stress_t_points_0
     index_i = 2
     index_j = 0
     execute_on = TIMESTEP_END
@@ -314,7 +316,7 @@
   [stress_yz]
     type = ADRankTwoAux
     variable = stress_yz
-    rank_two_tensor = t_points_0_stress
+    rank_two_tensor = global_stress_t_points_0 
     index_i = 1
     index_j = 2
     execute_on = TIMESTEP_END
@@ -330,7 +332,7 @@
   [stress_zy]
     type = ADRankTwoAux
     variable = stress_zy
-    rank_two_tensor = t_points_0_stress
+    rank_two_tensor = global_stress_t_points_0
     index_i = 2
     index_j = 1
     execute_on = TIMESTEP_END
@@ -350,21 +352,20 @@
   #   type = SMP
   #   full = true
   # [../]
-  [FDP_jfnk]
+  [./FDP_jfnk]
     type = FDP
-  []
+  [../]
 []
 
 [Executioner]
   type = Transient
   solve_type = NEWTON
   line_search = 'none'
-#   petsc_options_iname = '-pc_type'
-#   petsc_options_value = 'lu'
-  petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
-  petsc_options_value = 'lu NONZERO   1e1'
+  petsc_options_iname = '-pc_type'
+  petsc_options_value = 'lu'
+  # petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
+  # petsc_options_value = 'lu NONZERO   1e1'
   petsc_options = '-ksp_view_pmat'
-  # petsc_options = '-ksp_view_rhs'
   nl_rel_tol = 1e-10
   nl_abs_tol = 1e-8
   dt = 1.0
@@ -421,78 +422,27 @@
 []
 
 [Materials]
-  [elasticity_t0]
-    type = ADComputeIsotropicElasticityTensor
+  [elasticity_shell]
+    type = ADComputeIsotropicElasticityTensorShell
     youngs_modulus = 1e6
     poissons_ratio = 0.0
-    base_name = t_points_0
+    through_thickness_order = SECOND
+    block = 0
   []
-  [elasticity_t1]
-    type = ADComputeIsotropicElasticityTensor
-    youngs_modulus = 1e6
-    poissons_ratio = 0.0
-    base_name = t_points_1
-  []
-  [strain]
+  [strain_shell]
     type = ADComputeIncrementalShellStrain2
     displacements = 'disp_x disp_y disp_z'
     rotations = 'rot_x rot_y rot_z'
     thickness = 0.01
     through_thickness_order = SECOND
+    block = 0
   []
-  [stress_t0]
-    type = ADComputeLinearElasticStress
-    base_name = t_points_0
+  [stress_shell]
+    type = ADComputeShellStress2
+    through_thickness_order = SECOND
+    block = 0
+    # outputs = exodus
   []
-  [stress_t1]
-    type = ADComputeLinearElasticStress
-    base_name = t_points_1
-  []
-
-  # [total_strain_xx_0]
-  #   type = ADComputeIncrementalShellStrain2
-  #   base_name = t_points_0
-  #   rank_two_tensor = t_points_0_total_strain
-  #   property_name = 'total_strain_xx_0t'
-  #   displacements = 'disp_x disp_y disp_z'
-  #   rotations = 'rot_x rot_y rot_z'
-  #   thickness = 0.01
-  #   through_thickness_order = SECOND
-  #   index_i = 0
-  #   index_j = 0
-  #   outputs = all
-  # []
-  # [total_strain_xx_1]
-  #   type = ADComputeIncrementalShellStrain2
-  #   base_name = t_points_1
-  #   rank_two_tensor = t_points_1_total_strain
-  #   property_name = 'total_strain_xx_1t'
-  #   displacements = 'disp_x disp_y disp_z'
-  #   rotations = 'rot_x rot_y rot_z'
-  #   thickness = 0.01
-  #   through_thickness_order = SECOND
-  #   index_i = 0
-  #   index_j = 0
-  #   outputs = all
-  # []
-#   [stress_xx_0]
-#     type = ADComputeLinearElasticStress
-#     rank_two_tensor = t_points_0_stress
-#     property_name = 'stress_xx_0t'
-#     base_name = t_points_0
-#     index_i = 0
-#     index_j = 0
-#     outputs = all
-#   []
-#   [stress_xx_1]
-#     type = ADComputeLinearElasticStress
-#     rank_two_tensor = t_points_1_stress
-#     property_name = 'stress_xx_1t'
-#     base_name = t_points_1
-#     index_i = 0
-#     index_j = 0
-#     outputs = all
-#   []
 []
 
 [Postprocessors]
@@ -516,21 +466,22 @@
     boundary = '1'
     variable = react_disp_x
   []
+
   [stress_xx]
     type = ElementalVariableValue
     variable = 'stress_xx'
     elementid = 0
   []
-  # # [stress_yy]
-  # #   type = ElementalVariableValue
-  # #   variable = 'stress_yy'
-  # #   elementid = 0
-  # # []
-  # # [stress_xy]
-  # #   type = ElementalVariableValue
-  # #   variable = 'stress_xy'
-  # #   elementid = 0
-  # # []
+  # [stress_yy]
+  #   type = ElementalVariableValue
+  #   variable = 'stress_yy'
+  #   elementid = 0
+  # []
+  # [stress_xy]
+  #   type = ElementalVariableValue
+  #   variable = 'stress_xy'
+  #   elementid = 0
+  # []
   [strain_xx]
     type = ElementalVariableValue
     variable = 'strain_xx'
