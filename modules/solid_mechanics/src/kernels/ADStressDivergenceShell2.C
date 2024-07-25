@@ -138,8 +138,8 @@ ADStressDivergenceShell2::computeQpResidual()
            2.0 * _stress_covariant_old(1, 2) * (*_B_nl[_qp_z])[_qp](4, _i + _component * 4));
     }
 
-    if (_qp_z == 0)
-      std::cout << "BBBB B matrix:" << (*_B_mat[_qp_z])[_qp] << std::endl;
+    // if (_qp_z == 0)
+    //   std::cout << "BBBB B matrix:" << (*_B_mat[_qp_z])[_qp] << std::endl;
 
     // std::cout<<"AB _stress_covariant: "<<std::endl;
     // _stress_covariant.printReal();
