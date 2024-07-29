@@ -55,10 +55,10 @@ ADComputeLinearElasticStressTempl<R2, R4>::computeQpStress()
   _elastic_strain[_qp] = _mechanical_strain[_qp];
   // std::cout << std::endl << "CCCC AB: Elasticity Tensor:" << std::endl;
   // _elasticity_tensor[_qp].printReal();
-  // std::cout << std::endl << "ssss AB: LE Strain :" << std::endl;
-  // _mechanical_strain[_qp].printReal();
-  std::cout << std::endl << "MMMM AB: Elastic Strain:" << std::endl;
-  _elastic_strain[_qp].printReal();
+  std::cout << std::endl << "ssss AB: LE Strain :" << std::endl;
+  _mechanical_strain[_qp].printReal();
+  // std::cout << std::endl << "MMMM AB: Elastic Strain:" << std::endl;
+  // _elastic_strain[_qp].printReal();
   std::cout << std::endl << "LLLL AB: LE Stress:" << std::endl;
   _stress[_qp].printReal();
 }

@@ -1,8 +1,16 @@
 [Mesh]
-  [mesh]
-    type = FileMeshGenerator
-    file = flatplates_xy.e
-  []
+#   [mesh]
+#     type = FileMeshGenerator
+#     file = flatplates_xy.e
+#   []
+    [gmg]
+        type = GeneratedMeshGenerator
+        dim = 2
+        xmin = 0.0
+        xmax = 1.0
+        ymin = 0.0
+        ymax = 1.0
+    []
 []
 
 
@@ -36,31 +44,31 @@
   [xy_fix_x]
     type = DirichletBC
     variable = disp_x
-    boundary = '6'
+    boundary = '3'
     value = 0.0
   []
   [xy_fix_y]
     type = DirichletBC
     variable = disp_y
-    boundary = '1' #BottomLeftNode
+    boundary = '0' #BottomLeftNode
     value = 0.0
   []
   [xy_fix_z]
     type = DirichletBC
     variable = disp_z
-    boundary = '6'
+    boundary = '3'
     value = 0.0
   []
   [xy_fix_rot_y]
     type = DirichletBC
     variable = rot_y
-    boundary = '6' #LeftEdge
+    boundary = '3' #LeftEdge
     value = 0.0
   []
   [xy_pull_x]
     type = DirichletBC
     variable = disp_x
-    boundary = '8' #RightEdge
+    boundary = '1' #RightEdge
     value = 0.01
   []
 []
@@ -190,12 +198,12 @@
   []
   [xreact_right]
     type = NodalSum
-    boundary = 8
+    boundary = 1
     variable = react_disp_x
   []
   [xreact_left]
     type = NodalSum
-    boundary = 6
+    boundary = 3
     variable = react_disp_x
   []
 []

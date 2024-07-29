@@ -82,6 +82,14 @@ ADStressDivergenceShell::computeQpResidual()
   ADReal residual1 = 0.0;
   for (_qp_z = 0; _qp_z < _t_weights.size(); ++_qp_z)
   {
+    std::cout << "DDDD _stress: " << std::endl;
+    (*_stress[_qp_z])[_qp].printReal();
+    // std::cout << "BWS kernel transf: " << std::endl;
+    // (*_contravariant_transformation_matrix[_qp_z])[_qp].printReal();
+    // std::cout << "BWS stress post: " << std::endl;
+    // _stress_covariant.printReal();
+    // std::cout << std::endl;
+
     residual1 = (*_stress[_qp_z])[_qp](0, 0) * (*_B_mat[_qp_z])[_qp](0, _i + _component * 4) +
                 (*_stress[_qp_z])[_qp](1, 1) * (*_B_mat[_qp_z])[_qp](1, _i + _component * 4) +
                 2.0 * (*_stress[_qp_z])[_qp](0, 1) * (*_B_mat[_qp_z])[_qp](2, _i + _component * 4) +
