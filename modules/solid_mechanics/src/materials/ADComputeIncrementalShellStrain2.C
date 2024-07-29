@@ -689,12 +689,12 @@ ADComputeIncrementalShellStrain2::computeBMatrix()
       {
         for (unsigned int t = 0; t < 3; ++t)
         {
-          std::cout << " B ( " << t << ",0) = " << (*_B[j])[i](t, 0) << "\n";
-          std::cout << " B ( " << t << ",4) = " << (*_B[j])[i](t, 4) << "\n";
-          std::cout << " B ( " << t << ",8) = " << (*_B[j])[i](t, 8) << "\n";
-          std::cout << " B ( " << t << ",12) = " << (*_B[j])[i](t, 12) << "\n";
-          std::cout << " B ( " << t << ",16) = " << (*_B[j])[i](t, 16) << "\n";
-          std::cout << " B ( " << t << ",20) = " << (*_B[j])[i](t, 20) << "\n";
+          std::cout << " Bix ( " << t << ",0) = " << (*_B[j])[i](t, 0) << "\n";
+          std::cout << " Biy ( " << t << ",4) = " << (*_B[j])[i](t, 4) << "\n";
+          std::cout << " Biz ( " << t << ",8) = " << (*_B[j])[i](t, 8) << "\n";
+          std::cout << " Btx ( " << t << ",12) = " << (*_B[j])[i](t, 12) << "\n";
+          std::cout << " Bty ( " << t << ",16) = " << (*_B[j])[i](t, 16) << "\n";
+          std::cout << " Btz ( " << t << ",20) = " << (*_B[j])[i](t, 20) << "\n";
         }
         // std::cout << " B (0,12)" << (*_B[j])[i](0, 12)  << "\n";
         // std::cout << " B (0,12)" << (*_B[j])[i](0, 12)  << "\n";
