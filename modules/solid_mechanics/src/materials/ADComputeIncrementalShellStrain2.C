@@ -543,10 +543,10 @@ ADComputeIncrementalShellStrain2::computeGMatrix()
       //           << (*_dxyz_dzeta[j])[i](2) << std::endl;
       // std::cout << std::endl << "BWS ge:" << std::endl;
       // (*_ge[j])[i].printReal();
-      std::cout << std::endl << "BWS covariant:" << std::endl;
-      (*_covariant_transformation_matrix[j])[i].printReal();
-      std::cout << std::endl << "BWS contravariant:" << std::endl;
-      (*_contravariant_transformation_matrix[j])[i].printReal();
+      // std::cout << std::endl << "BWS covariant:" << std::endl;
+      // (*_covariant_transformation_matrix[j])[i].printReal();
+      // std::cout << std::endl << "BWS contravariant:" << std::endl;
+      // (*_contravariant_transformation_matrix[j])[i].printReal();
     }
   }
 }
@@ -685,20 +685,20 @@ ADComputeIncrementalShellStrain2::computeBMatrix()
             (-_v2[k] * _cos_zv1[k] + _v1[k] * _cos_zv2[k]);
       }
 
-      // if( j == 0 && i ==0)
-      // {
-      //   for(unsigned int t = 0 ; t < 3; ++t )
-      //   {
-      //     std::cout << " B ( " << t << ",0) = " << (*_B[j])[i](t, 0)  << "\n";
-      //     std::cout << " B ( " << t << ",4) = " << (*_B[j])[i](t, 4)  << "\n";
-      //     std::cout << " B ( " << t << ",8) = " << (*_B[j])[i](t, 8)  << "\n";
-      //     std::cout << " B ( " << t << ",12) = " << (*_B[j])[i](t, 12)  << "\n";
-      //     std::cout << " B ( " << t << ",16) = " << (*_B[j])[i](t, 16)  << "\n";
-      //     std::cout << " B ( " << t << ",20) = " << (*_B[j])[i](t, 20)  << "\n";
-      //   }
-      //   // std::cout << " B (0,12)" << (*_B[j])[i](0, 12)  << "\n";
-      //   // std::cout << " B (0,12)" << (*_B[j])[i](0, 12)  << "\n";
-      // }
+      if (j == 0 && i == 0)
+      {
+        for (unsigned int t = 0; t < 3; ++t)
+        {
+          std::cout << " B ( " << t << ",0) = " << (*_B[j])[i](t, 0) << "\n";
+          std::cout << " B ( " << t << ",4) = " << (*_B[j])[i](t, 4) << "\n";
+          std::cout << " B ( " << t << ",8) = " << (*_B[j])[i](t, 8) << "\n";
+          std::cout << " B ( " << t << ",12) = " << (*_B[j])[i](t, 12) << "\n";
+          std::cout << " B ( " << t << ",16) = " << (*_B[j])[i](t, 16) << "\n";
+          std::cout << " B ( " << t << ",20) = " << (*_B[j])[i](t, 20) << "\n";
+        }
+        // std::cout << " B (0,12)" << (*_B[j])[i](0, 12)  << "\n";
+        // std::cout << " B (0,12)" << (*_B[j])[i](0, 12)  << "\n";
+      }
 
       _g3_a = _thickness[i] / 4.0 * (_node_normal[2] + _node_normal[3]);
       _g3_c = _thickness[i] / 4.0 * (_node_normal[0] + _node_normal[1]);

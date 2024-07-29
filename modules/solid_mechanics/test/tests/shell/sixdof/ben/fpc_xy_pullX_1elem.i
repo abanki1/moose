@@ -134,42 +134,42 @@
 []
 
 [BCs]
-  # [xy_fix_x]
-  #   type = DirichletBC
-  #   variable = disp_x
-  #   boundary = '3' #LeftEdge
-  #   value = 0.0
-  # []
-  # [xy_fix_y]
-  #   type = DirichletBC
-  #   variable = disp_y
-  #   boundary = '0 2' #'6'#'LeftEdge'
-  #   value = 0.0
-  # []
-#   [xy_fix_z]
+  [xy_fix_x]
+    type = DirichletBC
+    variable = disp_x
+    boundary = '3' #LeftEdge
+    value = 0.0
+  []
+  [xy_fix_y]
+    type = DirichletBC
+    variable = disp_y
+    boundary = '0 2' #'6'#'LeftEdge'
+    value = 0.0
+  []
+  [xy_fix_z]
+    type = DirichletBC
+    variable = disp_z
+    boundary = '0' #'6' #LeftEdge
+    value = 0.0
+  []
+#   [xy_fix_rot_x]
 #     type = DirichletBC
-#     variable = disp_z
-#     boundary = '0' #'6' #LeftEdge
-#     value = 0.0
-#   []
-# #   [xy_fix_rot_x]
-# #     type = DirichletBC
-# #     variable = rot_x
-# #     boundary = '0 1 2 3'
-# #     value = 0.0
-# #   []
-#   [xy_fix_rot_y]
-#     type = DirichletBC
-#     variable = rot_y
-#     boundary = '0'
-#     value = 0.0
-#   []
-#   [xy_fix_rot_z]
-#     type = DirichletBC
-#     variable = rot_z
+#     variable = rot_x
 #     boundary = '0 1 2 3'
 #     value = 0.0
 #   []
+  [xy_fix_rot_y]
+    type = DirichletBC
+    variable = rot_y
+    boundary = '0'
+    value = 0.0
+  []
+  [xy_fix_rot_z]
+    type = DirichletBC
+    variable = rot_z
+    boundary = '0 1 2 3'
+    value = 0.0
+  []
   [xy_pull_x]
     type = DirichletBC
     variable = disp_x
@@ -447,51 +447,6 @@
     type = ADComputeLinearElasticStress
     base_name = t_points_1
   []
-
-  # [total_strain_xx_0]
-  #   type = ADComputeIncrementalShellStrain2
-  #   base_name = t_points_0
-  #   rank_two_tensor = t_points_0_total_strain
-  #   property_name = 'total_strain_xx_0t'
-  #   displacements = 'disp_x disp_y disp_z'
-  #   rotations = 'rot_x rot_y rot_z'
-  #   thickness = 0.01
-  #   through_thickness_order = SECOND
-  #   index_i = 0
-  #   index_j = 0
-  #   outputs = all
-  # []
-  # [total_strain_xx_1]
-  #   type = ADComputeIncrementalShellStrain2
-  #   base_name = t_points_1
-  #   rank_two_tensor = t_points_1_total_strain
-  #   property_name = 'total_strain_xx_1t'
-  #   displacements = 'disp_x disp_y disp_z'
-  #   rotations = 'rot_x rot_y rot_z'
-  #   thickness = 0.01
-  #   through_thickness_order = SECOND
-  #   index_i = 0
-  #   index_j = 0
-  #   outputs = all
-  # []
-#   [stress_xx_0]
-#     type = ADComputeLinearElasticStress
-#     rank_two_tensor = t_points_0_stress
-#     property_name = 'stress_xx_0t'
-#     base_name = t_points_0
-#     index_i = 0
-#     index_j = 0
-#     outputs = all
-#   []
-#   [stress_xx_1]
-#     type = ADComputeLinearElasticStress
-#     rank_two_tensor = t_points_1_stress
-#     property_name = 'stress_xx_1t'
-#     base_name = t_points_1
-#     index_i = 0
-#     index_j = 0
-#     outputs = all
-#   []
 []
 
 [Postprocessors]
