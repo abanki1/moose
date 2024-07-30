@@ -3,184 +3,324 @@
 #     type = FileMeshGenerator
 #     file = flatplates_xy.e
 #   []
-    [gmg]
+  [gmg]
     type = GeneratedMeshGenerator
     dim = 2
-    nx = 4
-    ny = 1
+    nx = 1
+    ny = 3
     xmin = 0.0
     xmax = 1.0
     ymin = 0.0
     ymax = 1.0
     show_info = true
-    []
-    [all_nodes]
-        type = BoundingBoxNodeSetGenerator
-        input = gmg
-        bottom_left = '-1e6 -1e6 -1e6'
-        top_right = '1e6 1e6 1e6'
-        new_boundary = 'all_nodes'
-      []
+  []
 []
 
 [Variables]
-    [disp_x]
+  [disp_x]
     order = FIRST
     family = LAGRANGE
-    []
-    [disp_y]
+  []
+  [disp_y]
     order = FIRST
     family = LAGRANGE
-    []
-    [disp_z]
+  []
+  [disp_z]
     order = FIRST
     family = LAGRANGE
-    []
-    [rot_x]
+  []
+  [rot_x]
     order = FIRST
     family = LAGRANGE
-    []
-    [rot_y]
+  []
+  [rot_y]
     order = FIRST
     family = LAGRANGE
-    []
-    [rot_z]
+  []
+  [rot_z]
     order = FIRST
     family = LAGRANGE
-    []
+  []
 []
 
 [AuxVariables]
-    [react_disp_x]
-    []
-    [react_disp_y]
-    []
-    [react_disp_z]
-    []
-    [react_rot_x]
-    []
-    [react_rot_y]
-    []
-    [react_rot_z]
-    []
-    [stress_xx]
+  [react_disp_x]
+  []
+  [react_disp_y]
+  []
+  [react_disp_z]
+  []
+  [react_rot_x]
+  []
+  [react_rot_y]
+  []
+  [react_rot_z]
+  []
+  [stress_xx]
     order = CONSTANT
     family = MONOMIAL
-    []
-    [stress_yy]
+  []
+  [stress_yy]
     order = CONSTANT
     family = MONOMIAL
-    []
-    [stress_zz]
+  []
+  [stress_zz]
     order = CONSTANT
     family = MONOMIAL
-    []
-    [stress_xy]
+  []
+  [stress_xy]
     order = CONSTANT
     family = MONOMIAL
-    []
-    [stress_yx]
+  []
+  [stress_yx]
     order = CONSTANT
     family = MONOMIAL
-    []
-    [stress_yz]
+  []
+  [stress_yz]
     order = CONSTANT
     family = MONOMIAL
-    []
-    [stress_zy]
+  []
+  [stress_zy]
     order = CONSTANT
     family = MONOMIAL
-    []
-    [stress_xz]
+  []
+  [stress_xz]
     order = CONSTANT
     family = MONOMIAL
-    []
-    [stress_zx]
+  []
+  [stress_zx]
     order = CONSTANT
     family = MONOMIAL
-    []
-    [strain_xx]
+  []
+  [strain_xx]
     order = CONSTANT
     family = MONOMIAL
-    []
-    [strain_yy]
+  []
+  [strain_yy]
     order = CONSTANT
     family = MONOMIAL
-    []
-    [strain_zz]
+  []
+  [strain_zz]
     order = CONSTANT
     family = MONOMIAL
-    []
-    [strain_xy]
+  []
+  [strain_xy]
     order = CONSTANT
     family = MONOMIAL
-    []
-    [strain_yx]
+  []
+  [strain_yx]
     order = CONSTANT
     family = MONOMIAL
-    []
-    [strain_xz]
+  []
+  [strain_xz]
     order = CONSTANT
     family = MONOMIAL
-    []
-    [strain_zx]
+  []
+  [strain_zx]
     order = CONSTANT
     family = MONOMIAL
-    []
-    [strain_yz]
+  []
+  [strain_yz]
     order = CONSTANT
     family = MONOMIAL
-    []
-    [strain_zy]
+  []
+  [strain_zy]
     order = CONSTANT
     family = MONOMIAL
-    []
-    
+  []
+  
+[]
+
+[AuxKernels]
+  [stress_xx]
+    type = ADRankTwoAux
+    variable = stress_xx
+    rank_two_tensor = global_stress_t_points_0
+    index_i = 0
+    index_j = 0
+    execute_on = TIMESTEP_END
+  []
+  [strain_xx]
+    type = ADRankTwoAux
+    variable = strain_xx
+    rank_two_tensor = t_points_0_total_strain
+    index_i = 0
+    index_j = 0
+    execute_on = TIMESTEP_END
+  []
+  [stress_yy]
+    type = ADRankTwoAux
+    variable = stress_yy
+    rank_two_tensor = global_stress_t_points_0
+    index_i = 1
+    index_j = 1
+    execute_on = TIMESTEP_END
+  []
+  [strain_yy]
+    type = ADRankTwoAux
+    variable = strain_yy
+    rank_two_tensor = t_points_0_total_strain
+    index_i = 1
+    index_j = 1
+    execute_on = TIMESTEP_END
+  []
+  [stress_zz]
+    type = ADRankTwoAux
+    variable = stress_zz
+    rank_two_tensor = global_stress_t_points_0
+    index_i = 2
+    index_j = 2
+    execute_on = TIMESTEP_END
+  []
+  [strain_zz]
+    type = ADRankTwoAux
+    variable = strain_zz
+    rank_two_tensor = t_points_0_total_strain
+    index_i = 2
+    index_j = 2
+    execute_on = TIMESTEP_END
+  []
+  [stress_xy]
+    type = ADRankTwoAux
+    variable = stress_xy
+    rank_two_tensor = global_stress_t_points_0
+    index_i = 0
+    index_j = 1
+    execute_on = TIMESTEP_END
+  []
+  [strain_xy]
+    type = ADRankTwoAux
+    variable = strain_xy
+    rank_two_tensor = t_points_0_total_strain
+    index_i = 0
+    index_j = 1
+    execute_on = TIMESTEP_END
+  []
+  [stress_yx]
+    type = ADRankTwoAux
+    variable = stress_yx
+    rank_two_tensor = global_stress_t_points_0
+    index_i = 1
+    index_j = 0
+    execute_on = TIMESTEP_END
+  []
+  [strain_yx]
+    type = ADRankTwoAux
+    variable = strain_yx
+    rank_two_tensor = t_points_0_total_strain
+    index_i = 1
+    index_j = 0
+    execute_on = TIMESTEP_END
+  []
+  [stress_xz]
+    type = ADRankTwoAux
+    variable = stress_xz
+    rank_two_tensor = global_stress_t_points_0
+    index_i = 0
+    index_j = 2
+    execute_on = TIMESTEP_END
+  []
+  [strain_xz]
+    type = ADRankTwoAux
+    variable = strain_xz
+    rank_two_tensor = t_points_0_total_strain
+    index_i = 0
+    index_j = 2
+    execute_on = TIMESTEP_END
+  []
+  [stress_zx]
+    type = ADRankTwoAux
+    variable = stress_zx
+    rank_two_tensor = global_stress_t_points_0
+    index_i = 2
+    index_j = 0
+    execute_on = TIMESTEP_END
+  []
+  [strain_zx]
+    type = ADRankTwoAux
+    variable = strain_zx
+    rank_two_tensor = t_points_0_total_strain
+    index_i = 2
+    index_j = 0
+    execute_on = TIMESTEP_END
+  []
+  [stress_yz]
+    type = ADRankTwoAux
+    variable = stress_yz
+    rank_two_tensor = global_stress_t_points_0 
+    index_i = 1
+    index_j = 2
+    execute_on = TIMESTEP_END
+  []
+  [strain_yz]
+    type = ADRankTwoAux
+    variable = strain_yz
+    rank_two_tensor = t_points_0_total_strain
+    index_i = 1
+    index_j = 2
+    execute_on = TIMESTEP_END
+  []
+  [stress_zy]
+    type = ADRankTwoAux
+    variable = stress_zy
+    rank_two_tensor = global_stress_t_points_0
+    index_i = 2
+    index_j = 1
+    execute_on = TIMESTEP_END
+  []
+  [strain_zy]
+    type = ADRankTwoAux
+    variable = strain_zy
+    rank_two_tensor = t_points_0_total_strain
+    index_i = 2
+    index_j = 1
+    execute_on = TIMESTEP_END
+  []
 []
 
 [BCs]
-    [fix_x]
+  [fix_x]
     type = DirichletBC
     variable = disp_x
-    boundary = '3'
+    boundary = '0 1 3'
     value = 0.0
-    []
-    [fix_y]
+  []
+  [fix_y]
     type = DirichletBC
     variable = disp_y
-    boundary = '0 1 2 3'
+    boundary = '0'
     value = 0.0
-    []
-    [fix_z]
+  []
+  [fix_z]
     type = DirichletBC
     variable = disp_z
     boundary = '0 1 2 3'
     value = 0.0
-    []
-    [fix_rot_x]
-      type = DirichletBC
-      variable = rot_x
-      boundary = '0 1 2 3'
-      value = 0.0
-    []
-    [fix_rot_y]
+  []
+  [fix_rot_x]
+    type = DirichletBC
+    variable = rot_x
+    boundary = '0 1 2 3'
+    value = 0.0
+  []
+  [fix_rot_y]
     type = DirichletBC
     variable = rot_y
     boundary = '0 1 2 3'
     value = 0.0
-    []
-    [fix_rot_z]
-      type = DirichletBC
-      variable = rot_z
-      boundary = '0 1 2 3'
-      value = 0.0
-    []
-    [xy_pull_x]
+  []
+  [fix_rot_z]
     type = DirichletBC
-    variable = disp_x
-    boundary = '1'
+    variable = rot_z
+    boundary = '0 1 2 3'
+    value = 0.0
+  []
+  [xy_pull_y]
+    type = DirichletBC
+    variable = disp_y
+    boundary = '2'
     value = 0.01
-    []
+  []
 []
 
 #[DiracKernels]
@@ -195,300 +335,153 @@
 # [NodalKernels]
 #  [fx]
 #    type = UserForcingFunctionNodalKernel
-#    boundary = '1'
+#    boundary = '2'
 #    function = 10
-#    variable = 'disp_x'
+#    variable = 'disp_y'
 #  []
 # []
 
-[AuxKernels]
-    [stress_xx]
-    type = ADRankTwoAux
-    variable = stress_xx
-    rank_two_tensor = global_stress_t_points_0
-    index_i = 0
-    index_j = 0
-    execute_on = TIMESTEP_END
-    []
-    [strain_xx]
-    type = ADRankTwoAux
-    variable = strain_xx
-    rank_two_tensor = t_points_0_total_strain
-    index_i = 0
-    index_j = 0
-    execute_on = TIMESTEP_END
-    []
-    [stress_yy]
-    type = ADRankTwoAux
-    variable = stress_yy
-    rank_two_tensor = global_stress_t_points_0
-    index_i = 1
-    index_j = 1
-    execute_on = TIMESTEP_END
-    []
-    [strain_yy]
-    type = ADRankTwoAux
-    variable = strain_yy
-    rank_two_tensor = t_points_0_total_strain
-    index_i = 1
-    index_j = 1
-    execute_on = TIMESTEP_END
-    []
-    [stress_zz]
-    type = ADRankTwoAux
-    variable = stress_zz
-    rank_two_tensor = global_stress_t_points_0
-    index_i = 2
-    index_j = 2
-    execute_on = TIMESTEP_END
-    []
-    [strain_zz]
-    type = ADRankTwoAux
-    variable = strain_zz
-    rank_two_tensor = t_points_0_total_strain
-    index_i = 2
-    index_j = 2
-    execute_on = TIMESTEP_END
-    []
-    [stress_xy]
-    type = ADRankTwoAux
-    variable = stress_xy
-    rank_two_tensor = global_stress_t_points_0
-    index_i = 0
-    index_j = 1
-    execute_on = TIMESTEP_END
-    []
-    [strain_xy]
-    type = ADRankTwoAux
-    variable = strain_xy
-    rank_two_tensor = t_points_0_total_strain
-    index_i = 0
-    index_j = 1
-    execute_on = TIMESTEP_END
-    []
-    [stress_yx]
-    type = ADRankTwoAux
-    variable = stress_yx
-    rank_two_tensor = global_stress_t_points_0
-    index_i = 1
-    index_j = 0
-    execute_on = TIMESTEP_END
-    []
-    [strain_yx]
-    type = ADRankTwoAux
-    variable = strain_yx
-    rank_two_tensor = t_points_0_total_strain
-    index_i = 1
-    index_j = 0
-    execute_on = TIMESTEP_END
-    []
-    [stress_xz]
-    type = ADRankTwoAux
-    variable = stress_xz
-    rank_two_tensor = global_stress_t_points_0
-    index_i = 0
-    index_j = 2
-    execute_on = TIMESTEP_END
-    []
-    [strain_xz]
-    type = ADRankTwoAux
-    variable = strain_xz
-    rank_two_tensor = t_points_0_total_strain
-    index_i = 0
-    index_j = 2
-    execute_on = TIMESTEP_END
-    []
-    [stress_zx]
-    type = ADRankTwoAux
-    variable = stress_zx
-    rank_two_tensor = global_stress_t_points_0
-    index_i = 2
-    index_j = 0
-    execute_on = TIMESTEP_END
-    []
-    [strain_zx]
-    type = ADRankTwoAux
-    variable = strain_zx
-    rank_two_tensor = t_points_0_total_strain
-    index_i = 2
-    index_j = 0
-    execute_on = TIMESTEP_END
-    []
-    [stress_yz]
-    type = ADRankTwoAux
-    variable = stress_yz
-    rank_two_tensor = global_stress_t_points_0 
-    index_i = 1
-    index_j = 2
-    execute_on = TIMESTEP_END
-    []
-    [strain_yz]
-    type = ADRankTwoAux
-    variable = strain_yz
-    rank_two_tensor = t_points_0_total_strain
-    index_i = 1
-    index_j = 2
-    execute_on = TIMESTEP_END
-    []
-    [stress_zy]
-    type = ADRankTwoAux
-    variable = stress_zy
-    rank_two_tensor = global_stress_t_points_0
-    index_i = 2
-    index_j = 1
-    execute_on = TIMESTEP_END
-    []
-    [strain_zy]
-    type = ADRankTwoAux
-    variable = strain_zy
-    rank_two_tensor = t_points_0_total_strain
-    index_i = 2
-    index_j = 1
-    execute_on = TIMESTEP_END
-    []
-[]
-
 [Preconditioning]
-    # [./smp]
-    #   type = SMP
-    #   full = true
-    # [../]
-    [./FDP_jfnk]
+  # [./smp]
+  #   type = SMP
+  #   full = true
+  # [../]
+  [./FDP_jfnk]
     type = FDP
-    [../]
+  [../]
 []
 
 [Executioner]
-    type = Transient
-    solve_type = NEWTON
-    line_search = 'none'
-    petsc_options_iname = '-pc_type'
-    petsc_options_value = 'lu'
-    # petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
-    # petsc_options_value = 'lu NONZERO   1e1'
-    petsc_options = '-ksp_view_pmat'
-    nl_rel_tol = 1e-10
-    nl_abs_tol = 1e-8
-    dt = 1.0
-    dtmin = 1.0
-    end_time = 1.0
+  type = Transient
+  solve_type = NEWTON
+  line_search = 'none'
+  petsc_options_iname = '-pc_type'
+  petsc_options_value = 'lu'
+  # petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
+  # petsc_options_value = 'lu NONZERO   1e1'
+  petsc_options = '-ksp_view_pmat'
+  nl_rel_tol = 1e-10
+  nl_abs_tol = 1e-8
+  dt = 1.0
+  dtmin = 1.0
+  end_time = 1.0
 []
 
 [Kernels]
-    [solid_disp_x]
+  [solid_disp_x]
     type = ADStressDivergenceShell2
     component = 0
     variable = disp_x
     save_in = react_disp_x
     through_thickness_order = SECOND
-    []
-    [solid_disp_y]
+  []
+  [solid_disp_y]
     type = ADStressDivergenceShell2
     component = 1
     variable = disp_y
     save_in = react_disp_y
     through_thickness_order = SECOND
-    []
-    [solid_disp_z]
+  []
+  [solid_disp_z]
     type = ADStressDivergenceShell2
     component = 2
     variable = disp_z
     save_in = react_disp_z
     through_thickness_order = SECOND
-    []
-    [solid_rot_x]
+  []
+  [solid_rot_x]
     type = ADStressDivergenceShell2
     component = 3
     variable = rot_x
     save_in = react_rot_x
     through_thickness_order = SECOND
     penalty = 0
-    []
-    [solid_rot_y]
+  []
+  [solid_rot_y]
     type = ADStressDivergenceShell2
     component = 4
     variable = rot_y
     save_in = react_rot_y
     through_thickness_order = SECOND
     penalty = 0
-    []
-    [solid_rot_z]
+  []
+  [solid_rot_z]
     type = ADStressDivergenceShell2
     component = 5
     variable = rot_z
     save_in = react_rot_z
     through_thickness_order = SECOND
     penalty = 0
-    []
+  []
 []
 
 [Materials]
-    [elasticity_shell]
+  [elasticity_shell]
     type = ADComputeIsotropicElasticityTensorShell
     youngs_modulus = 1e6
     poissons_ratio = 0.0
     through_thickness_order = SECOND
     block = 0
-    []
-    [strain_shell]
+  []
+  [strain_shell]
     type = ADComputeIncrementalShellStrain2
     displacements = 'disp_x disp_y disp_z'
     rotations = 'rot_x rot_y rot_z'
     thickness = 0.01
     through_thickness_order = SECOND
     block = 0
-    []
-    [stress_shell]
+  []
+  [stress_shell]
     type = ADComputeShellStress2
     through_thickness_order = SECOND
     block = 0
     # outputs = exodus
-    []
+  []
 []
 
 [Postprocessors]
-    [xdisp_1]
-    type = PointValue
-    point = '1 0 0'
-    variable = disp_x
-    []
-    [xdisp_2]
+  [ydisp_1]
     type = PointValue
     point = '1 1 0'
-    variable = disp_x
-    []
-    [xreact_right]
+    variable = disp_y
+  []
+  [ydisp_2]
+    type = PointValue
+    point = '0 1 0'
+    variable = disp_y
+  []
+  [yreact_top]
     type = NodalSum
-    boundary = '1'
-    variable = react_disp_x
-    []
-    [xreact_left]
+    boundary = '2'
+    variable = react_disp_y
+  []
+  [yreact_bottom]
     type = NodalSum
-    boundary = '3'
-    variable = react_disp_x
-    []
-    [stress_xx]
+    boundary = '0'
+    variable = react_disp_y
+  []
+  [stress_yy]
     type = ElementalVariableValue
-    variable = 'stress_xx'
+    variable = 'stress_yy'
     elementid = 0
-    []
-    # [stress_yy]
-    #   type = ElementalVariableValue
-    #   variable = 'stress_yy'
-    #   elementid = 0
-    # []
-    # [stress_xy]
-    #   type = ElementalVariableValue
-    #   variable = 'stress_xy'
-    #   elementid = 0
-    # []
-    [strain_xx]
+  []
+  # [stress_yy]
+  #   type = ElementalVariableValue
+  #   variable = 'stress_yy'
+  #   elementid = 0
+  # []
+  # [stress_xy]
+  #   type = ElementalVariableValue
+  #   variable = 'stress_xy'
+  #   elementid = 0
+  # []
+  [strain_yy]
     type = ElementalVariableValue
-    variable = 'strain_xx'
+    variable = 'strain_yy'
     elementid = 0
-    []
+  []
 []
 
 [Outputs]
-    exodus = true
+  exodus = true
 []
