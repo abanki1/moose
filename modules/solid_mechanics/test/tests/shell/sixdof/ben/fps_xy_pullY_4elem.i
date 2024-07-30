@@ -6,8 +6,8 @@
   [gmg]
     type = GeneratedMeshGenerator
     dim = 2
-    nx = 4
-    ny = 1
+    nx = 1
+    ny = 4
     xmin = 0.0
     xmax = 1.0
     ymin = 0.0
