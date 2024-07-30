@@ -134,48 +134,48 @@
 []
 
 [BCs]
-  # [xy_fix_x]
-  #   type = DirichletBC
-  #   variable = disp_x
-  #   boundary = '3' #LeftEdge
-  #   value = 0.0
-  # []
-  # [xy_fix_y]
-  #   type = DirichletBC
-  #   variable = disp_y
-  #   boundary = '0 1 3 2' #'6'#'LeftEdge'
-  #   value = 0.0
-  # []
-  # [xy_fix_z]
-  #   type = DirichletBC
-  #   variable = disp_z
-  #   boundary = '0 1 2 3' #'6' #LeftEdge
-  #   value = 0.0
-  # []
-  # [xy_fix_rot_x]
-  #   type = DirichletBC
-  #   variable = rot_x
-  #   boundary = '0 1 2 3' 
-  #   value = 0.0
-  # []
-  # [xy_fix_rot_y]
-  #   type = DirichletBC
-  #   variable = rot_y
-  #   boundary = '0 1 2 3' 
-  #   value = 0.0
-  # []
-  # [xy_fix_rot_z]
-  #   type = DirichletBC
-  #   variable = rot_z
-  #   boundary = '0 1 2 3'
-  #   value = 0.0
-  # []
-  # [xy_pull]
-  #   type = DirichletBC
-  #   variable = disp_x
-  #   boundary = '1' #RightEdge
-  #   value = 0.01
-  # []
+  [xy_fix_x]
+    type = DirichletBC
+    variable = disp_x
+    boundary = '3' #LeftEdge
+    value = 0.0
+  []
+  [xy_fix_y]
+    type = DirichletBC
+    variable = disp_y
+    boundary = '0 1 3 2' #'6'#'LeftEdge'
+    value = 0.0
+  []
+  [xy_fix_z]
+    type = DirichletBC
+    variable = disp_z
+    boundary = '0 1 2 3' #'6' #LeftEdge
+    value = 0.0
+  []
+  [xy_fix_rot_x]
+    type = DirichletBC
+    variable = rot_x
+    boundary = '0 1 2 3' 
+    value = 0.0
+  []
+  [xy_fix_rot_y]
+    type = DirichletBC
+    variable = rot_y
+    boundary = '0 1 2 3' 
+    value = 0.0
+  []
+  [xy_fix_rot_z]
+    type = DirichletBC
+    variable = rot_z
+    boundary = '0 1 2 3'
+    value = 0.0
+  []
+  [xy_pull]
+    type = DirichletBC
+    variable = disp_x
+    boundary = '1' #RightEdge
+    value = 0.01
+  []
 []
 
 # [DiracKernels]
@@ -358,10 +358,10 @@
   type = Transient
   solve_type = NEWTON
   line_search = 'none'
-  # petsc_options_iname = '-pc_type'
-  # petsc_options_value = 'lu'
-  petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
-  petsc_options_value = 'lu NONZERO   1e1'
+  petsc_options_iname = '-pc_type'
+  petsc_options_value = 'lu'
+  # petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
+  # petsc_options_value = 'lu NONZERO   1e1'
   petsc_options = '-ksp_view_pmat'
   # petsc_options = '-ksp_view_rhs'
   nl_rel_tol = 1e-10
