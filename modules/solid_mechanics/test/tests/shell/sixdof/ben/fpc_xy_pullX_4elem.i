@@ -150,36 +150,36 @@
   [xy_fix_y]
     type = DirichletBC
     variable = disp_y
-    # boundary = '0 1 3 2' #'6'#'LeftEdge'
-    boundary = all_nodes
+    boundary = '0 1 3 2' #'6'#'LeftEdge'
+    # boundary = all_nodes
     value = 0.0
   []
   [xy_fix_z]
     type = DirichletBC
     variable = disp_z
-    # boundary = '0 1 2 3' #'6' #LeftEdge
-    boundary = all_nodes
+    boundary = '0 1 2 3' #'6' #LeftEdge
+    # boundary = all_nodes
     value = 0.0
   []
   [xy_fix_rot_x]
     type = DirichletBC
     variable = rot_x
-    # boundary = '0 1 2 3' 
-    boundary = all_nodes
+    boundary = '0 1 2 3' 
+    # boundary = all_nodes
     value = 0.0
   []
   [xy_fix_rot_y]
     type = DirichletBC
     variable = rot_y
-    # boundary = '0 1 2 3' 
-    boundary = all_nodes
+    boundary = '0 1 2 3' 
+    # boundary = all_nodes
     value = 0.0
   []
   [xy_fix_rot_z]
     type = DirichletBC
     variable = rot_z
-    # boundary = '0 1 2 3'
-    boundary = all_nodes
+    boundary = '0 1 2 3'
+    # boundary = all_nodes
     value = 0.0
   []
   [xy_pull]
@@ -373,8 +373,7 @@
 []
 
 [Executioner]
-  # type = Transient
-  type = STEADY
+  type = Transient
   solve_type = NEWTON
   line_search = 'none'
   petsc_options_iname = '-pc_type'

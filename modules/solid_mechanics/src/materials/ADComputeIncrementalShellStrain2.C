@@ -8,6 +8,7 @@
 //* https://www.gnu.org/licenses/lgpl-2.1.html
 
 #include "ADComputeIncrementalShellStrain2.h"
+#include "Conversion.h"
 #include "MooseMesh.h"
 #include "Assembly.h"
 #include "NonlinearSystem.h"
@@ -222,7 +223,7 @@ ADComputeIncrementalShellStrain2::initQpStatefulProperties()
     mooseError("ADComputeIncrementalShellStrain2: Shell element needs to have exactly four "
                "quadrature points.");
 
-  //  std::cout<<"BWS init elem id: "<<_current_elem->id()<<std::endl;
+  std::cout << "BWS init elem id: " << _current_elem->id() << std::endl;
   computeGMatrix();
   computeBMatrix();
 }
@@ -276,6 +277,12 @@ ADComputeIncrementalShellStrain2::computeProperties()
         _strain_vector(temp1) = 0.0;
         for (unsigned int temp2 = 0; temp2 < 24; ++temp2)
           _strain_vector(temp1) += (*_B[j])[i](temp1, temp2) * _soln_vector(temp2);
+        if (i == 0 && j == 0)
+        {
+          // std::cout << "BBBB xx:" << (*_B[j])[i](0, 0) << std::endl;
+          // std::cout << "SOLLLL Solution Vector: " << _soln_vector(0) << std::endl;
+          // std::cout << "VVVV Strain Vector: " << _strain_vector(0) << std::endl;
+        }
       }
       (*_strain_increment[j])[i](0, 0) = _strain_vector(0);
       (*_strain_increment[j])[i](1, 1) = _strain_vector(1);
@@ -307,7 +314,7 @@ ADComputeIncrementalShellStrain2::computeProperties()
 
       if (j == 0)
       {
-        // std::cout << " i = " << i << " \n";
+        std::cout << " i = " << i << " \n";
         // std::cout << " gamma test = " << (*_gamma_test[j])[i] << " \n";
         // std::cout << " gamma test x  = " << (*_gamma_test_x[j])[i] << " \n";
         // std::cout << " gamma test y  = " << (*_gamma_test_y[j])[i] << " \n";
@@ -321,22 +328,28 @@ ADComputeIncrementalShellStrain2::computeProperties()
         // // std::cout << " coszv1  = " << (_cos_zv1[i]) << " \n";
         // // std::cout << " coszv2  = " << (_cos_zv2[i]) << " \n";
         // std::cout << " coszvn  = " << (_cos_zvn[i]) << " \n";
-        // std::cout << " soln  = " << (_soln_vector(12+i)) << " \n";
+        // std::cout << " soln (12+i) = " << (_soln_vector(12 + i)) << " \n";
       }
 
       (*_total_strain[j])[i] = (*_contravariant_transformation_matrix[j])[i] *
                                (*_total_strain_covariant[j])[i] *
                                (*_contravariant_transformation_matrix[j])[i].transpose();
       (*_mechanical_strain[j])[i] = (*_total_strain[j])[i];
-      // if(j == 0)
-      // {
-      //   std::cout << " i = " << i << " \n";
-      //   std::cout << " unrotated strain xx = " << _unrotated_total_strain(0, 0) << " \n";
-      //   std::cout << " unrotated strain yy = " << _unrotated_total_strain(1, 1) << " \n";
-      //   std::cout << " unrotated strain xy = " << _unrotated_total_strain(0, 1) << " \n";
-      //   std::cout << " unrotated strain xz = " << _unrotated_total_strain(0, 2) << " \n";
-      //   std::cout << " unrotated strain yz = " << _unrotated_total_strain(1, 2) << " \n";
-      // }
+      if (j == 0 && i == 0)
+      {
+        // std::cout << "SOLLL Solution Vector = " << _soln_vector << std::endl;
+
+        // std::cout << "VVVV Strain Vector = " << _strain_vector(0) << std::endl;
+
+        // std::cout << "TTTT Total Strain Covariant = " << std::endl;
+        // (*_total_strain_covariant[j])[i].printReal();
+
+        // // std::cout << " i = " << i << " \n";
+        // std::cout << "MMMM Mechanical Strain = " << std::endl;
+        // (*_mechanical_strain[j])[i].printReal();
+
+        // std::cout << " unrotated strain yz = " << _unrotated_total_strain(1, 2) << " \n";
+      }
     }
   }
 }
@@ -689,12 +702,12 @@ ADComputeIncrementalShellStrain2::computeBMatrix()
       {
         for (unsigned int t = 0; t < 3; ++t)
         {
-          std::cout << " Bix ( " << t << ",0) = " << (*_B[j])[i](t, 0) << "\n";
-          std::cout << " Biy ( " << t << ",4) = " << (*_B[j])[i](t, 4) << "\n";
-          std::cout << " Biz ( " << t << ",8) = " << (*_B[j])[i](t, 8) << "\n";
-          std::cout << " Btx ( " << t << ",12) = " << (*_B[j])[i](t, 12) << "\n";
-          std::cout << " Bty ( " << t << ",16) = " << (*_B[j])[i](t, 16) << "\n";
-          std::cout << " Btz ( " << t << ",20) = " << (*_B[j])[i](t, 20) << "\n";
+          // std::cout << " Bix ( " << t << ",0) = " << (*_B[j])[i](t, 0) << "\n";
+          // std::cout << " Biy ( " << t << ",4) = " << (*_B[j])[i](t, 4) << "\n";
+          // std::cout << " Biz ( " << t << ",8) = " << (*_B[j])[i](t, 8) << "\n";
+          // std::cout << " Btx ( " << t << ",12) = " << (*_B[j])[i](t, 12) << "\n";
+          // std::cout << " Bty ( " << t << ",16) = " << (*_B[j])[i](t, 16) << "\n";
+          // std::cout << " Btz ( " << t << ",20) = " << (*_B[j])[i](t, 20) << "\n";
         }
         // std::cout << " B (0,12)" << (*_B[j])[i](0, 12)  << "\n";
         // std::cout << " B (0,12)" << (*_B[j])[i](0, 12)  << "\n";
@@ -801,16 +814,38 @@ ADComputeIncrementalShellStrain2::computeSolnVector()
   {
     _soln_disp_index[j].resize(_ndisp);
     _soln_rot_index[j].resize(_nrot);
-
+    // std::cout << "nrot = " << _nrot << std::endl;
+    // std::cout << "ndisp = " << _ndisp << std::endl;
     for (unsigned int i = 0; i < _ndisp; ++i)
     {
+
+      // std::cout << "i = " << i << std::endl;
 #ifndef MOOSE_GLOBAL_AD_INDEXING
       std::size_t ad_offset = _disp_num[i] * _nonlinear_sys.getMaxVarNDofsPerElem();
 #endif
+      // _soln_disp_index[j][i] = _nodes[j]->dof_number(_nonlinear_sys.number(), _disp_num[i], 0);
+      // //original
       _soln_disp_index[j][i] = _nodes[j]->dof_number(_nonlinear_sys.number(), _disp_num[i], 0);
+      std::cout << " _nonlinear_sys.number =" << _nonlinear_sys.number() << " and _disp_num[i] "
+                << _disp_num[i] << std::endl;
+      // if (i == 0 && j == 0)
+      // for (unsigned m = 0; m < 4; ++m)
+      //   for (unsigned n = 0; n < 3; ++n)
+      // std::cout << "i = " << i << " , j = " << j
+      //           << " and _soln_disp_index[j][i] = " << _soln_disp_index[j][i] << std::endl;
+      // std::cout << "  _soln_disp_index = " << Moose::stringify(_soln_disp_index) << std::endl;
+
       _soln_vector(j + i * _nodes.size()) =
           (*_sol)(_soln_disp_index[j][i]) - _sol_old(_soln_disp_index[j][i]);
+
+      std::cout << "Maybe Global soln vector = " << (*_sol)(_soln_disp_index[j][i]) << std::endl;
+      std::cout << "_soln_vector(j + i * _nodes.size()) = " << _soln_vector(j + i * _nodes.size())
+                << std::endl;
+
       _soln_current(j + i * _nodes.size()) = (*_sol)(_soln_disp_index[j][i]);
+      std::cout << "_soln_current(j + i * _nodes.size()) = " << _soln_current(j + i * _nodes.size())
+                << std::endl;
+      std::cout << "  " << std::endl;
       if (ADReal::do_derivatives)
         Moose::derivInsert(_soln_vector(j + i * _nodes.size()).derivatives(),
 #ifdef MOOSE_GLOBAL_AD_INDEXING
@@ -841,4 +876,7 @@ ADComputeIncrementalShellStrain2::computeSolnVector()
                            1.);
     }
   }
+  std::cout << "  FINAL _soln_disp_index = " << Moose::stringify(_soln_disp_index) << std::endl;
+  std::cout << "  FINAL _soln_rot_index = " << Moose::stringify(_soln_rot_index) << std::endl;
+  std::cout << "FINAL SOL:" << MetaPhysicL::raw_value(_soln_vector) << std::endl;
 }
