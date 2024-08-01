@@ -16,6 +16,12 @@
     ymax = 1.0
     show_info = true
   []
+  [rotate]
+    type = TransformGenerator
+    input = gmg
+    transform = ROTATE
+    vector_value = '45 0 0'
+  []
 []
 
 [Variables]
@@ -174,7 +180,13 @@
     type = DirichletBC
     variable = disp_x
     boundary = '1' #RightEdge
-    value = 0.01
+    value = 7.07e-3
+  []
+  [xy_pull_y]
+    type = DirichletBC
+    variable = disp_y
+    boundary = '1' #RightEdge
+    value = 7.07e-3
   []
 []
 
@@ -452,12 +464,12 @@
 [Postprocessors]
   [xdisp_1]
     type = PointValue
-    point = '1 0 0'
+    point = '0 1.414 0'
     variable = disp_x
   []
   [xdisp_2]
     type = PointValue
-    point = '1 1 0'
+    point = '0.707 0.707 0'
     variable = disp_x
   []
   [xreact_left]
@@ -470,16 +482,26 @@
     boundary = '1'
     variable = react_disp_x
   []
+  [yreact_left]
+    type = NodalSum
+    boundary = '3'
+    variable = react_disp_y
+  []
+  [yreact_right]
+    type = NodalSum
+    boundary = '1'
+    variable = react_disp_y
+  []
   [stress_xx]
     type = ElementAverageValue
     variable = 'stress_xx'
     block = 0
   []
-  # # [stress_yy]
-  # #   type = ElementalVariableValue
-  # #   variable = 'stress_yy'
-  # #   elementid = 0
-  # # []
+  [stress_yy]
+    type = ElementalVariableValue
+    variable = 'stress_yy'
+    elementid = 0
+  []
   # # [stress_xy]
   # #   type = ElementalVariableValue
   # #   variable = 'stress_xy'

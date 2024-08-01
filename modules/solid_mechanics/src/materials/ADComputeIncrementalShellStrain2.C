@@ -818,7 +818,6 @@ ADComputeIncrementalShellStrain2::computeSolnVector()
     // std::cout << "ndisp = " << _ndisp << std::endl;
     for (unsigned int i = 0; i < _ndisp; ++i)
     {
-
       // std::cout << "i = " << i << std::endl;
 #ifndef MOOSE_GLOBAL_AD_INDEXING
       std::size_t ad_offset = _disp_num[i] * _nonlinear_sys.getMaxVarNDofsPerElem();
