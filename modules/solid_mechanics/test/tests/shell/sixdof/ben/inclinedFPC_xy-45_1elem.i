@@ -22,12 +22,12 @@
     transform = ROTATE
     vector_value = '-45 0 0'
   []
-    [all_nodes]
-        type = BoundingBoxNodeSetGenerator
-        input = rotate
-        bottom_left = '-1e6 -1e6 -1e6'
-        top_right = '1E6 1E6 1E6'
-        new_boundary = all_nodes
+  [all_nodes]
+      type = BoundingBoxNodeSetGenerator
+      input = rotate
+      bottom_left = '-1e6 -1e6 -1e6'
+      top_right = '1E6 1E6 1E6'
+      new_boundary = all_nodes
   []
 []
 
@@ -220,20 +220,20 @@
   function = 7.07
   variable = 'disp_y'
 []
-[penaltyrot_X]
-  type = PenaltyDirichletNodalKernel
-  boundary = '0 1 2 3'
-  variable = 'rot_x'
-  value = 0.0
-  penalty = 1e6
-[]
-[penaltyrot_Y]
-  type = PenaltyDirichletNodalKernel
-  boundary = '0 1 2 3'
-  variable = 'rot_y'
-  value = 0.0
-  penalty = 1e6
-[]
+# [penaltyrot_X]
+#   type = PenaltyDirichletNodalKernel
+#   boundary = '0 1 2 3'
+#   variable = 'rot_x'
+#   value = 0.0
+#   penalty = 1e6
+# []
+# [penaltyrot_Y]
+#   type = PenaltyDirichletNodalKernel
+#   boundary = '0 1 2 3'
+#   variable = 'rot_y'
+#   value = 0.0
+#   penalty = 1e6
+# []
 [penaltyrot_Z]
   type = PenaltyDirichletNodalKernel
   boundary = '0 1 2 3'
