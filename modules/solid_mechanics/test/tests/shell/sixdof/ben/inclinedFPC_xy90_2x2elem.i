@@ -20,7 +20,7 @@
     type = TransformGenerator
     input = gmg
     transform = ROTATE
-    vector_value = '-30 0 0'
+    vector_value = '90 0 0'
   []
   [all_nodes]
     type = BoundingBoxNodeSetGenerator
@@ -183,17 +183,17 @@
     boundary = '0 1 2 3'
     value = 0.0
   []
-  [xy_pull_x]
-    type = DirichletBC
-    variable = disp_x
-    boundary = '1' #RightEdge
-    value = 0.866
-  []
+  # [xy_pull_x]
+  #   type = DirichletBC
+  #   variable = disp_x
+  #   boundary = '1' #RightEdge
+  #   value = 0.866
+  # []
   [xy_pull_y]
     type = DirichletBC
     variable = disp_y
     boundary = '1' #RightEdge
-    value = -0.5
+    value = 1
   []
 []
 
