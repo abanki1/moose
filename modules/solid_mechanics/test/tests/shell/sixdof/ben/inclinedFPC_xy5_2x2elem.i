@@ -20,7 +20,7 @@
     type = TransformGenerator
     input = gmg
     transform = ROTATE
-    vector_value = '45 0 0'
+    vector_value = '30 0 0'
   []
   [all_nodes]
     type = BoundingBoxNodeSetGenerator

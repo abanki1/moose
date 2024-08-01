@@ -20,7 +20,7 @@
     type = TransformGenerator
     input = gmg
     transform = ROTATE
-    vector_value = '45 0 0'
+    vector_value = '5 0 0'
   []
   [all_nodes]
     type = BoundingBoxNodeSetGenerator
@@ -187,13 +187,13 @@
     type = DirichletBC
     variable = disp_x
     boundary = '1' #RightEdge
-    value = 0.707
+    value = 0.866
   []
   [xy_pull_y]
     type = DirichletBC
     variable = disp_y
     boundary = '1' #RightEdge
-    value = 0.707
+    value = 0.5
   []
 []
 
@@ -496,16 +496,16 @@
 []
 
 [Postprocessors]
-  [xdisp_1]
-    type = PointValue
-    point = '0 1.414 0'
-    variable = disp_x
-  []
-  [xdisp_2]
-    type = PointValue
-    point = '0.707 0.707 0'
-    variable = disp_x
-  []
+#   [xdisp_1]
+#     type = PointValue
+#     point = '0.366 1.366 0'
+#     variable = disp_x
+#   []
+#   [xdisp_2]
+#     type = PointValue
+#     point = '0.866 0.5 0'
+#     variable = disp_x
+#   []
   [xreact_left]
     type = NodalSum
     boundary = '3'
