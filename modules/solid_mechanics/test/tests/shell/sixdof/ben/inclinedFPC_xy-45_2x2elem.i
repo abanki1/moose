@@ -183,18 +183,18 @@
     boundary = '0 1 2 3'
     value = 0.0
   []
-  # [xy_pull_x]
-  #   type = DirichletBC
-  #   variable = disp_x
-  #   boundary = '1' #RightEdge
-  #   value = 0.707
-  # []
-  # [xy_pull_y]
-  #   type = DirichletBC
-  #   variable = disp_y
-  #   boundary = '1' #RightEdge
-  #   value = -0.707
-  # []
+  [xy_pull_x]
+    type = DirichletBC
+    variable = disp_x
+    boundary = '1' #RightEdge
+    value = 0.707
+  []
+  [xy_pull_y]
+    type = DirichletBC
+    variable = disp_y
+    boundary = '1' #RightEdge
+    value = -0.707
+  []
 []
 
 # [DiracKernels]
@@ -208,18 +208,18 @@
 # []
 
 [NodalKernels]
- [fx]
-   type = UserForcingFunctionNodalKernel
-   boundary = '1'
-   function = 0.707
-   variable = 'disp_x'
- []
- [fy]
-  type = UserForcingFunctionNodalKernel
-  boundary = '1'
-  function = 0.707
-  variable = 'disp_y'
-[]
+#  [fx]
+#    type = UserForcingFunctionNodalKernel
+#    boundary = '1'
+#    function = 0.707
+#    variable = 'disp_x'
+#  []
+#  [fy]
+#   type = UserForcingFunctionNodalKernel
+#   boundary = '1'
+#   function = 0.707
+#   variable = 'disp_y'
+# []
 [penaltyrot_X]
   type = PenaltyDirichletNodalKernel
   boundary = '0 1 2 3'
