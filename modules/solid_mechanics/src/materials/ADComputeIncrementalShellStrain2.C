@@ -22,6 +22,7 @@
 #include "libmesh/fe_type.h"
 #include "libmesh/string_to_enum.h"
 #include "libmesh/quadrature_gauss.h"
+#include "metaphysicl/raw_type.h"
 
 registerMooseObject("SolidMechanicsApp", ADComputeIncrementalShellStrain2);
 
@@ -877,5 +878,5 @@ ADComputeIncrementalShellStrain2::computeSolnVector()
   }
   std::cout << "  FINAL _soln_disp_index = " << Moose::stringify(_soln_disp_index) << std::endl;
   std::cout << "  FINAL _soln_rot_index = " << Moose::stringify(_soln_rot_index) << std::endl;
-  std::cout << "FINAL SOL:" << MetaPhysicL::raw_value(_soln_vector) << std::endl;
+  std::cout << "FINAL ELEM SOL:" << MetaPhysicL::raw_value(_soln_vector) << std::endl;
 }

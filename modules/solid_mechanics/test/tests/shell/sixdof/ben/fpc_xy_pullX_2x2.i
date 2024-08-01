@@ -191,20 +191,34 @@
 #  []
 # []
 
-# [NodalKernels]
-# #  [fx]
-# #    type = UserForcingFunctionNodalKernel
-# #    boundary = '1'
-# #    function = 10
-# #    variable = 'disp_x'
-# #  []
-# [./constraint_z]
-#   type = PenaltyDirichletNodalKernel
-#   variable = rot_z
-#   value = 0
-#   penalty = 1e6
-# []
-# []
+[NodalKernels]
+#  [fx]
+#    type = UserForcingFunctionNodalKernel
+#    boundary = '1'
+#    function = 10
+#    variable = 'disp_x'
+#  []
+[penaltyrot_X]
+  type = PenaltyDirichletNodalKernel
+  boundary = '0 1 2 3'
+  variable = 'rot_x'
+  value = 0.0
+  penalty = 1e6
+[]
+[penaltyrot_Y]
+  type = PenaltyDirichletNodalKernel
+  boundary = '0 1 2 3'
+  variable = 'rot_y'
+  value = 0.0
+  penalty = 1e6
+[]
+[./constraint_z]
+  type = PenaltyDirichletNodalKernel
+  variable = rot_z
+  value = 0.0
+  penalty = 1e6
+[]
+[]
 
 [AuxKernels]
   [stress_xx]
@@ -367,10 +381,10 @@
   type = Transient
   solve_type = NEWTON
   line_search = 'none'
-  petsc_options_iname = '-pc_type'
-  petsc_options_value = 'lu'
-  # petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
-  # petsc_options_value = 'lu NONZERO   1e1'
+  # petsc_options_iname = '-pc_type'
+  # petsc_options_value = 'lu'
+  petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
+  petsc_options_value = 'lu NONZERO   1e1'
   petsc_options = '-ksp_view_pmat'
   # petsc_options = '-ksp_view_rhs'
   nl_rel_tol = 1e-10
@@ -408,7 +422,7 @@
     variable = rot_x
     save_in = react_rot_x
     through_thickness_order = SECOND
-    penalty = 0
+    penalty = 1e6
   []
   [solid_rot_y]
     type = ADStressDivergenceShell2
@@ -416,7 +430,7 @@
     variable = rot_y
     save_in = react_rot_y
     through_thickness_order = SECOND
-    penalty = 0
+    penalty = 1e6
   []
   [solid_rot_z]
     type = ADStressDivergenceShell2
@@ -424,7 +438,7 @@
     variable = rot_z
     save_in = react_rot_z
     through_thickness_order = SECOND
-    penalty = 0
+    penalty = 1e6
   []
 []
 
