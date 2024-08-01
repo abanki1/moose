@@ -20,7 +20,7 @@
     type = TransformGenerator
     input = gmg
     transform = ROTATE
-    vector_value = '5 0 0'
+    vector_value = '45 0 0'
   []
   [all_nodes]
     type = BoundingBoxNodeSetGenerator
@@ -220,20 +220,20 @@
 #   function = 0.707
 #   variable = 'disp_y'
 # []
-[penaltyrot_X]
-  type = PenaltyDirichletNodalKernel
-  boundary = '0 1 2 3'
-  variable = 'rot_x'
-  value = 0.0
-  penalty = 1e6
-[]
-[penaltyrot_Y]
-  type = PenaltyDirichletNodalKernel
-  boundary = '0 1 2 3'
-  variable = 'rot_y'
-  value = 0.0
-  penalty = 1e6
-[]
+# [penaltyrot_X]
+#   type = PenaltyDirichletNodalKernel
+#   boundary = '0 1 2 3'
+#   variable = 'rot_x'
+#   value = 0.0
+#   penalty = 1e6
+# []
+# [penaltyrot_Y]
+#   type = PenaltyDirichletNodalKernel
+#   boundary = '0 1 2 3'
+#   variable = 'rot_y'
+#   value = 0.0
+#   penalty = 1e6
+# []
 [penaltyrot_Z]
   type = PenaltyDirichletNodalKernel
   boundary = '0 1 2 3'
@@ -404,10 +404,10 @@
   type = Transient
   solve_type = NEWTON
   line_search = 'none'
-  # petsc_options_iname = '-pc_type'
-  # petsc_options_value = 'lu'
-  petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
-  petsc_options_value = 'lu NONZERO   1e1'
+  petsc_options_iname = '-pc_type'
+  petsc_options_value = 'lu'
+#   petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
+#   petsc_options_value = 'lu NONZERO   1e1'
   petsc_options = '-ksp_view_pmat'
   # petsc_options = '-ksp_view_rhs'
   nl_rel_tol = 1e-10
