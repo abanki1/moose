@@ -8,8 +8,8 @@
   [gmg]
     type = GeneratedMeshGenerator #In 2D, bottom =0, right = 1, top = 2, left = 3
     dim = 2
-    nx = 2
-    ny = 2
+    nx = 1
+    ny = 1
     xmin = 0.0
     xmax = 1.0
     ymin = 0.0
@@ -20,7 +20,14 @@
     type = TransformGenerator
     input = gmg
     transform = ROTATE
-    vector_value = '45 0 0'
+    vector_value = '-45 0 0'
+  []
+    [all_nodes]
+        type = BoundingBoxNodeSetGenerator
+        input = rotate
+        bottom_left = '-1e6 -1e6 -1e6'
+        top_right = '1E6 1E6 1E6'
+        new_boundary = all_nodes
   []
 []
 
@@ -186,7 +193,7 @@
     type = DirichletBC
     variable = disp_y
     boundary = '1' #RightEdge
-    value = 7.07e-3
+    value = -7.07e-3
   []
 []
 
@@ -491,12 +498,12 @@
 [Postprocessors]
   [xdisp_1]
     type = PointValue
-    point = '0 1.414 0'
+    point = '1.414 0 0'
     variable = disp_x
   []
   [xdisp_2]
     type = PointValue
-    point = '0.707 0.707 0'
+    point = '0.707 -0.707 0'
     variable = disp_x
   []
   [xreact_left]
