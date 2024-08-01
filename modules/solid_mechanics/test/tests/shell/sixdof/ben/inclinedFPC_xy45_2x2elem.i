@@ -22,6 +22,13 @@
     transform = ROTATE
     vector_value = '45 0 0'
   []
+  [all_nodes]
+    type = BoundingBoxNodeSetGenerator
+    input = rotate
+    bottom_left = '-1e6 -1e6 -1e6'
+    top_right = '1E6 1E6 1E6'
+    new_boundary = all_nodes
+[]
 []
 
 [Variables]
