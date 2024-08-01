@@ -149,25 +149,25 @@
   [xy_fix_y]
     type = DirichletBC
     variable = disp_y
-    boundary = '0 2' #'6'#'LeftEdge'
+    boundary = '3' #'6'#'LeftEdge'
     value = 0.0
   []
   [xy_fix_z]
     type = DirichletBC
     variable = disp_z
-    boundary = '0' #'6' #LeftEdge
+    boundary = '3' #'6' #LeftEdge
     value = 0.0
   []
-#   [xy_fix_rot_x]
-#     type = DirichletBC
-#     variable = rot_x
-#     boundary = '0 1 2 3'
-#     value = 0.0
-#   []
+  [xy_fix_rot_x]
+    type = DirichletBC
+    variable = rot_x
+    boundary = '0 1 2 3'
+    value = 0.0
+  []
   [xy_fix_rot_y]
     type = DirichletBC
     variable = rot_y
-    boundary = '0'
+    boundary = '0 1 2 3'
     value = 0.0
   []
   [xy_fix_rot_z]
@@ -201,12 +201,18 @@
 # []
 
 [NodalKernels]
-#  [fx]
-#    type = UserForcingFunctionNodalKernel
-#    boundary = '1'
-#    function = 10
-#    variable = 'disp_x'
-#  []
+ [fx]
+   type = UserForcingFunctionNodalKernel
+   boundary = '1'
+   function = 7.07
+   variable = 'disp_x'
+ []
+ [fy]
+  type = UserForcingFunctionNodalKernel
+  boundary = '1'
+  function = 7.07
+  variable = 'disp_y'
+[]
 []
 
 [AuxKernels]
@@ -370,10 +376,10 @@
   type = Transient
   solve_type = NEWTON
   line_search = 'none'
-  petsc_options_iname = '-pc_type'
-  petsc_options_value = 'lu'
-  # petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
-  # petsc_options_value = 'lu NONZERO   1e1'
+  # petsc_options_iname = '-pc_type'
+  # petsc_options_value = 'lu'
+  petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
+  petsc_options_value = 'lu NONZERO   1e1'
   petsc_options = '-ksp_view_pmat'
   # petsc_options = '-ksp_view_rhs'
   nl_rel_tol = 1e-10
