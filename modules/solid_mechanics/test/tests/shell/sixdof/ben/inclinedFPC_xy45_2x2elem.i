@@ -33,10 +33,10 @@
     order = FIRST
     family = LAGRANGE
   []
-  [disp_z]
-    order = FIRST
-    family = LAGRANGE
-  []
+  # [disp_z]
+  #   order = FIRST
+  #   family = LAGRANGE
+  # []
   # [rot_x]
   #   order = FIRST
   #   family = LAGRANGE
@@ -63,6 +63,10 @@
   [react_rot_y]
   []
   [react_rot_z]
+  []
+  [disp_z]
+    order = FIRST
+    family = LAGRANGE
   []
   [rot_x]
     order = FIRST
@@ -164,12 +168,12 @@
     boundary = '3' #'6'#'LeftEdge'
     value = 0.0
   []
-  [xy_fix_z]
-    type = DirichletBC
-    variable = disp_z
-    boundary = '3' #'6' #LeftEdge
-    value = 0.0
-  []
+  # [xy_fix_z]
+  #   type = DirichletBC
+  #   variable = disp_z
+  #   boundary = '3 1' #'6' #LeftEdge
+  #   value = 0.0
+  # []
   # [xy_fix_rot_x]
   #   type = DirichletBC
   #   variable = rot_x
@@ -224,6 +228,24 @@
 #   boundary = '1'
 #   function = 7.07
 #   variable = 'disp_y'
+# []
+# [./constraint_x]
+#   type = PenaltyDirichletNodalKernel
+#   variable = disp_x
+#   value = 0
+#   penalty = 1e6
+# []
+# [./constraint_y]
+#   type = PenaltyDirichletNodalKernel
+#   variable = disp_x
+#   value = 0
+#   penalty = 1e6
+# []
+# [./constraint_z]
+#   type = PenaltyDirichletNodalKernel
+#   variable = disp_z
+#   value = 0
+#   penalty = 1e6
 # []
 []
 
@@ -416,13 +438,13 @@
     save_in = react_disp_y
     through_thickness_order = SECOND
   []
-  [solid_disp_z]
-    type = ADStressDivergenceShell2
-    component = 2
-    variable = disp_z
-    save_in = react_disp_z
-    through_thickness_order = SECOND
-  []
+  # [solid_disp_z]
+  #   type = ADStressDivergenceShell2
+  #   component = 2
+  #   variable = disp_z
+  #   save_in = react_disp_z
+  #   through_thickness_order = SECOND
+  # []
   # [solid_rot_x]
   #   type = ADStressDivergenceShell2
   #   component = 3

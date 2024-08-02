@@ -817,7 +817,7 @@ ADComputeIncrementalShellStrain2::computeSolnVector()
     _soln_rot_index[j].resize(_nrot);
     std::cout << "nrot = " << _nrot << std::endl;
     std::cout << "ndisp = " << _ndisp << std::endl;
-    for (unsigned int i = 0; i < _ndisp; ++i)
+    for (unsigned int i = 0; i < _ndisp - 1; ++i)
     {
       // std::cout << "i = " << i << std::endl;
 #ifndef MOOSE_GLOBAL_AD_INDEXING
