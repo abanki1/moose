@@ -16,12 +16,12 @@
     ymax = 1.0
     show_info = true
   []
-  [rotate]
-    type = TransformGenerator
-    input = gmg
-    transform = ROTATE
-    vector_value = '45 0 0'
-  []
+  # [rotate]
+  #   type = TransformGenerator
+  #   input = gmg
+  #   transform = ROTATE
+  #   vector_value = '45 0 0'
+  # []
 []
 
 [Variables]
@@ -194,12 +194,12 @@
     boundary = '1' #RightEdge
     value = 7.07e-3
   []
-  [xy_pull_y]
-    type = DirichletBC
-    variable = disp_y
-    boundary = '1' #RightEdge
-    value = 7.07e-3
-  []
+  # [xy_pull_y]
+  #   type = DirichletBC
+  #   variable = disp_y
+  #   boundary = '1' #RightEdge
+  #   value = 7.07e-3
+  # []
 []
 
 # [DiracKernels]
@@ -213,18 +213,18 @@
 # []
 
 [NodalKernels]
- [fx]
-   type = UserForcingFunctionNodalKernel
-   boundary = '1'
-   function = 7.07
-   variable = 'disp_x'
- []
- [fy]
-  type = UserForcingFunctionNodalKernel
-  boundary = '1'
-  function = 7.07
-  variable = 'disp_y'
-[]
+#  [fx]
+#    type = UserForcingFunctionNodalKernel
+#    boundary = '1'
+#    function = 7.07
+#    variable = 'disp_x'
+#  []
+#  [fy]
+#   type = UserForcingFunctionNodalKernel
+#   boundary = '1'
+#   function = 7.07
+#   variable = 'disp_y'
+# []
 []
 
 [AuxKernels]
