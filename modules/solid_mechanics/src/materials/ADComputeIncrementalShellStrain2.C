@@ -828,9 +828,7 @@ ADComputeIncrementalShellStrain2::computeSolnVector()
       _soln_disp_index[j][i] = _nodes[j]->dof_number(_nonlinear_sys.number(), _disp_num[i], 0);
       std::cout << " _nonlinear_sys.number =" << _nonlinear_sys.number() << " and _disp_num[i] "
                 << _disp_num[i] << std::endl;
-      // if (i == 0 && j == 0)
-      // for (unsigned m = 0; m < 4; ++m)
-      //   for (unsigned n = 0; n < 3; ++n)
+
       // std::cout << "i = " << i << " , j = " << j
       //           << " and _soln_disp_index[j][i] = " << _soln_disp_index[j][i] << std::endl;
       // std::cout << "  _soln_disp_index = " << Moose::stringify(_soln_disp_index) << std::endl;
