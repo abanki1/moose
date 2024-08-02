@@ -817,21 +817,19 @@ ADComputeIncrementalShellStrain2::computeSolnVector()
     _soln_rot_index[j].resize(_nrot);
     std::cout << "nrot = " << _nrot << std::endl;
     std::cout << "ndisp = " << _ndisp << std::endl;
-    for (unsigned int i = 0; i < _ndisp - 1; ++i)
+    for (unsigned int i = 0; i < _ndisp - 2; ++i)
     {
       // std::cout << "i = " << i << std::endl;
 #ifndef MOOSE_GLOBAL_AD_INDEXING
       std::size_t ad_offset = _disp_num[i] * _nonlinear_sys.getMaxVarNDofsPerElem();
 #endif
-      // _soln_disp_index[j][i] = _nodes[j]->dof_number(_nonlinear_sys.number(), _disp_num[i], 0);
-      // //original
       _soln_disp_index[j][i] = _nodes[j]->dof_number(_nonlinear_sys.number(), _disp_num[i], 0);
       std::cout << " _nonlinear_sys.number =" << _nonlinear_sys.number() << " and _disp_num[i] "
                 << _disp_num[i] << std::endl;
 
-      // std::cout << "i = " << i << " , j = " << j
-      //           << " and _soln_disp_index[j][i] = " << _soln_disp_index[j][i] << std::endl;
-      // std::cout << "  _soln_disp_index = " << Moose::stringify(_soln_disp_index) << std::endl;
+      std::cout << "i = " << i << " , j = " << j
+                << " and _soln_disp_index[j][i] = " << _soln_disp_index[j][i] << std::endl;
+      std::cout << "  _soln_disp_index = " << Moose::stringify(_soln_disp_index) << std::endl;
 
       _soln_vector(j + i * _nodes.size()) =
           (*_sol)(_soln_disp_index[j][i]) - _sol_old(_soln_disp_index[j][i]);
@@ -854,7 +852,7 @@ ADComputeIncrementalShellStrain2::computeSolnVector()
                            ,
                            1.);
     }
-
+    std::cout << "INTERMEDIATE ELEM SOL:" << MetaPhysicL::raw_value(_soln_vector) << std::endl;
     //     for (unsigned int i = 0; i < _nrot; ++i)
     //     {
     // #ifndef MOOSE_GLOBAL_AD_INDEXING

@@ -29,10 +29,10 @@
     order = FIRST
     family = LAGRANGE
   []
-  [disp_y]
-    order = FIRST
-    family = LAGRANGE
-  []
+  # [disp_y]
+  #   order = FIRST
+  #   family = LAGRANGE
+  # []
   # [disp_z]
   #   order = FIRST
   #   family = LAGRANGE
@@ -63,6 +63,10 @@
   [react_rot_y]
   []
   [react_rot_z]
+  []
+  [disp_y]
+    order = FIRST
+    family = LAGRANGE
   []
   [disp_z]
     order = FIRST
@@ -162,12 +166,12 @@
     boundary = '3' #LeftEdge
     value = 0.0
   []
-  [xy_fix_y]
-    type = DirichletBC
-    variable = disp_y
-    boundary = '3' #'6'#'LeftEdge'
-    value = 0.0
-  []
+  # [xy_fix_y]
+  #   type = DirichletBC
+  #   variable = disp_y
+  #   boundary = '3' #'6'#'LeftEdge'
+  #   value = 0.0
+  # []
   # [xy_fix_z]
   #   type = DirichletBC
   #   variable = disp_z
@@ -431,13 +435,13 @@
     save_in = react_disp_x
     through_thickness_order = SECOND
   []
-  [solid_disp_y]
-    type = ADStressDivergenceShell2
-    component = 1
-    variable = disp_y
-    save_in = react_disp_y
-    through_thickness_order = SECOND
-  []
+  # [solid_disp_y]
+  #   type = ADStressDivergenceShell2
+  #   component = 1
+  #   variable = disp_y
+  #   save_in = react_disp_y
+  #   through_thickness_order = SECOND
+  # []
   # [solid_disp_z]
   #   type = ADStressDivergenceShell2
   #   component = 2
