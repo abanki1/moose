@@ -296,7 +296,7 @@
   [fix_y]
     type = DirichletBC
     variable = disp_y
-    boundary = '0'
+    boundary = '0 1 2 3'
     value = 0.0
   []
   [fix_z]
@@ -358,14 +358,14 @@
   #   type = SMP
   #   full = true
   # [../]
-  [./FDP_jfnk]
-    type = FDP
-  [../]
+  # [./FDP_jfnk]
+  #   type = FDP
+  # [../]
 []
 
 [Executioner]
   type = Transient
-  solve_type = NEWTON
+  solve_type = FD
   line_search = 'none'
   petsc_options_iname = '-pc_type'
   petsc_options_value = 'lu'

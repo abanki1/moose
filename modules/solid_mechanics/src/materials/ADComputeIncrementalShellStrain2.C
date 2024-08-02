@@ -224,7 +224,7 @@ ADComputeIncrementalShellStrain2::initQpStatefulProperties()
     mooseError("ADComputeIncrementalShellStrain2: Shell element needs to have exactly four "
                "quadrature points.");
 
-  std::cout << "BWS init elem id: " << _current_elem->id() << std::endl;
+  // std::cout << "BWS init elem id: " << _current_elem->id() << std::endl;
   computeGMatrix();
   computeBMatrix();
 }
@@ -815,8 +815,8 @@ ADComputeIncrementalShellStrain2::computeSolnVector()
   {
     _soln_disp_index[j].resize(_ndisp);
     _soln_rot_index[j].resize(_nrot);
-    std::cout << "nrot = " << _nrot << std::endl;
-    std::cout << "ndisp = " << _ndisp << std::endl;
+    // std::cout << "nrot = " << _nrot << std::endl;
+    // std::cout << "ndisp = " << _ndisp << std::endl;
     for (unsigned int i = 0; i < _ndisp; ++i)
     {
       // std::cout << "i = " << i << std::endl;
@@ -824,24 +824,26 @@ ADComputeIncrementalShellStrain2::computeSolnVector()
       std::size_t ad_offset = _disp_num[i] * _nonlinear_sys.getMaxVarNDofsPerElem();
 #endif
       _soln_disp_index[j][i] = _nodes[j]->dof_number(_nonlinear_sys.number(), _disp_num[i], 0);
-      std::cout << " _nonlinear_sys.number =" << _nonlinear_sys.number() << " and _disp_num[i] "
-                << _disp_num[i] << std::endl;
+      // std::cout << " _nonlinear_sys.number =" << _nonlinear_sys.number() << " and _disp_num[i] "
+      //           << _disp_num[i] << std::endl;
 
-      std::cout << "i = " << i << " , j = " << j
-                << " and _soln_disp_index[j][i] = " << _soln_disp_index[j][i] << std::endl;
-      std::cout << "  _soln_disp_index = " << Moose::stringify(_soln_disp_index) << std::endl;
+      // std::cout << "i = " << i << " , j = " << j
+      //           << " and _soln_disp_index[j][i] = " << _soln_disp_index[j][i] << std::endl;
+      // std::cout << "  _soln_disp_index = " << Moose::stringify(_soln_disp_index) << std::endl;
 
       _soln_vector(j + i * _nodes.size()) =
           (*_sol)(_soln_disp_index[j][i]) - _sol_old(_soln_disp_index[j][i]);
 
-      std::cout << "Maybe Global soln vector = " << (*_sol)(_soln_disp_index[j][i]) << std::endl;
-      std::cout << "_soln_vector(j + i * _nodes.size()) = " << _soln_vector(j + i * _nodes.size())
-                << std::endl;
+      // std::cout << "Maybe Global soln vector = " << (*_sol)(_soln_disp_index[j][i]) << std::endl;
+      // std::cout << "_soln_vector(j + i * _nodes.size()) = " << _soln_vector(j + i *
+      // _nodes.size())
+      //           << std::endl;
 
       _soln_current(j + i * _nodes.size()) = (*_sol)(_soln_disp_index[j][i]);
-      std::cout << "_soln_current(j + i * _nodes.size()) = " << _soln_current(j + i * _nodes.size())
-                << std::endl;
-      std::cout << "  " << std::endl;
+      // std::cout << "_soln_current(j + i * _nodes.size()) = " << _soln_current(j + i *
+      // _nodes.size())
+      //           << std::endl;
+      // std::cout << "  " << std::endl;
       if (ADReal::do_derivatives)
         Moose::derivInsert(_soln_vector(j + i * _nodes.size()).derivatives(),
 #ifdef MOOSE_GLOBAL_AD_INDEXING
@@ -852,7 +854,7 @@ ADComputeIncrementalShellStrain2::computeSolnVector()
                            ,
                            1.);
     }
-    std::cout << "INTERMEDIATE ELEM SOL:" << MetaPhysicL::raw_value(_soln_vector) << std::endl;
+    // std::cout << "INTERMEDIATE ELEM SOL:" << MetaPhysicL::raw_value(_soln_vector) << std::endl;
     //     for (unsigned int i = 0; i < _nrot; ++i)
     //     {
     // #ifndef MOOSE_GLOBAL_AD_INDEXING
@@ -872,7 +874,7 @@ ADComputeIncrementalShellStrain2::computeSolnVector()
     //                            1.);
     //     }
   }
-  std::cout << "  FINAL _soln_disp_index = " << Moose::stringify(_soln_disp_index) << std::endl;
-  std::cout << "  FINAL _soln_rot_index = " << Moose::stringify(_soln_rot_index) << std::endl;
-  std::cout << "FINAL ELEM SOL:" << MetaPhysicL::raw_value(_soln_vector) << std::endl;
+  // std::cout << "  FINAL _soln_disp_index = " << Moose::stringify(_soln_disp_index) << std::endl;
+  // std::cout << "  FINAL _soln_rot_index = " << Moose::stringify(_soln_rot_index) << std::endl;
+  // std::cout << "FINAL ELEM SOL:" << MetaPhysicL::raw_value(_soln_vector) << std::endl;
 }

@@ -360,7 +360,7 @@
 
 [Executioner]
     type = Transient
-    solve_type = NEWTON
+    solve_type = FD
     line_search = 'none'
     petsc_options_iname = '-pc_type'
     petsc_options_value = 'lu'

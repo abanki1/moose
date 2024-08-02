@@ -16,12 +16,12 @@
     ymax = 1.0
     show_info = true
   []
-  # [rotate]
-  #   type = TransformGenerator
-  #   input = gmg
-  #   transform = ROTATE
-  #   vector_value = '45 0 0'
-  # []
+  [rotate]
+    type = TransformGenerator
+    input = gmg
+    transform = ROTATE
+    vector_value = '45 0 0'
+  []
 []
 
 [Variables]
@@ -29,14 +29,14 @@
     order = FIRST
     family = LAGRANGE
   []
-  # [disp_y]
-  #   order = FIRST
-  #   family = LAGRANGE
-  # []
-  # [disp_z]
-  #   order = FIRST
-  #   family = LAGRANGE
-  # []
+  [disp_y]
+    order = FIRST
+    family = LAGRANGE
+  []
+  [disp_z]
+    order = FIRST
+    family = LAGRANGE
+  []
   # [rot_x]
   #   order = FIRST
   #   family = LAGRANGE
@@ -64,14 +64,14 @@
   []
   [react_rot_z]
   []
-  [disp_y]
-    order = FIRST
-    family = LAGRANGE
-  []
-  [disp_z]
-    order = FIRST
-    family = LAGRANGE
-  []
+  # [disp_y]
+  #   order = FIRST
+  #   family = LAGRANGE
+  # []
+  # [disp_z]
+  #   order = FIRST
+  #   family = LAGRANGE
+  # []
   [rot_x]
     order = FIRST
     family = LAGRANGE
@@ -166,18 +166,18 @@
     boundary = '3' #LeftEdge
     value = 0.0
   []
-  # [xy_fix_y]
-  #   type = DirichletBC
-  #   variable = disp_y
-  #   boundary = '3' #'6'#'LeftEdge'
-  #   value = 0.0
-  # []
-  # [xy_fix_z]
-  #   type = DirichletBC
-  #   variable = disp_z
-  #   boundary = '3 1' #'6' #LeftEdge
-  #   value = 0.0
-  # []
+  [xy_fix_y]
+    type = DirichletBC
+    variable = disp_y
+    boundary = '3 0 1 2' #'6'#'LeftEdge'
+    value = 0.0
+  []
+  [xy_fix_z]
+    type = DirichletBC
+    variable = disp_z
+    boundary = '3 1 0 2' #'6' #LeftEdge
+    value = 0.0
+  []
   # [xy_fix_rot_x]
   #   type = DirichletBC
   #   variable = rot_x
@@ -202,12 +202,12 @@
     boundary = '1' #RightEdge
     value = 7.07e-3
   []
-  # [xy_pull_y]
-  #   type = DirichletBC
-  #   variable = disp_y
-  #   boundary = '1' #RightEdge
-  #   value = 7.07e-3
-  # []
+  [xy_pull_y]
+    type = DirichletBC
+    variable = disp_y
+    boundary = '1' #RightEdge
+    value = 7.07e-3
+  []
 []
 
 # [DiracKernels]
@@ -412,8 +412,9 @@
 
 [Executioner]
   type = Transient
-  solve_type = NEWTON
-  line_search = 'none'
+  # solve_type = PJFNK
+  solve_type = FD
+  # line_search = 'none'
   # petsc_options_iname = '-pc_type'
   # petsc_options_value = 'lu'
   petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
@@ -435,20 +436,20 @@
     save_in = react_disp_x
     through_thickness_order = SECOND
   []
-  # [solid_disp_y]
-  #   type = ADStressDivergenceShell2
-  #   component = 1
-  #   variable = disp_y
-  #   save_in = react_disp_y
-  #   through_thickness_order = SECOND
-  # []
-  # [solid_disp_z]
-  #   type = ADStressDivergenceShell2
-  #   component = 2
-  #   variable = disp_z
-  #   save_in = react_disp_z
-  #   through_thickness_order = SECOND
-  # []
+  [solid_disp_y]
+    type = ADStressDivergenceShell2
+    component = 1
+    variable = disp_y
+    save_in = react_disp_y
+    through_thickness_order = SECOND
+  []
+  [solid_disp_z]
+    type = ADStressDivergenceShell2
+    component = 2
+    variable = disp_z
+    save_in = react_disp_z
+    through_thickness_order = SECOND
+  []
   # [solid_rot_x]
   #   type = ADStressDivergenceShell2
   #   component = 3

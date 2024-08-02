@@ -29,10 +29,10 @@
     order = FIRST
     family = LAGRANGE
   []
-  [disp_z]
-    order = FIRST
-    family = LAGRANGE
-  []
+  # [disp_z]
+  #   order = FIRST
+  #   family = LAGRANGE
+  # []
   # [rot_x]
   #   order = FIRST
   #   family = LAGRANGE
@@ -59,6 +59,10 @@
   [react_rot_y]
   []
   [react_rot_z]
+  []
+  [disp_z]
+    order = FIRST
+    family = LAGRANGE
   []
   [rot_x]
     order = FIRST
@@ -160,12 +164,12 @@
     boundary = all_nodes #'6'#'LeftEdge'
     value = 0.0
   []
-  [xy_fix_z]
-    type = DirichletBC
-    variable = disp_z
-    boundary = all_nodes #'6' #LeftEdge
-    value = 0.0
-  []
+  # [xy_fix_z]
+  #   type = DirichletBC
+  #   variable = disp_z
+  #   boundary = all_nodes #'6' #LeftEdge
+  #   value = 0.0
+  # []
   # [xy_fix_rot_x]
   #   type = DirichletBC
   #   variable = rot_x
@@ -391,12 +395,12 @@
 
 [Executioner]
   type = Transient
-  solve_type = NEWTON
-  line_search = 'none'
-  # petsc_options_iname = '-pc_type'
-  # petsc_options_value = 'lu'
-  petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
-  petsc_options_value = 'lu NONZERO   1e1'
+  solve_type = FD
+  # line_search = 'none'
+  petsc_options_iname = '-pc_type'
+  petsc_options_value = 'lu'
+  # petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
+  # petsc_options_value = 'lu NONZERO   0e1'
   petsc_options = '-ksp_view_pmat'
   # petsc_options = '-ksp_view_rhs'
   nl_rel_tol = 1e-10
@@ -421,13 +425,13 @@
     save_in = react_disp_y
     through_thickness_order = SECOND
   []
-  [solid_disp_z]
-    type = ADStressDivergenceShell2
-    component = 2
-    variable = disp_z
-    save_in = react_disp_z
-    through_thickness_order = SECOND
-  []
+  # [solid_disp_z]
+  #   type = ADStressDivergenceShell2
+  #   component = 2
+  #   variable = disp_z
+  #   save_in = react_disp_z
+  #   through_thickness_order = SECOND
+  # []
   # [solid_rot_x]
   #   type = ADStressDivergenceShell2
   #   component = 3
