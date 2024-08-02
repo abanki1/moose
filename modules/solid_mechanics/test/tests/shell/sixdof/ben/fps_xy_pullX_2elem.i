@@ -185,14 +185,21 @@
 #  []
 #[]
 
-# [NodalKernels]
+[NodalKernels]
 #  [fx]
 #    type = UserForcingFunctionNodalKernel
 #    boundary = '1'
 #    function = 10
 #    variable = 'disp_x'
 #  []
-# []
+[penaltyrot_Z]
+    type = PenaltyDirichletNodalKernel
+    boundary = '0 1 2 3'
+    variable = 'rot_z'
+    value = 0.0
+    penalty = 1e6
+  []
+[]
 
 [AuxKernels]
     [stress_xx]

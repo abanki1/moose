@@ -60,8 +60,8 @@ ADComputeShellStress2::ADComputeShellStress2(const InputParameters & parameters)
     // rotation matrix and stress for output purposes only
     _covariant_transformation_matrix[t] = &getADMaterialProperty<RankTwoTensor>(
         "covariant_transformation_t_points_" + std::to_string(t));
-    _contravariant_transformation_matrix[t] = &getADMaterialProperty<RankTwoTensor>(
-        "contravariant_transformation_t_points_" + std::to_string(t));
+    // _contravariant_transformation_matrix[t] = &getADMaterialProperty<RankTwoTensor>(
+    //     "contravariant_transformation_t_points_" + std::to_string(t));
     _global_stress[t] =
         &declareADProperty<RankTwoTensor>("global_stress_t_points_" + std::to_string(t));
     // _global_stress[t] =
@@ -91,21 +91,20 @@ ADComputeShellStress2::computeQpProperties()
     for (unsigned int ii = 0; ii < 3; ++ii)
       for (unsigned int jj = 0; jj < 3; ++jj)
         _unrotated_stress(ii, jj) = MetaPhysicL::raw_value((*_stress[i])[_qp](ii, jj));
-
-    // (*_global_stress[i])[_qp] =
-    //     (*_covariant_transformation_matrix[i])[_qp].transpose() * _unrotated_stress *
-    //     (*_covariant_transformation_matrix[i])[_qp]; // original gobal stress
-
+    std::cout << std::endl << "ADCompShellStress2 Unrotated: UUUU Stress:" << std::endl;
+    (_unrotated_stress).printReal();
     (*_global_stress[i])[_qp] =
-        (*_contravariant_transformation_matrix[i])[_qp].transpose() * _unrotated_stress *
-        (*_contravariant_transformation_matrix[i])[_qp]; // debugging attempt for stress
-                                                         // transformation
-    // (*_stress_map[i])[_qp] = (*_contravariant_transformation_matrix[i])[_qp].transpose() *
-    //                          (*_global_stress[i])[_qp] *
-    //                          (*_contravariant_transformation_matrix[i])[_qp];
+        (*_covariant_transformation_matrix[i])[_qp].transpose() * _unrotated_stress *
+        (*_covariant_transformation_matrix[i])[_qp]; // original gobal stress
+
+    (*_global_stress[i])[_qp] = (*_covariant_transformation_matrix[i])[_qp] * _unrotated_stress *
+                                (*_covariant_transformation_matrix[i])[_qp]
+                                    .transpose(); // original gobal stress // debugging attempt for
+    //     stress
+    //                                                                  // transformation
 
     // stress as _stress from the shell material model std::cout <<
-    // (*_stress[i])[_qp] = (*_global_stress[i])[_qp]; // shell model
+    (*_stress[i])[_qp] = (*_global_stress[i])[_qp]; // shell model
 
     // std::cout << std::endl << "eeee AB: Strain Increment:" << std::endl;
     // (*_strain_increment[i])[_qp].printReal();
@@ -116,7 +115,7 @@ ADComputeShellStress2::computeQpProperties()
     (*_global_stress[i])[_qp].printReal();
     // std::cout << "tttt AB: Contravariant Tensor:" << std::endl;
     // (*_contravariant_transformation_matrix[i])[_qp].printReal();
-    // std::cout << std::endl << "RRRR AB: Reverse map Stress:" << std::endl;
-    // (*_stress_map[i])[_qp].printReal();
+    std::cout << std::endl << "ADCompShellStress2 LLLL: local Stress:" << std::endl;
+    (*_stress[i])[_qp].printReal();
   }
 }

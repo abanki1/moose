@@ -152,24 +152,24 @@
     boundary = '0' #'6' #LeftEdge
     value = 0.0
   []
-#   [xy_fix_rot_x]
-#     type = DirichletBC
-#     variable = rot_x
-#     boundary = '0 1 2 3' 
-#     value = 0.0
-#   []
+  [xy_fix_rot_x]
+    type = DirichletBC
+    variable = rot_x
+    boundary = '0 1 2 3' 
+    value = 0.0
+  []
   [xy_fix_rot_y]
     type = DirichletBC
     variable = rot_y
     boundary = '0' 
     value = 0.0
   []
-#   [xy_fix_rot_z]
-#     type = DirichletBC
-#     variable = rot_z
-#     boundary = '0 1 2 3'
-#     value = 0.0
-#   []
+  [xy_fix_rot_z]
+    type = DirichletBC
+    variable = rot_z
+    boundary = '0 1 2 3'
+    value = 0.0
+  []
   [xy_pull]
     type = DirichletBC
     variable = disp_x
@@ -188,14 +188,21 @@
 #  []
 # []
 
-# [NodalKernels]
+[NodalKernels]
 #  [fx]
 #    type = UserForcingFunctionNodalKernel
 #    boundary = '1'
 #    function = 10
 #    variable = 'disp_x'
 #  []
-# []
+[penaltyrot_Z]
+  type = PenaltyDirichletNodalKernel
+  boundary = '0 1 2 3'
+  variable = 'rot_z'
+  value = 0.0
+  penalty = 1e6
+[]
+[]
 
 [AuxKernels]
   [stress_xx]
