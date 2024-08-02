@@ -110,13 +110,13 @@ ADStressDivergenceShell2::computeQpResidual()
 
     // _stress_covariant = (*_stress[_qp_z])[_qp]; // shell model
 
-    // std::cout << "BWS stress pre: " << std::endl;
-    // (*_stress[_qp_z])[_qp].printReal();
-    // std::cout << "BWS kernel transf: " << std::endl;
-    // (*_contravariant_transformation_matrix[_qp_z])[_qp].printReal();
-    // std::cout << "BWS stress post: " << std::endl;
-    // _stress_covariant.printReal();
-    // std::cout << std::endl;
+    std::cout << "ADStressDivergenceShell2 BWS stress pre: " << std::endl;
+    (*_stress[_qp_z])[_qp].printReal();
+    std::cout << "ADStressDivergenceShell2 BWS kernel transf: " << std::endl;
+    (*_contravariant_transformation_matrix[_qp_z])[_qp].printReal();
+    std::cout << "ADStressDivergenceShell2 BWS stress post: " << std::endl;
+    _stress_covariant.printReal();
+    std::cout << std::endl;
 
     residual1 = _stress_covariant(0, 0) * (*_B_mat[_qp_z])[_qp](0, _i + _component * 4) +
                 _stress_covariant(1, 1) * (*_B_mat[_qp_z])[_qp](1, _i + _component * 4) +
