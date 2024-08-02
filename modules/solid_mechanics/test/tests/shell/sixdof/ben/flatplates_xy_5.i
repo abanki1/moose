@@ -3,8 +3,13 @@
     type = FileMeshGenerator
     file = flatplates_xy.e
   []
+  [rotate]
+    type = TransformGenerator
+    input = mesh
+    transform = ROTATE
+    vector_value = '45 0 0'
+  []
 []
-
 
 [Variables]
   [disp_x]

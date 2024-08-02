@@ -93,17 +93,11 @@ ADComputeShellStress2::computeQpProperties()
         _unrotated_stress(ii, jj) = MetaPhysicL::raw_value((*_stress[i])[_qp](ii, jj));
     std::cout << std::endl << "ADCompShellStress2 Unrotated: UUUU Stress:" << std::endl;
     (_unrotated_stress).printReal();
+
     (*_global_stress[i])[_qp] =
-        (*_covariant_transformation_matrix[i])[_qp].transpose() * _unrotated_stress *
-        (*_covariant_transformation_matrix[i])[_qp]; // original gobal stress
+        (*_covariant_transformation_matrix[i])[_qp] * _unrotated_stress *
+        (*_covariant_transformation_matrix[i])[_qp].transpose(); // original gobal stress
 
-    (*_global_stress[i])[_qp] = (*_covariant_transformation_matrix[i])[_qp] * _unrotated_stress *
-                                (*_covariant_transformation_matrix[i])[_qp]
-                                    .transpose(); // original gobal stress // debugging attempt for
-    //     stress
-    //                                                                  // transformation
-
-    // stress as _stress from the shell material model std::cout <<
     (*_stress[i])[_qp] = (*_global_stress[i])[_qp]; // shell model
 
     // std::cout << std::endl << "eeee AB: Strain Increment:" << std::endl;
