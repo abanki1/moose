@@ -33,18 +33,18 @@
     order = FIRST
     family = LAGRANGE
   []
-  [rot_x]
-    order = FIRST
-    family = LAGRANGE
-  []
-  [rot_y]
-    order = FIRST
-    family = LAGRANGE
-  []
-  [rot_z]
-    order = FIRST
-    family = LAGRANGE
-  []
+  # [rot_x]
+  #   order = FIRST
+  #   family = LAGRANGE
+  # []
+  # [rot_y]
+  #   order = FIRST
+  #   family = LAGRANGE
+  # []
+  # [rot_z]
+  #   order = FIRST
+  #   family = LAGRANGE
+  # []
 []
 
 [AuxVariables]
@@ -59,6 +59,18 @@
   [react_rot_y]
   []
   [react_rot_z]
+  []
+  [rot_x]
+    order = FIRST
+    family = LAGRANGE
+  []
+  [rot_y]
+    order = FIRST
+    family = LAGRANGE
+  []
+  [rot_z]
+    order = FIRST
+    family = LAGRANGE
   []
   [stress_xx]
     order = CONSTANT
@@ -154,25 +166,25 @@
     boundary = all_nodes #'6' #LeftEdge
     value = 0.0
   []
-  [xy_fix_rot_x]
-    type = DirichletBC
-    variable = rot_x
-    boundary = all_nodes
-    value = 0.0
-  []
-  [xy_fix_rot_y]
-    type = DirichletBC
-    variable = rot_y
-    boundary = all_nodes
-    value = 0.0
-  []
-  [xy_fix_rot_z]
-    type = DirichletBC
-    variable = rot_z
-    # boundary = '0 1 2 3'
-    boundary = all_nodes
-    value = 0.0
-  []
+  # [xy_fix_rot_x]
+  #   type = DirichletBC
+  #   variable = rot_x
+  #   boundary = all_nodes
+  #   value = 0.0
+  # []
+  # [xy_fix_rot_y]
+  #   type = DirichletBC
+  #   variable = rot_y
+  #   boundary = all_nodes
+  #   value = 0.0
+  # []
+  # [xy_fix_rot_z]
+  #   type = DirichletBC
+  #   variable = rot_z
+  #   # boundary = '0 1 2 3'
+  #   boundary = all_nodes
+  #   value = 0.0
+  # []
   [xy_pull_x]
     type = DirichletBC
     variable = disp_x
@@ -198,26 +210,26 @@
 #    function = 10
 #    variable = 'disp_x'
 #  []
-[penaltyrot_X]
-  type = PenaltyDirichletNodalKernel
-  boundary = '0 1 2 3'
-  variable = 'rot_x'
-  value = 0.0
-  penalty = 1e6
-[]
-[penaltyrot_Y]
-  type = PenaltyDirichletNodalKernel
-  boundary = '0 1 2 3'
-  variable = 'rot_y'
-  value = 0.0
-  penalty = 1e6
-[]
-[./constraint_z]
-  type = PenaltyDirichletNodalKernel
-  variable = rot_z
-  value = 0.0
-  penalty = 1e6
-[]
+# [penaltyrot_X]
+#   type = PenaltyDirichletNodalKernel
+#   boundary = '0 1 2 3'
+#   variable = 'rot_x'
+#   value = 0.0
+#   penalty = 1e6
+# []
+# [penaltyrot_Y]
+#   type = PenaltyDirichletNodalKernel
+#   boundary = '0 1 2 3'
+#   variable = 'rot_y'
+#   value = 0.0
+#   penalty = 1e6
+# []
+# [./constraint_z]
+#   type = PenaltyDirichletNodalKernel
+#   variable = rot_z
+#   value = 0.0
+#   penalty = 1e6
+# []
 []
 
 [AuxKernels]
@@ -416,30 +428,30 @@
     save_in = react_disp_z
     through_thickness_order = SECOND
   []
-  [solid_rot_x]
-    type = ADStressDivergenceShell2
-    component = 3
-    variable = rot_x
-    save_in = react_rot_x
-    through_thickness_order = SECOND
-    penalty = 1e6
-  []
-  [solid_rot_y]
-    type = ADStressDivergenceShell2
-    component = 4
-    variable = rot_y
-    save_in = react_rot_y
-    through_thickness_order = SECOND
-    penalty = 1e6
-  []
-  [solid_rot_z]
-    type = ADStressDivergenceShell2
-    component = 5
-    variable = rot_z
-    save_in = react_rot_z
-    through_thickness_order = SECOND
-    penalty = 1e6
-  []
+  # [solid_rot_x]
+  #   type = ADStressDivergenceShell2
+  #   component = 3
+  #   variable = rot_x
+  #   save_in = react_rot_x
+  #   through_thickness_order = SECOND
+  #   penalty = 1e6
+  # []
+  # [solid_rot_y]
+  #   type = ADStressDivergenceShell2
+  #   component = 4
+  #   variable = rot_y
+  #   save_in = react_rot_y
+  #   through_thickness_order = SECOND
+  #   penalty = 1e6
+  # []
+  # [solid_rot_z]
+  #   type = ADStressDivergenceShell2
+  #   component = 5
+  #   variable = rot_z
+  #   save_in = react_rot_z
+  #   through_thickness_order = SECOND
+  #   penalty = 1e6
+  # []
 []
 
 [Materials]

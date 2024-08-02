@@ -241,7 +241,7 @@
 # []
 # [./constraint_y]
 #   type = PenaltyDirichletNodalKernel
-#   variable = disp_x
+#   variable = disp_y
 #   value = 0
 #   penalty = 1e6
 # []
