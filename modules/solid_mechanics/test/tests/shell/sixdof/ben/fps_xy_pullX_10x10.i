@@ -36,6 +36,18 @@
     order = FIRST
     family = LAGRANGE
   []
+  [rot_x]
+    order = FIRST
+    family = LAGRANGE
+  []
+  [rot_y]
+    order = FIRST
+    family = LAGRANGE
+  []
+  [rot_z]
+    order = FIRST
+    family = LAGRANGE
+  []
 []
 
 [AuxVariables]
@@ -50,18 +62,6 @@
   [react_rot_y]
   []
   [react_rot_z]
-  []
-  [rot_x]
-    order = FIRST
-    family = LAGRANGE
-  []
-  [rot_y]
-    order = FIRST
-    family = LAGRANGE
-  []
-  [rot_z]
-    order = FIRST
-    family = LAGRANGE
   []
   [stress_xx]
     order = CONSTANT
@@ -407,30 +407,30 @@
     save_in = react_disp_z
     through_thickness_order = SECOND
   []
-  # [solid_rot_x]
-  #   type = ADStressDivergenceShell2
-  #   component = 3
-  #   variable = rot_x
-  #   save_in = react_rot_x
-  #   through_thickness_order = SECOND
-  #   penalty = 0
-  # []
-  # [solid_rot_y]
-  #   type = ADStressDivergenceShell2
-  #   component = 4
-  #   variable = rot_y
-  #   save_in = react_rot_y
-  #   through_thickness_order = SECOND
-  #   penalty = 0
-  # []
-  # [solid_rot_z]
-  #   type = ADStressDivergenceShell2
-  #   component = 5
-  #   variable = rot_z
-  #   save_in = react_rot_z
-  #   through_thickness_order = SECOND
-  #   penalty = 0
-  # []
+  [solid_rot_x]
+    type = ADStressDivergenceShell2
+    component = 3
+    variable = rot_x
+    save_in = react_rot_x
+    through_thickness_order = SECOND
+    penalty = 0
+  []
+  [solid_rot_y]
+    type = ADStressDivergenceShell2
+    component = 4
+    variable = rot_y
+    save_in = react_rot_y
+    through_thickness_order = SECOND
+    penalty = 0
+  []
+  [solid_rot_z]
+    type = ADStressDivergenceShell2
+    component = 5
+    variable = rot_z
+    save_in = react_rot_z
+    through_thickness_order = SECOND
+    penalty = 0
+  []
 []
 
 [Materials]
