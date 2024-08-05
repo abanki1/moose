@@ -179,12 +179,12 @@
     # boundary = all_nodes
     value = 0.0
   []
-  [xy_pull_x]
-    type = DirichletBC
-    variable = disp_x
-    boundary = '1'
-    value = 0.01
-  []
+  # [xy_pull_x]
+  #   type = DirichletBC
+  #   variable = disp_x
+  #   boundary = '1'
+  #   value = 0.01
+  # []
 []
 
 #[DiracKernels]
@@ -197,12 +197,12 @@
 #[]
 
 [NodalKernels]
-#  [fx]
-#    type = UserForcingFunctionNodalKernel
-#    boundary = '1'
-#    function = 10
-#    variable = 'disp_x'
-#  []
+ [fx]
+   type = UserForcingFunctionNodalKernel
+   boundary = '1'
+   function = 10
+   variable = 'disp_x'
+ []
 # [./constraint_z]
 #   type = PenaltyDirichletNodalKernel
 #   variable = rot_z

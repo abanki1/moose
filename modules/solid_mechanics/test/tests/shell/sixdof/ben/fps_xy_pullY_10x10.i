@@ -315,12 +315,12 @@
   #   boundary = '0 1 2 3'
   #   value = 0.0
   # []
-  [xy_pull_y]
-    type = DirichletBC
-    variable = disp_y
-    boundary = '2'
-    value = 0.01
-  []
+  # [xy_pull_y]
+  #   type = DirichletBC
+  #   variable = disp_y
+  #   boundary = '2'
+  #   value = 0.01
+  # []
 []
 
 #[DiracKernels]
@@ -332,14 +332,14 @@
 #  []
 #[]
 
-# [NodalKernels]
-#  [fx]
-#    type = UserForcingFunctionNodalKernel
-#    boundary = '2'
-#    function = 10
-#    variable = 'disp_y'
-#  []
-# []
+[NodalKernels]
+ [fx]
+   type = UserForcingFunctionNodalKernel
+   boundary = '2'
+   function = 10
+   variable = 'disp_y'
+ []
+[]
 
 [Preconditioning]
   # [./smp]
