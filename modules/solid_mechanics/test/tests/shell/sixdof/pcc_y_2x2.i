@@ -6,7 +6,7 @@
 [Mesh]
   [./mesh]
     type = FileMeshGenerator
-    file = cyl_1x1.e
+    file = cyl_2x2.e
   [../]
 []
 
@@ -55,7 +55,7 @@
 #       min = -0.01
 #       max = 0.01
 #     []
-  
+
 #     [rot_x]
 #       type = RandomIC
 #       variable = rot_x
@@ -143,12 +143,12 @@
 [Executioner]
   type = Transient
   solve_type = FD
-  line_search = 'none'
+#   line_search = 'none'
   petsc_options_iname = '-pc_type'
   petsc_options_value = 'lu'
   petsc_options = '-ksp_view_pmat'
   nl_rel_tol = 1e-8 #was 1e-10 previously
-#   nl_abs_tol = 1e-8
+  nl_abs_tol = 1e-8
   dt = 1.0
   dtmin = 1.0
   end_time = 1.0
@@ -251,7 +251,7 @@
 #     type = SideAverageValue
 #     boundary = 'BC'
 #     variable = disp_x
-    
+
 #   [../]
 #   [./disp_y]
 #     type = SideAverageValue
