@@ -300,7 +300,7 @@
   [fix_rot_x]
     type = DirichletBC
     variable = rot_x
-    boundary = '0 1 2 3'
+    boundary = '0'
     value = 0.0
   []
   [fix_rot_y]
