@@ -159,13 +159,13 @@
     # boundary = all_nodes
     value = 0.0
   []
-  # [fix_rot_x]
-  #   type = DirichletBC
-  #   variable = rot_x
-  #   # boundary = '0 1 2 3'
-  #   boundary = all_nodes
-  #   value = 0.0
-  # []
+  [fix_rot_x]
+    type = DirichletBC
+    variable = rot_x
+    # boundary = '0 1 2 3'
+    boundary = all_nodes
+    value = 0.0
+  []
   [fix_rot_y]
     type = DirichletBC
     variable = rot_y
