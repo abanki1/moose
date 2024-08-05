@@ -135,7 +135,6 @@
     order = CONSTANT
     family = MONOMIAL
   []
-  
 []
 
 [BCs]
