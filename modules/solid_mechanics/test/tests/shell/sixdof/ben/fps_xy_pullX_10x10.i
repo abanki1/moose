@@ -428,7 +428,7 @@
     variable = rot_z
     save_in = react_rot_z
     through_thickness_order = SECOND
-    penalty = 0
+    penalty = 1e6
   []
 []
 
