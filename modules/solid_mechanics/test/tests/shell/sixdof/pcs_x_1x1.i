@@ -26,16 +26,19 @@
 # The results from FEM analysis matches well with the series solution and with
 # the solution presented by Dvorkin and Bathe (1984).
 
-# Run with -pc_type svd -pc_svd_monitor if convergence issue
-
-# [GlobalParams]
-#   use_displaced_mesh = true
-# []
+# Run with -pc_type svd -pc_svd_monitor if convergence issu
 
 [Mesh]
   [mesh]
     type = FileMeshGenerator
-    file = cyl_2x2.e
+    file = cyl_1x1.e
+  []
+  [all_nodes]
+    type = BoundingBoxNodeSetGenerator
+    new_boundary = 'all_nodes'
+    input = mesh
+    top_right = '1e6 1e6 1e6'
+    bottom_left = '-1e6 -1e6 -1e6'
   []
 []
 
@@ -141,48 +144,78 @@
     type = DirichletBC
     variable = rot_z
     boundary = 'CD AD BC'
-    # boundary = 'CD AD BC AB' #debugging attempts
+    # boundary = all_nodes
     value = 0.0
   []
 []
 
 [NodalKernels]
-  [pinch]
+  [pinch_x]
     type = UserForcingFunctionNodalKernel
     boundary = 'BC' #'10'
     function = -2.5
     variable = disp_x
   []
-  [./constraint_z]
+  # [constraint_x]
+  #   type = PenaltyDirichletNodalKernel
+  #   variable = rot_x
+  #   value = 0
+  #   boundary = 'CD AD BC'
+  #   penalty = 1e6
+  # [../]
+  # [constraint_y]
+  #   type = PenaltyDirichletNodalKernel
+  #   variable = rot_y
+  #   value = 0
+  #   boundary = 'CD AD BC'
+  #   penalty = 1e6
+  # [../]
+  [constraint_z]
     type = PenaltyDirichletNodalKernel
     variable = rot_z
-    value = 0
+    value = 0.0
     penalty = 1e6
   []
 []
 
 [Preconditioning]
-#   [./smp]
-#     type = SMP
-#     full = true
-#   [../]
-  [FDP_jfnk]
-    type = FDP
-  []
+  [./smp]
+    type = SMP
+    full = true
+  [../]
+  # [FDP_jfnk]
+  #   type = FDP
+  # []
 []
 
 [Executioner]
   type = Transient
   solve_type = FD
-#   line_search = 'none'
+  # type = Steady
+  # line_search = 'none'
+
+  # ###### this gives a zeroPivit error with SMP ######
   petsc_options_iname = '-pc_type'
   petsc_options_value = 'lu'
+
+  # petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
+  # petsc_options_value = 'lu NONZERO   1e1'
+  # petsc_options_iname = '-pc_type -pc_factor_mat_solver_package'
+  # petsc_options_value = 'lu superlu_dist'
+  # # petsc_options = '-snes_ksp_ew'
   petsc_options = '-ksp_view_pmat'
-  nl_rel_tol = 1e-8
+  # petsc_options = '-ksp_view_rhs'
+  # l_max_its = 10
+  # nl_max_its = 10
+  nl_rel_tol = 1e-10
   nl_abs_tol = 1e-8
   dt = 1.0
   dtmin = 1.0
   end_time = 1.0
+[]
+
+[Debug]
+  show_material_props = true
 []
 
 [Kernels]
@@ -221,7 +254,7 @@
     component = 4
     variable = rot_y
     through_thickness_order = SECOND
-    penalty = 1e6
+    penalty = 0
   []
   [solid_rot_z]
     type = ADStressDivergenceShell2
@@ -234,18 +267,12 @@
 []
 
 [Materials]
-  # these are consistent with the continuum model
-  [elasticity_t0]
-    type = ADComputeIsotropicElasticityTensor
+  [elasticity_shell]
+    type = ADComputeIsotropicElasticityTensorShell
     youngs_modulus = 1e6
     poissons_ratio = 0.0
-    base_name = t_points_0
-  []
-  [elasticity_t1]
-    type = ADComputeIsotropicElasticityTensor
-    youngs_modulus = 1e6
-    poissons_ratio = 0.0
-    base_name = t_points_1
+    block = '100'
+    through_thickness_order = SECOND
   []
   [strain]
     type = ADComputeIncrementalShellStrain2
@@ -255,14 +282,10 @@
     thickness = 0.01
     through_thickness_order = SECOND
   []
-
-  [stress_t0]
-    type = ADComputeLinearElasticStress
-    base_name = t_points_0
-  []
-  [stress_t1]
-    type = ADComputeLinearElasticStress
-    base_name = t_points_1
+  [stress_shell]
+    type = ADComputeShellStress2
+    block = '100'
+    through_thickness_order = SECOND
   []
 []
 
@@ -279,19 +302,7 @@
   []
 []
 
-# [Postprocessors]
-#     [disp_x]
-#       type = SideAverageValue
-#       boundary = 'BC'
-#       variable = disp_x
-#     []
-#     [disp_y]
-#       type = SideAverageValue
-#       boundary = 'AD'
-#       variable = disp_y
-#     []
-#   []
-
 [Outputs]
   exodus = true
+  #dofmap = true
 []
