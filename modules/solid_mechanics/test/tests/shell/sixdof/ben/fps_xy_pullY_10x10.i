@@ -282,19 +282,19 @@
   [fix_x]
     type = DirichletBC
     variable = disp_x
-    boundary = '0 1 2 3'
+    boundary = '1 3'
     value = 0.0
   []
   [fix_y]
     type = DirichletBC
     variable = disp_y
-    boundary = '0 1 3'
+    boundary = '0'
     value = 0.0
   []
   [fix_z]
     type = DirichletBC
     variable = disp_z
-    boundary = '0 1 2 3'
+    boundary = '0'
     value = 0.0
   []
   [fix_rot_x]
@@ -353,7 +353,7 @@
 
 [Executioner]
   type = Transient
-  solve_type = NEWTON
+  solve_type = FD
   line_search = 'none'
   petsc_options_iname = '-pc_type'
   petsc_options_value = 'lu'
@@ -411,7 +411,7 @@
     variable = rot_z
     save_in = react_rot_z
     through_thickness_order = SECOND
-    penalty = 0
+    penalty = 1e6
   []
 []
 
