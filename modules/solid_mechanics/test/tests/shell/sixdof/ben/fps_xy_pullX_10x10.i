@@ -169,8 +169,8 @@
   [fix_rot_y]
     type = DirichletBC
     variable = rot_y
-    boundary = '3'
-    # boundary = all_nodes
+    # boundary = '3'
+    boundary = all_nodes
     value = 0.0
   []
   # [fix_rot_z]
