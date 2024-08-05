@@ -190,7 +190,8 @@
 
 [Executioner]
   type = Transient
-  solve_type = NEWTON
+  # solve_type = NEWTON
+  solve_type = FD 
   # type = Steady
   # line_search = 'none'
 
