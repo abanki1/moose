@@ -14,13 +14,6 @@
     ymax = 1.0
     show_info = true
   []
-  [all_nodes]
-    type = BoundingBoxNodeSetGenerator
-    input = gmg
-    bottom_left = '-1e6 -1e6 -1e6'
-    top_right = '1e6 1e6 1e6'
-    new_boundary = 'all_nodes'
-  []
 []
 
 [Variables]
@@ -135,80 +128,7 @@
     order = CONSTANT
     family = MONOMIAL
   []
-[]
-
-[BCs]
-  [fix_x]
-    type = DirichletBC
-    variable = disp_x
-    boundary = '3'
-    value = 0.0
-  []
-  [fix_y]
-    type = DirichletBC
-    variable = disp_y
-    boundary = '0 2'
-    # boundary = all_nodes
-    value = 0.0
-  []
-  [fix_z]
-    type = DirichletBC
-    variable = disp_z
-    boundary = '3'
-    # boundary = all_nodes
-    value = 0.0
-  []
-  [fix_rot_x]
-    type = DirichletBC
-    variable = rot_x
-    boundary = '0 1 2 3'
-    # boundary = all_nodes
-    value = 0.0
-  []
-  [fix_rot_y]
-    type = DirichletBC
-    variable = rot_y
-    boundary = '3'
-    # boundary = all_nodes
-    value = 0.0
-  []
-  [fix_rot_z]
-    type = DirichletBC
-    variable = rot_z
-    boundary = '0 1 2 3'
-    # boundary = all_nodes
-    value = 0.0
-  []
-  [xy_pull_x]
-    type = DirichletBC
-    variable = disp_x
-    boundary = '1'
-    value = 0.01
-  []
-[]
-
-#[DiracKernels]
-#  [point1]
-#    type = ConstantPointSource
-#    variable = disp_x
-#    point = '1 0 1'
-#    value = -2.5 # P = 10
-#  []
-#[]
-
-[NodalKernels]
-#  [fx]
-#    type = UserForcingFunctionNodalKernel
-#    boundary = '1'
-#    function = 10
-#    variable = 'disp_x'
-#  []
-# [./constraint_z]
-#   type = PenaltyDirichletNodalKernel
-#   variable = rot_z
-#   value = 0
-#   penalty = 1e6
-# []
+  
 []
 
 [AuxKernels]
@@ -358,6 +278,69 @@
   []
 []
 
+[BCs]
+  [fix_x]
+    type = DirichletBC
+    variable = disp_x
+    boundary = '0 1 2 3'
+    value = 0.0
+  []
+  [fix_y]
+    type = DirichletBC
+    variable = disp_y
+    boundary = '0 1 3'
+    value = 0.0
+  []
+  [fix_z]
+    type = DirichletBC
+    variable = disp_z
+    boundary = '0 1 2 3'
+    value = 0.0
+  []
+  [fix_rot_x]
+    type = DirichletBC
+    variable = rot_x
+    boundary = '0 1 2 3'
+    value = 0.0
+  []
+  [fix_rot_y]
+    type = DirichletBC
+    variable = rot_y
+    boundary = '0 1 2 3'
+    value = 0.0
+  []
+  [fix_rot_z]
+    type = DirichletBC
+    variable = rot_z
+    boundary = '0 1 2 3'
+    value = 0.0
+  []
+  [xy_pull_y]
+    type = DirichletBC
+    variable = disp_y
+    boundary = '2'
+    value = 0.01
+  []
+[]
+
+#[DiracKernels]
+#  [point1]
+#    type = ConstantPointSource
+#    variable = disp_x
+#    point = '1 0 1'
+#    value = -2.5 # P = 10
+#  []
+#[]
+
+# [NodalKernels]
+#  [fx]
+#    type = UserForcingFunctionNodalKernel
+#    boundary = '2'
+#    function = 10
+#    variable = 'disp_y'
+#  []
+# []
+
 [Preconditioning]
   # [./smp]
   #   type = SMP
@@ -370,7 +353,7 @@
 
 [Executioner]
   type = Transient
-  solve_type = FD
+  solve_type = NEWTON
   line_search = 'none'
   petsc_options_iname = '-pc_type'
   petsc_options_value = 'lu'
@@ -428,7 +411,7 @@
     variable = rot_z
     save_in = react_rot_z
     through_thickness_order = SECOND
-    penalty = 1e6
+    penalty = 0
   []
 []
 
@@ -457,30 +440,29 @@
 []
 
 [Postprocessors]
-  [xdisp_1]
-    type = PointValue
-    point = '1 0 0'
-    variable = disp_x
-  []
-  [xdisp_2]
+  [ydisp_1]
     type = PointValue
     point = '1 1 0'
-    variable = disp_x
+    variable = disp_y
   []
-  [xreact_left]
+  [ydisp_2]
+    type = PointValue
+    point = '0 1 0'
+    variable = disp_y
+  []
+  [yreact_top]
     type = NodalSum
-    boundary = '3'
-    variable = react_disp_x
+    boundary = '2'
+    variable = react_disp_y
   []
-  [xreact_right]
+  [yreact_bottom]
     type = NodalSum
-    boundary = '1'
-    variable = react_disp_x
+    boundary = '0'
+    variable = react_disp_y
   []
-
-  [stress_xx]
+  [stress_yy]
     type = ElementalVariableValue
-    variable = 'stress_xx'
+    variable = 'stress_yy'
     elementid = 0
   []
   # [stress_yy]
@@ -493,9 +475,9 @@
   #   variable = 'stress_xy'
   #   elementid = 0
   # []
-  [strain_xx]
+  [strain_yy]
     type = ElementalVariableValue
-    variable = 'strain_xx'
+    variable = 'strain_yy'
     elementid = 0
   []
 []
