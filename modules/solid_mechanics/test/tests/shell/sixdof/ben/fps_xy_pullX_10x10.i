@@ -148,15 +148,15 @@
   [fix_y]
     type = DirichletBC
     variable = disp_y
-    boundary = '0 1 2 3'
+    boundary = '0 2'
     # boundary = all_nodes
     value = 0.0
   []
   [fix_z]
     type = DirichletBC
     variable = disp_z
-    # boundary = '0 1 2 3'
-    boundary = all_nodes
+    boundary = '3'
+    # boundary = all_nodes
     value = 0.0
   []
   [fix_rot_x]
