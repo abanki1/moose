@@ -36,7 +36,45 @@
     family = LAGRANGE
   [../]
 []
-
+# [ICs]
+#     [disp_x]
+#       type = RandomIC
+#       variable = disp_x
+#       min = -0.01
+#       max = 0.01
+#     []
+#     [disp_y]
+#       type = RandomIC
+#       variable = disp_y
+#       min = -0.01
+#       max = 0.01
+#     []
+#     [disp_z]
+#       type = RandomIC
+#       variable = disp_z
+#       min = -0.01
+#       max = 0.01
+#     []
+  
+#     [rot_x]
+#       type = RandomIC
+#       variable = rot_x
+#       min = -0.01
+#       max = 0.01
+#     []
+#     [rot_y]
+#       type = RandomIC
+#       variable = rot_y
+#       min = -0.01
+#       max = 0.01
+#     []
+#     [rot_z]
+#       type = RandomIC
+#       variable = rot_z
+#       min = -0.01
+#       max = 0.01
+#     []
+#   []
 [BCs]
   [./simply_support_x]
     type = DirichletBC
@@ -71,8 +109,8 @@
   [./simply_support_rot_z]
     type = DirichletBC
     variable = rot_z
-    # boundary = 'CD AD BC'
-    boundary = 'CD AD BC AB' #debugging attempts
+    boundary = 'CD AD BC'
+    # boundary = 'CD AD BC AB' #debugging attempts
     value = 0.0
   [../]
 []
@@ -88,7 +126,7 @@
     type = PenaltyDirichletNodalKernel
     variable = rot_z
     value = 0
-    penalty = 0
+    penalty = 1e6
   []
 []
 
@@ -109,8 +147,8 @@
   petsc_options_iname = '-pc_type'
   petsc_options_value = 'lu'
   petsc_options = '-ksp_view_pmat'
-  nl_rel_tol = 1e-10
-  nl_abs_tol = 1e-8
+  nl_rel_tol = 1e-8 #was 1e-10 previously
+#   nl_abs_tol = 1e-8
   dt = 1.0
   dtmin = 1.0
   end_time = 1.0
@@ -160,7 +198,7 @@
     component = 5
     variable = rot_z
     through_thickness_order = SECOND
-    penalty = 0
+    penalty = 1e6
   [../]
 []
 
@@ -168,22 +206,15 @@
   [elasticity_t0]
     type = ADComputeIsotropicElasticityTensor
     youngs_modulus = 1e6
-    poissons_ratio = 0.3
+    poissons_ratio = 0.0
     base_name = t_points_0
   []
   [elasticity_t1]
     type = ADComputeIsotropicElasticityTensor
     youngs_modulus = 1e6
-    poissons_ratio = 0.3
+    poissons_ratio = 0.0
     base_name = t_points_1
   []
-  # [./elasticity]
-  #   type = ADComputeIsotropicElasticityTensorShell
-  #   youngs_modulus = 1e6
-  #   poissons_ratio = 0.3
-  #   block = '100'
-  #   through_thickness_order = SECOND
-  # [../]
   [./strain]
     type = ADComputeIncrementalShellStrain2
     block = '100'
@@ -191,13 +222,9 @@
     rotations = 'rot_x rot_y rot_z'
     thickness = 0.01
     through_thickness_order = SECOND
-  [../]
-  # [./stress]
-  #   type = ADComputeShellStress2
-  #   block = '100'
-  #   through_thickness_order = SECOND
-  # [../]
-    [stress_t0]
+  []
+
+  [stress_t0]
       type = ADComputeLinearElasticStress
       base_name = t_points_0
     []
@@ -208,14 +235,27 @@
 []
 
 [Postprocessors]
+    [disp_x]
+      type = PointValue
+      point = '1 0 1'
+      variable = disp_x
+    []
+    [disp_y]
+      type = PointValue
+      point = '0 1 1'
+      variable = disp_y
+    []
+  []
+[Postprocessors]
   [./disp_x]
-    type = PointValue
-    point = '1 0 1'
+    type = SideAverageValue
+    boundary = 'BC'
     variable = disp_x
+    
   [../]
   [./disp_y]
-    type = PointValue
-    point = '0 1 1'
+    type = SideAverageValue
+    boundary = 'AD'
     variable = disp_y
   [../]
 []
