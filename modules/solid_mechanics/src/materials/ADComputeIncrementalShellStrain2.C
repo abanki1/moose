@@ -315,7 +315,7 @@ ADComputeIncrementalShellStrain2::computeProperties()
 
       if (j == 0)
       {
-        std::cout << " i = " << i << " \n";
+        // std::cout << " i = " << i << " \n";
         // std::cout << " gamma test = " << (*_gamma_test[j])[i] << " \n";
         // std::cout << " gamma test x  = " << (*_gamma_test_x[j])[i] << " \n";
         // std::cout << " gamma test y  = " << (*_gamma_test_y[j])[i] << " \n";
