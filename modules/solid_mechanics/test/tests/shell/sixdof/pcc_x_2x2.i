@@ -37,6 +37,13 @@
     type = FileMeshGenerator
     file = cyl_2x2.e
   []
+  [all_nodes]
+    type = BoundingBoxNodeSetGenerator
+    input = mesh
+    top_right = '1e6 1e6 1e6'
+    bottom_left = '-1e6 -1e6 -1e6'
+    new_boundary = 'all_nodes'
+  []
 []
 
 [Variables]
@@ -140,8 +147,9 @@
   [simply_support_rot_z]
     type = DirichletBC
     variable = rot_z
-    boundary = 'CD AD BC'
+    # boundary = 'CD AD BC'
     # boundary = 'CD AD BC AB' #debugging attempts
+    boundary = all_nodes
     value = 0.0
   []
 []
