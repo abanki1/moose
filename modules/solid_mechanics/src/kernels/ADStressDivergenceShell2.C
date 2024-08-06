@@ -103,19 +103,18 @@ ADStressDivergenceShell2::computeQpResidual()
   for (_qp_z = 0; _qp_z < _t_weights.size(); ++_qp_z)
   {
     _stress_covariant =
-        (*_contravariant_transformation_matrix[_qp_z])[_qp].transpose() * (*_stress[_qp_z])[_qp]
-        *
+        (*_contravariant_transformation_matrix[_qp_z])[_qp].transpose() * (*_stress[_qp_z])[_qp] *
         (*_contravariant_transformation_matrix[_qp_z])
             [_qp]; // continuum constitutive model-transform global stress to local coordinate
 
     // _stress_covariant = (*_stress[_qp_z])[_qp]; // shell model
-    if (_qp_z==0 && _qp==0)
+    if (_qp_z == 0 && _qp == 0)
     {
-    //   std::cout << "ADStressDivergenceShell2 BWS stress pre: " << std::endl;
-    //   (*_stress[_qp_z])[_qp].printReal();
+      //   std::cout << "ADStressDivergenceShell2 BWS stress pre: " << std::endl;
+      //   (*_stress[_qp_z])[_qp].printReal();
       // std::cout << "ADStressDivergenceShell2 BWS kernel transf: " << std::endl;
       // (*_contravariant_transformation_matrix[_qp_z])[_qp].printReal();
-      std::cout << "ADStressDivergenceShell2 BWS stress post: " << std::endl;
+      std::cout << "ADStressDivergenceShell2 stress in residual calc: " << std::endl;
       _stress_covariant.printReal();
       std::cout << std::endl;
     }

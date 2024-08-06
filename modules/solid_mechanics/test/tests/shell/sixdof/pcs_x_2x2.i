@@ -170,22 +170,22 @@
   #   boundary = 'CD AD BC'
   #   penalty = 1e6
   # [../]
-  # [constraint_z]
-  #   type = PenaltyDirichletNodalKernel
-  #   variable = rot_z
-  #   value = 0.0
-  #   penalty = 1e6
-  # []
+  [constraint_z]
+    type = PenaltyDirichletNodalKernel
+    variable = rot_z
+    value = 0.0
+    penalty = 1e6
+  []
 []
 
 [Preconditioning]
-  [./smp]
-    type = SMP
-    full = true
-  [../]
-  # [FDP_jfnk]
-  #   type = FDP
-  # []
+  # [./smp]
+  #   type = SMP
+  #   full = true
+  # [../]
+  [FDP_jfnk]
+    type = FDP
+  []
 []
 
 [Executioner]
