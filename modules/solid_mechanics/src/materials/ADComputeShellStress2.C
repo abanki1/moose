@@ -46,7 +46,7 @@ ADComputeShellStress2::ADComputeShellStress2(const InputParameters & parameters)
   _strain_increment.resize(_t_points.size());
   _covariant_transformation_matrix.resize(_t_points.size());
   _global_stress.resize(_t_points.size());
-  std::cout << "TTTT AB: t_points_size : " << _t_points.size() << std::endl;
+  // std::cout << "TTTT AB: t_points_size : " << _t_points.size() << std::endl;
   for (unsigned int t = 0; t < _t_points.size(); ++t)
   {
     _elasticity_tensor[t] =
@@ -60,8 +60,6 @@ ADComputeShellStress2::ADComputeShellStress2(const InputParameters & parameters)
     // rotation matrix and stress for output purposes only
     _covariant_transformation_matrix[t] = &getADMaterialProperty<RankTwoTensor>(
         "covariant_transformation_t_points_" + std::to_string(t));
-    // _contravariant_transformation_matrix[t] = &getADMaterialProperty<RankTwoTensor>(
-    //     "contravariant_transformation_t_points_" + std::to_string(t));
     _global_stress[t] =
         &declareADProperty<RankTwoTensor>("global_stress_t_points_" + std::to_string(t));
     // _global_stress[t] =
@@ -98,21 +96,19 @@ ADComputeShellStress2::computeQpProperties()
         (*_covariant_transformation_matrix[i])[_qp] * (*_stress[i])[_qp] *
         (*_covariant_transformation_matrix[i])[_qp].transpose(); // original gobal stress
 
-    // (*_stress[i])[_qp] =
-    //     (*_covariant_transformation_matrix[i])[_qp] * (*_stress[i])[_qp] *
-    //     (*_covariant_transformation_matrix[i])[_qp]
-    //         .transpose(); // debugging attempts to avoid incorrect stress transformation
+    (*_stress[i])[_qp] =
+        (*_covariant_transformation_matrix[i])[_qp].transpose() * (*_stress[i])[_qp] * (*_covariant_transformation_matrix[i])[_qp]; // original gobal stress; // debugging attempts to avoid incorrect stress transformation
 
     // std::cout << std::endl << "eeee AB: Strain Increment:" << std::endl;
     // (*_strain_increment[i])[_qp].printReal();
-    // std::cout << std::endl << "ADCompShellStress2 TTTT AB: Covariant matrix:" << std::endl;
-    // (*_covariant_transformation_matrix[i])[_qp].printReal();
+    std::cout << std::endl << "ADCompShellStress2 TTTT AB: Covariant matrix:" << std::endl;
+    (*_covariant_transformation_matrix[i])[_qp].printReal();
 
     // std::cout << std::endl << "ADCompShellStress2 GGGG: Global Stress:" << std::endl;
     // (*_global_stress[i])[_qp].printReal();
     // std::cout << "tttt AB: Contravariant Tensor:" << std::endl;
     // (*_contravariant_transformation_matrix[i])[_qp].printReal();
-    // std::cout << std::endl << "ADCompShellStress2 LLLL: local Stress:" << std::endl;
+    // std::cout << std::endl << "ADCompShellStress2 LLLL: local Stress after transf:" << std::endl;
     // (*_stress[i])[_qp].printReal();
   }
 }

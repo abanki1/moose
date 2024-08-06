@@ -102,23 +102,23 @@ ADStressDivergenceShell2::computeQpResidual()
   // strains rot_Z
   for (_qp_z = 0; _qp_z < _t_weights.size(); ++_qp_z)
   {
+    _stress_covariant =
+        (*_contravariant_transformation_matrix[_qp_z])[_qp].transpose() * (*_stress[_qp_z])[_qp]
+        *
+        (*_contravariant_transformation_matrix[_qp_z])
+            [_qp]; // continuum constitutive model-transform global stress to local coordinate
 
-    // _stress_covariant =
-    //     (*_contravariant_transformation_matrix[_qp_z])[_qp].transpose() * (*_stress[_qp_z])[_qp]
-    //     *
-    //     (*_contravariant_transformation_matrix[_qp_z])
-    //         [_qp]; // continuum constitutive model-transform global stress to local coordinate
-
-    _stress_covariant = (*_stress[_qp_z])[_qp]; // shell model
-
-    // std::cout << "ADStressDivergenceShell2 BWS stress pre: " << std::endl;
-    // (*_stress[_qp_z])[_qp].printReal();
-    // std::cout << "ADStressDivergenceShell2 BWS kernel transf: " << std::endl;
-    // (*_contravariant_transformation_matrix[_qp_z])[_qp].printReal();
-    // std::cout << "ADStressDivergenceShell2 BWS stress post: " << std::endl;
-    // _stress_covariant.printReal();
-    // std::cout << std::endl;
-
+    // _stress_covariant = (*_stress[_qp_z])[_qp]; // shell model
+    if (_qp_z==0 && _qp==0)
+    {
+    //   std::cout << "ADStressDivergenceShell2 BWS stress pre: " << std::endl;
+    //   (*_stress[_qp_z])[_qp].printReal();
+      std::cout << "ADStressDivergenceShell2 BWS kernel transf: " << std::endl;
+      (*_contravariant_transformation_matrix[_qp_z])[_qp].printReal();
+      // std::cout << "ADStressDivergenceShell2 BWS stress post: " << std::endl;
+      // _stress_covariant.printReal();
+      // std::cout << std::endl;
+    }
     residual1 = _stress_covariant(0, 0) * (*_B_mat[_qp_z])[_qp](0, _i + _component * 4) +
                 _stress_covariant(1, 1) * (*_B_mat[_qp_z])[_qp](1, _i + _component * 4) +
                 2.0 * _stress_covariant(0, 1) * (*_B_mat[_qp_z])[_qp](2, _i + _component * 4) +
