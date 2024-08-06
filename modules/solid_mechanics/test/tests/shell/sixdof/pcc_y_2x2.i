@@ -8,6 +8,13 @@
     type = FileMeshGenerator
     file = cyl_2x2.e
   [../]
+  [all_nodes]
+    type = BoundingBoxNodeSetGenerator
+    input = mesh
+    top_right = '1e6 1e6 1e6'
+    bottom_left = '-1e6 -1e6 -1e6'
+    new_boundary = 'all_nodes'
+  []
 []
 
 [Variables]
@@ -109,7 +116,8 @@
   [./simply_support_rot_z]
     type = DirichletBC
     variable = rot_z
-    boundary = 'CD AD BC'
+    # boundary = 'CD AD BC'
+    boundary = all_nodes
     # boundary = 'CD AD BC AB' #debugging attempts
     value = 0.0
   [../]
@@ -147,7 +155,7 @@
   petsc_options_iname = '-pc_type'
   petsc_options_value = 'lu'
   petsc_options = '-ksp_view_pmat'
-  nl_rel_tol = 1e-8 #was 1e-10 previously
+  nl_rel_tol = 1e-10 #was 1e-10 previously
   nl_abs_tol = 1e-8
   dt = 1.0
   dtmin = 1.0

@@ -170,9 +170,9 @@
   end_time = 1.0
 []
 
-[Debug]
-  show_material_props = true
-[]
+# [Debug]
+#   show_material_props = true
+# []
 
 [Kernels]
   [solid_disp_x]

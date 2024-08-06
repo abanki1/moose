@@ -96,16 +96,16 @@ ADComputeShellStress2::computeQpProperties()
         (*_covariant_transformation_matrix[i])[_qp] * (*_stress[i])[_qp] *
         (*_covariant_transformation_matrix[i])[_qp].transpose(); // original gobal stress
 
-    (*_stress[i])[_qp] =
-        (*_covariant_transformation_matrix[i])[_qp].transpose() * (*_stress[i])[_qp] *
-        (*_covariant_transformation_matrix[i])[_qp]; // original gobal stress; // debugging attempts
-                                                     // to avoid incorrect stress transformation
+    // (*_stress[i])[_qp] =
+    //     (*_covariant_transformation_matrix[i])[_qp].transpose() * (*_stress[i])[_qp] *
+    //     (*_covariant_transformation_matrix[i])[_qp]; // original gobal stress; // debugging
+    //     attempts
+    // to avoid incorrect stress transformation
 
     // std::cout << std::endl << "eeee AB: Strain Increment:" << std::endl;
     // (*_strain_increment[i])[_qp].printReal();
-    // std::cout << std::endl << "ADCompShellStress2 TTTT AB: Covariant matrix:" <<
-    // std::endl;
-    // (*_covariant_transformation_matrix[i])[_qp].printReal();
+    std::cout << std::endl << "ADCompShellStress2 TTTT AB: Covariant matrix:" << std::endl;
+    (*_covariant_transformation_matrix[i])[_qp].printReal();
 
     std::cout << std::endl << "ADCompShellStress2 GGGG: Global Stress:" << std::endl;
     (*_global_stress[i])[_qp].printReal();
