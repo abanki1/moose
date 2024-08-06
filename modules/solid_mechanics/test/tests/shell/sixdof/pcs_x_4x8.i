@@ -143,8 +143,8 @@
   [simply_support_rot_z]
     type = DirichletBC
     variable = rot_z
-    # boundary = 'CD AD BC'
-    boundary = all_nodes #givesSymmSol
+    boundary = 'CD AD BC'
+    # boundary = all_nodes #givesSymmSol
     value = 0.0
   []
 []
