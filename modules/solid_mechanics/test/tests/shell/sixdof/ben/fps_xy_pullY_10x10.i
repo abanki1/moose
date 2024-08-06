@@ -14,6 +14,13 @@
     ymax = 1.0
     show_info = true
   []
+  [all_nodes]
+    type = BoundingBoxNodeSetGenerator
+    input = gmg
+    bottom_left = '-1e6 -1e6 -1e6'
+    top_right = '1e6 1e6 1e6'
+    new_boundary = 'all_nodes'
+  []
 []
 
 [Variables]
@@ -128,7 +135,74 @@
     order = CONSTANT
     family = MONOMIAL
   []
+[]
+  [BCs]
+    [fix_x]
+      type = DirichletBC
+      variable = disp_x
+      boundary = '1 3'
+      value = 0.0
+    []
+    [fix_y]
+      type = DirichletBC
+      variable = disp_y
+      boundary = '0'
+      value = 0.0
+    []
+    [fix_z]
+      type = DirichletBC
+      variable = disp_z
+      boundary = '0'
+      value = 0.0
+    []
+    [fix_rot_x]
+      type = DirichletBC
+      variable = rot_x
+      boundary = '0'
+      value = 0.0
+    []
+    [fix_rot_y]
+      type = DirichletBC
+      variable = rot_y
+      boundary = '0 1 2 3'
+      value = 0.0
+    []
+    [fix_rot_z]
+      type = DirichletBC
+      variable = rot_z
+      boundary = '0 1 2 3'
+      value = 0.0
+    []
+    # [xy_pull_y]
+    #   type = DirichletBC
+    #   variable = disp_y
+    #   boundary = '2'
+    #   value = 0.01
+    # []
+  []
   
+  #[DiracKernels]
+  #  [point1]
+  #    type = ConstantPointSource
+  #    variable = disp_x
+  #    point = '1 0 1'
+  #    value = -2.5 # P = 10
+  #  []
+  #[]
+  
+  [NodalKernels]
+   [fx]
+     type = UserForcingFunctionNodalKernel
+     boundary = '2'
+     function = 10
+     variable = 'disp_y'
+   []
+#    [./constraint_z]
+#   type = PenaltyDirichletNodalKernel
+#   variable = rot_z
+#   value = 0
+#   penalty = 1e6
+# []
 []
 
 [AuxKernels]
@@ -276,69 +350,6 @@
     index_j = 1
     execute_on = TIMESTEP_END
   []
-[]
-
-[BCs]
-  [fix_x]
-    type = DirichletBC
-    variable = disp_x
-    boundary = '1 3'
-    value = 0.0
-  []
-  [fix_y]
-    type = DirichletBC
-    variable = disp_y
-    boundary = '0'
-    value = 0.0
-  []
-  [fix_z]
-    type = DirichletBC
-    variable = disp_z
-    boundary = '0'
-    value = 0.0
-  []
-  [fix_rot_x]
-    type = DirichletBC
-    variable = rot_x
-    boundary = '0'
-    value = 0.0
-  []
-  # [fix_rot_y]
-  #   type = DirichletBC
-  #   variable = rot_y
-  #   boundary = '0 1 2 3'
-  #   value = 0.0
-  # []
-  # [fix_rot_z]
-  #   type = DirichletBC
-  #   variable = rot_z
-  #   boundary = '0 1 2 3'
-  #   value = 0.0
-  # []
-  # [xy_pull_y]
-  #   type = DirichletBC
-  #   variable = disp_y
-  #   boundary = '2'
-  #   value = 0.01
-  # []
-[]
-
-#[DiracKernels]
-#  [point1]
-#    type = ConstantPointSource
-#    variable = disp_x
-#    point = '1 0 1'
-#    value = -2.5 # P = 10
-#  []
-#[]
-
-[NodalKernels]
- [fx]
-   type = UserForcingFunctionNodalKernel
-   boundary = '2'
-   function = 10
-   variable = 'disp_y'
- []
 []
 
 [Preconditioning]

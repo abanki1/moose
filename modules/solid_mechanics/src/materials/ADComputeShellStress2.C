@@ -96,10 +96,9 @@ ADComputeShellStress2::computeQpProperties()
         (*_covariant_transformation_matrix[i])[_qp] * (*_stress[i])[_qp] *
         (*_covariant_transformation_matrix[i])[_qp].transpose(); // original gobal stress
 
-    // (*_stress[i])[_qp] =
-    //     (*_covariant_transformation_matrix[i])[_qp].transpose() * (*_stress[i])[_qp] *
-    //     (*_covariant_transformation_matrix[i])[_qp]; // original gobal stress; // debugging
-    //     attempts
+    (*_stress[i])[_qp] =
+        (*_covariant_transformation_matrix[i])[_qp].transpose() * (*_stress[i])[_qp] *
+        (*_covariant_transformation_matrix[i])[_qp]; // original gobal stress; // debugging attempts
     // to avoid incorrect stress transformation
 
     // std::cout << std::endl << "eeee AB: Strain Increment:" << std::endl;
