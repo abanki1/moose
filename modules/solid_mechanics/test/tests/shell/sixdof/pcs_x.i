@@ -31,7 +31,7 @@
 [Mesh]
   [mesh]
     type = FileMeshGenerator
-    file = cyl_1x1.e
+    file = cyl.e
   []
 []
 
@@ -62,84 +62,84 @@
   []
 []
 
-[ICs]
-  [disp_x]
-    type = RandomIC
-    variable = disp_x
-    min = -0.01
-    max = 0.01
-  []
-  [disp_y]
-    type = RandomIC
-    variable = disp_y
-    min = -0.01
-    max = 0.01
-  []
-  [disp_z]
-    type = RandomIC
-    variable = disp_z
-    min = -0.01
-    max = 0.01
-  []
-
-  [rot_x]
-    type = RandomIC
-    variable = rot_x
-    min = -0.01
-    max = 0.01
-  []
-  [rot_y]
-    type = RandomIC
-    variable = rot_y
-    min = -0.01
-    max = 0.01
-  []
-  [rot_z]
-    type = RandomIC
-    variable = rot_z
-    min = -0.01
-    max = 0.01
-  []
-[]
-
-# [BCs]
-#   [simply_support_x]
-#     type = DirichletBC
+# [ICs]
+#   [disp_x]
+#     type = RandomIC
 #     variable = disp_x
-#     boundary = 'CD AD'
-#     value = 0.0
+#     min = -0.01
+#     max = 0.01
 #   []
-#   [simply_support_y]
-#     type = DirichletBC
+#   [disp_y]
+#     type = RandomIC
 #     variable = disp_y
-#     boundary = 'CD BC'
-#     value = 0.0
+#     min = -0.01
+#     max = 0.01
 #   []
-#   [simply_support_z]
-#     type = DirichletBC
+#   [disp_z]
+#     type = RandomIC
 #     variable = disp_z
-#     boundary = 'CD AB'
-#     value = 0.0
+#     min = -0.01
+#     max = 0.01
 #   []
-#   [simply_support_rot_x]
-#     type = DirichletBC
+
+#   [rot_x]
+#     type = RandomIC
 #     variable = rot_x
-#     boundary = 'CD BC AB'
-#     value = 0.0
+#     min = -0.01
+#     max = 0.01
 #   []
-#   [simply_support_rot_y]
-#     type = DirichletBC
+#   [rot_y]
+#     type = RandomIC
 #     variable = rot_y
-#     boundary = 'CD AD AB'
-#     value = 0.0
+#     min = -0.01
+#     max = 0.01
 #   []
-#   [simply_support_rot_z]
-#     type = DirichletBC
+#   [rot_z]
+#     type = RandomIC
 #     variable = rot_z
-#     boundary = 'CD AD BC'
-#     value = 0.0
+#     min = -0.01
+#     max = 0.01
 #   []
 # []
+
+[BCs]
+  [simply_support_x]
+    type = DirichletBC
+    variable = disp_x
+    boundary = 'CD AD'
+    value = 0.0
+  []
+  [simply_support_y]
+    type = DirichletBC
+    variable = disp_y
+    boundary = 'CD BC'
+    value = 0.0
+  []
+  [simply_support_z]
+    type = DirichletBC
+    variable = disp_z
+    boundary = 'CD AB'
+    value = 0.0
+  []
+  [simply_support_rot_x]
+    type = DirichletBC
+    variable = rot_x
+    boundary = 'CD BC AB'
+    value = 0.0
+  []
+  [simply_support_rot_y]
+    type = DirichletBC
+    variable = rot_y
+    boundary = 'CD AD AB'
+    value = 0.0
+  []
+  [simply_support_rot_z]
+    type = DirichletBC
+    variable = rot_z
+    boundary = 'CD AD BC'
+    value = 0.0
+  []
+[]
 
 [NodalKernels]
   [pinch]
