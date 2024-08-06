@@ -143,8 +143,8 @@
   [simply_support_rot_z]
     type = DirichletBC
     variable = rot_z
-    boundary = 'CD AD BC'
-    # boundary = all_nodes
+    # boundary = 'CD AD BC '
+    boundary = all_nodes
     value = 0.0
   []
 []
@@ -196,11 +196,11 @@
   # line_search = 'none'
 
   # ###### this gives a zeroPivit error with SMP ######
-  # petsc_options_iname = '-pc_type'
-  # petsc_options_value = 'lu'
+  petsc_options_iname = '-pc_type'
+  petsc_options_value = 'lu'
 
-  petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
-  petsc_options_value = 'lu NONZERO   1e1'
+  # petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
+  # petsc_options_value = 'lu NONZERO   1e1'
   # petsc_options_iname = '-pc_type -pc_factor_mat_solver_package'
   # petsc_options_value = 'lu superlu_dist'
   # # petsc_options = '-snes_ksp_ew'
@@ -291,12 +291,27 @@
 []
 
 [Postprocessors]
-  [disp_x]
+  [disp_x1]
     type = PointValue
     point = '1 0 1'
     variable = disp_x
   []
-  [disp_y]
+  # [disp_x2]
+  #   type = PointValue
+  #   point = '0.707 0.707 1' #18
+  #   variable = disp_x
+  # []
+  # [disp_y2]
+  #   type = PointValue
+  #   point = '0.707 0.707 1' #19
+  #   variable = disp_y
+  # []
+  # [disp_t2]
+  #   type = PointValue
+  #   point = '0.707 0.707 1' #18
+  #   variable = rot_z
+  # []
+  [disp_y3]
     type = PointValue
     point = '0 1 1'
     variable = disp_y
