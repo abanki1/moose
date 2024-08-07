@@ -143,13 +143,6 @@ ADStressDivergenceShell2::computeQpResidual()
 
     // std::cout<<"AB _stress_covariant: "<<std::endl;
     // _stress_covariant.printReal();
-    // std::cout<<"AB residual1: "<<residual<<std::endl;
-    // std::cout << std::endl;                                         // AB segregate the block
-    // std::cout << "AB:I am _component: " << _component << std::endl; // AB: print out shear
-    // strains rot_Z std::cout << "AB:I am in plane qp: " << _qp << std::endl; // AB: print out the
-    // inplane _qp loop std::cout << "AB:I am _i: " << _i << std::endl; // AB: print out the inplane
-    // _qp loop
-    // commenting the penalty additions for debugging purposes
     if (_component == 5)
     {
       if (_i == _qp)
