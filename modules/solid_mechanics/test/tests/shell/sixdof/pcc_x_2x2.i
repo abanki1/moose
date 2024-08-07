@@ -148,8 +148,8 @@
     type = DirichletBC
     variable = rot_z
     # boundary = 'CD AD BC'
-    # boundary = 'CD AD BC AB' #debugging attempts
-    boundary = all_nodes
+    boundary = 'CD AD BC AB' #debugging attempts
+    # boundary = all_nodes
     value = 0.0
   []
 []

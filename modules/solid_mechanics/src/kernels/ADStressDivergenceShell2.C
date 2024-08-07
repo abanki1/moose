@@ -107,7 +107,7 @@ ADStressDivergenceShell2::computeQpResidual()
         (*_contravariant_transformation_matrix[_qp_z])
             [_qp]; // continuum constitutive model-transform global stress to local coordinate
 
-    // _stress_covariant = (*_stress[_qp_z])[_qp]; // shell model
+    _stress_covariant = (*_stress[_qp_z])[_qp]; // shell model
     if (_qp_z == 0 && _qp == 0)
     {
       //   std::cout << "ADStressDivergenceShell2 BWS stress pre: " << std::endl;
