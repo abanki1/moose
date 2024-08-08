@@ -857,6 +857,8 @@ ADComputeIncrementalShellStrain2::computeSolnVector()
     // std::cout << "INTERMEDIATE ELEM SOL:" << MetaPhysicL::raw_value(_soln_vector) << std::endl;
     for (unsigned int i = 0; i < _nrot; ++i)
     {
+      std::cout << " _nonlinear_sys.number =" << _nonlinear_sys.number() << " and _rot_num[i] "
+                << _rot_num[i] << std::endl;
 #ifndef MOOSE_GLOBAL_AD_INDEXING
       std::size_t ad_offset = _rot_num[i] * _nonlinear_sys.getMaxVarNDofsPerElem();
 #endif
@@ -877,4 +879,8 @@ ADComputeIncrementalShellStrain2::computeSolnVector()
   // std::cout << "  FINAL _soln_disp_index = " << Moose::stringify(_soln_disp_index) << std::endl;
   // std::cout << "  FINAL _soln_rot_index = " << Moose::stringify(_soln_rot_index) << std::endl;
   // std::cout << "FINAL ELEM SOL:" << MetaPhysicL::raw_value(_soln_vector) << std::endl;
+  std::cout << "FINAL ELEM SOL: ";
+  for (const auto i : index_range(_soln_vector))
+    std::cout << _soln_vector(i) << ' ';
+  std::cout << std::endl;
 }
