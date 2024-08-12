@@ -313,24 +313,24 @@ ADComputeIncrementalShellStrain2::computeProperties()
       (*_gamma_test_y[j])[i] = (*_gamma_test[j])[i] * _cos_yvn[i];
       (*_gamma_test_z[j])[i] = (*_gamma_test[j])[i] * _cos_zvn[i];
 
-      if (j == 0)
-      {
-        // std::cout << " i = " << i << " \n";
-        // std::cout << " gamma test = " << (*_gamma_test[j])[i] << " \n";
-        // std::cout << " gamma test x  = " << (*_gamma_test_x[j])[i] << " \n";
-        // std::cout << " gamma test y  = " << (*_gamma_test_y[j])[i] << " \n";
-        // std::cout << " gamma test z  = " << (*_gamma_test_z[j])[i] << " \n";
-        // // std::cout << " cosxv1 = " << (_cos_xv1[i]) << " \n";
-        // // std::cout << " cosxv2  = " << (_cos_xv2[i]) << " \n";
-        // std::cout << " cosxvn  = " << (_cos_xvn[i]) << " \n";
-        // // std::cout << " cosyv1  = " << (_cos_yv1[i]) << " \n";
-        // // std::cout << " cosyv2  = " << (_cos_yv2[i]) << " \n";
-        // std::cout << " cosyvn  = " << (_cos_yvn[i]) << " \n";
-        // // std::cout << " coszv1  = " << (_cos_zv1[i]) << " \n";
-        // // std::cout << " coszv2  = " << (_cos_zv2[i]) << " \n";
-        // std::cout << " coszvn  = " << (_cos_zvn[i]) << " \n";
-        // std::cout << " soln (12+i) = " << (_soln_vector(12 + i)) << " \n";
-      }
+      // if (j == 0)
+      // {
+      //   // std::cout << " i = " << i << " \n";
+      //   // std::cout << " gamma test = " << (*_gamma_test[j])[i] << " \n";
+      //   // std::cout << " gamma test x  = " << (*_gamma_test_x[j])[i] << " \n";
+      //   // std::cout << " gamma test y  = " << (*_gamma_test_y[j])[i] << " \n";
+      //   // std::cout << " gamma test z  = " << (*_gamma_test_z[j])[i] << " \n";
+      //   // // std::cout << " cosxv1 = " << (_cos_xv1[i]) << " \n";
+      //   // // std::cout << " cosxv2  = " << (_cos_xv2[i]) << " \n";
+      //   // std::cout << " cosxvn  = " << (_cos_xvn[i]) << " \n";
+      //   // // std::cout << " cosyv1  = " << (_cos_yv1[i]) << " \n";
+      //   // // std::cout << " cosyv2  = " << (_cos_yv2[i]) << " \n";
+      //   // std::cout << " cosyvn  = " << (_cos_yvn[i]) << " \n";
+      //   // // std::cout << " coszv1  = " << (_cos_zv1[i]) << " \n";
+      //   // // std::cout << " coszv2  = " << (_cos_zv2[i]) << " \n";
+      //   // std::cout << " coszvn  = " << (_cos_zvn[i]) << " \n";
+      //   // std::cout << " soln (12+i) = " << (_soln_vector(12 + i)) << " \n";
+      // }
 
       (*_total_strain[j])[i] = (*_contravariant_transformation_matrix[j])[i] *
                                (*_total_strain_covariant[j])[i] *
@@ -858,7 +858,6 @@ ADComputeIncrementalShellStrain2::computeSolnVector()
       if (ADReal::do_derivatives)
         Moose::derivInsert(
             _soln_vector(j + 12 + i * _nodes.size()).derivatives(), _soln_rot_index[j][i], 1.);
-
     }
   }
   // std::cout << "  FINAL _soln_disp_index = " << Moose::stringify(_soln_disp_index) << std::endl;
