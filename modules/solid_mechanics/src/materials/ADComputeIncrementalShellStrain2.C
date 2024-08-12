@@ -222,6 +222,7 @@ ADComputeIncrementalShellStrain2::initQpStatefulProperties()
     mooseError("ADComputeIncrementalShellStrain2: Shell element needs to have exactly four nodes.");
 
   std::cout << "QPPP: " << _qrule->get_points().size() << std::endl;
+
   if (_qrule->get_points().size() != 4)
     mooseError("ADComputeIncrementalShellStrain2: Shell element needs to have exactly four "
                "quadrature points.");

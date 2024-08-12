@@ -1,9 +1,15 @@
+# [Mesh]
+#   [mesh]
+#     type = FileMeshGenerator
+#     file = flatplates_xy.e
+#   []
+# []
 [Mesh]
   [gmg]
     type = GeneratedMeshGenerator #In 2D, bottom =0, right = 1, top = 2, left = 3
     dim = 2
-    nx = 4
-    ny = 4
+    nx = 1
+    ny = 1
     xmin = 0.0
     xmax = 1.0
     ymin = 0.0
@@ -14,7 +20,7 @@
     type = TransformGenerator
     input = gmg
     transform = ROTATE
-    vector_value = '0 45 0'
+    vector_value = '0 45 45' #(rot about Z, Y, X)
   []
 []
 
@@ -32,7 +38,7 @@
     family = LAGRANGE
   []
   [rot_x]
-    order = FIRST 
+    order = FIRST
     family = LAGRANGE
   []
   [rot_y]
@@ -44,6 +50,10 @@
     family = LAGRANGE
   []
 []
+
+# [Problem]
+#   solve = false
+# []
 
 [AuxVariables]
   [react_disp_x]
@@ -130,59 +140,59 @@
     order = CONSTANT
     family = MONOMIAL
   []
-  
+
 []
 
 [BCs]
-    [xy_fix_x]
-      type = DirichletBC
-      variable = disp_x
-      boundary = '3' #LeftEdge
-      value = 0.0
-    []
-    [xy_fix_y]
-      type = DirichletBC
-      variable = disp_y
-      boundary = '3' #'6'#'LeftEdge'
-      value = 0.0
-    []
-    [xy_fix_z]
-      type = DirichletBC
-      variable = disp_z
-      boundary = '3' #'6' #LeftEdge
-      value = 0.0
-    []
-    [xy_fix_rot_x]
-      type = DirichletBC
-      variable = rot_x
-      boundary = '0 1 2 3'
-      value = 0.0
-    []
-    [xy_fix_rot_y]
-      type = DirichletBC
-      variable = rot_y
-      boundary = '0 1 2 3'
-      value = 0.0
-    []
-    [xy_fix_rot_z]
-      type = DirichletBC
-      variable = rot_z
-      boundary = '0 1 2 3'
-      value = 0.0
-    []
-    [xy_pull_x]
-      type = DirichletBC
-      variable = disp_x
-      boundary = '1' #RightEdge
-      value = 7.07e-3
-    []
-    [xy_pull_y]
-      type = DirichletBC
-      variable = disp_y
-      boundary = '1' #RightEdge
-      value = 7.07e-3
-    []
+  [xy_fix_x]
+    type = DirichletBC
+    variable = disp_x
+    boundary = '3' #LeftEdge
+    value = 0.0
   []
+  [xy_fix_y]
+    type = DirichletBC
+    variable = disp_y
+    boundary = '3' #'6'#'LeftEdge'
+    value = 0.0
+  []
+  [xy_fix_z]
+    type = DirichletBC
+    variable = disp_z
+    boundary = '3' #'6' #LeftEdge
+    value = 0.0
+  []
+  [xy_fix_rot_x]
+    type = DirichletBC
+    variable = rot_x
+    boundary = '0 1 2 3'
+    value = 0.0
+  []
+  [xy_fix_rot_y]
+    type = DirichletBC
+    variable = rot_y
+    boundary = '0 1 2 3'
+    value = 0.0
+  []
+  [xy_fix_rot_z]
+    type = DirichletBC
+    variable = rot_z
+    boundary = '0 1 2 3'
+    value = 0.0
+  []
+  [xy_pull_x]
+    type = DirichletBC
+    variable = disp_x
+    boundary = '1' #RightEdge
+    value = 7.07e-3
+  []
+  [xy_pull_y]
+    type = DirichletBC
+    variable = disp_y
+    boundary = '1' #RightEdge
+    value = 7.07e-3
+  []
+[]
 
 # [DiracKernels]
 #  [point1]
@@ -195,19 +205,19 @@
 # []
 
 [NodalKernels]
-    [fx]
-      type = UserForcingFunctionNodalKernel
-      boundary = '1'
-      function = 7.07
-      variable = 'disp_x'
-    []
-    [fy]
-     type = UserForcingFunctionNodalKernel
-     boundary = '1'
-     function = 7.07
-     variable = 'disp_y'
-   []
-   []
+ [fx]
+   type = UserForcingFunctionNodalKernel
+   boundary = '1'
+   function = 7.07
+   variable = 'disp_x'
+ []
+ [fy]
+  type = UserForcingFunctionNodalKernel
+  boundary = '1'
+  function = 7.07
+  variable = 'disp_y'
+[]
+[]
 
 [AuxKernels]
   [stress_xx]
@@ -368,8 +378,8 @@
 
 [Executioner]
   type = Transient
-  solve_type = FD
-  # line_search = 'none'
+  solve_type = NEWTON
+  line_search = 'none'
   # petsc_options_iname = '-pc_type'
   # petsc_options_value = 'lu'
   petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
@@ -469,19 +479,23 @@
   []
   [xdisp_2]
     type = PointValue
-    point = '0 0.707 0.707'
+    point = '1 0 0'
     variable = disp_y
   []
-# [./disp_x]
-#         type = SideAverageValue
-#         boundary = 'bottom' #'BC'
-#         variable = disp_x
-#       [../]
-#       [./disp_y]
-#         type = SideAverageValue
-#         boundary ='top' #'AD'
-#         variable = disp_y
-#       [../]
+  # [./disp_x]
+
+
+
+
+  #   type = SideAverageValue
+  #   boundary = '0' #'BC'
+  #   variable = disp_x
+  # [../]
+  # [./disp_y]
+  #   type = SideAverageValue
+  #   boundary ='2' #'AD'
+  #   variable = disp_y
+  # [../]
   [xreact_left]
     type = NodalSum
     boundary = '3'
@@ -492,21 +506,26 @@
     boundary = '1'
     variable = react_disp_x
   []
+  [yreact_left]
+    type = NodalSum
+    boundary = '3'
+    variable = react_disp_y
+  []
+  [yreact_right]
+    type = NodalSum
+    boundary = '1'
+    variable = react_disp_y
+  []
   [stress_xx]
-    type = ElementalVariableValue
+    type = ElementAverageValue
     variable = 'stress_xx'
+    block = 0
+  []
+  [stress_yy]
+    type = ElementalVariableValue
+    variable = 'stress_yy'
     elementid = 0
   []
-  # # [stress_yy]
-  # #   type = ElementalVariableValue
-  # #   variable = 'stress_yy'
-  # #   elementid = 0
-  # # []
-  # # [stress_xy]
-  # #   type = ElementalVariableValue
-  # #   variable = 'stress_xy'
-  # #   elementid = 0
-  # # []
   [strain_xx]
     type = ElementalVariableValue
     variable = 'strain_xx'
