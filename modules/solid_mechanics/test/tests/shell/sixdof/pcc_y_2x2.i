@@ -106,8 +106,8 @@
   [./simply_support_rot_x]
     type = DirichletBC
     variable = rot_x
-    # boundary = 'CD BC AB'
-    boundary = all_nodes
+    boundary = 'CD BC AB'
+    # boundary = all_nodes
     value = 0.0
   [../]
   [./simply_support_rot_y]
