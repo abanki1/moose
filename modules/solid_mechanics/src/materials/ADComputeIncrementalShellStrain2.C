@@ -220,11 +220,12 @@ ADComputeIncrementalShellStrain2::initQpStatefulProperties()
         "ADComputeIncrementalShellStrain2: Shell element is implemented only for 2D elements");
   if (_current_elem->n_nodes() != 4)
     mooseError("ADComputeIncrementalShellStrain2: Shell element needs to have exactly four nodes.");
+
+  std::cout << "QPPP: " << _qrule->get_points().size() << std::endl;
   if (_qrule->get_points().size() != 4)
     mooseError("ADComputeIncrementalShellStrain2: Shell element needs to have exactly four "
                "quadrature points.");
 
-  // std::cout << "BWS init elem id: " << _current_elem->id() << std::endl;
   computeGMatrix();
   computeBMatrix();
 }

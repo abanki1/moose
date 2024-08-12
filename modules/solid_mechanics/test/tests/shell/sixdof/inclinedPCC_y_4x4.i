@@ -20,7 +20,7 @@
     type = TransformGenerator
     input = gmg
     transform = ROTATE
-    vector_value = '0 45 0'
+    vector_value = '45 0 0'
   []
 []
 
@@ -50,6 +50,10 @@
     family = LAGRANGE
   []
 []
+
+# [Problem]
+#   solve = false
+# []
 
 [AuxVariables]
   [react_disp_x]
@@ -468,16 +472,26 @@
 []
 
 [Postprocessors]
-  [xdisp_1]
-    type = PointValue
-    point = '0 1.414 0'
-    variable = disp_x
-  []
-  [xdisp_2]
-    type = PointValue
-    point = '0.707 0.707 0'
-    variable = disp_x
-  []
+  # [xdisp_1]
+  #   type = PointValue
+  #   point = '0 1.414 0'
+  #   variable = disp_x
+  # []
+  # [xdisp_2]
+  #   type = PointValue
+  #   point = '0.707 0.707 0'
+  #   variable = disp_x
+  # []
+  [./disp_x]
+        type = SideAverageValue
+        boundary = '0' #'BC'
+        variable = disp_x
+      [../]
+      [./disp_y]
+        type = SideAverageValue
+        boundary ='2' #'AD'
+        variable = disp_y
+      [../]
   [xreact_left]
     type = NodalSum
     boundary = '3'
