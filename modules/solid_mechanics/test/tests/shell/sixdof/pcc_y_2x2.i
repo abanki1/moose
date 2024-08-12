@@ -43,6 +43,7 @@
     family = LAGRANGE
   [../]
 []
+
 # [ICs]
 #     [disp_x]
 #       type = RandomIC
@@ -82,6 +83,7 @@
 #       max = 0.01
 #     []
 #   []
+
 [BCs]
   [./simply_support_x]
     type = DirichletBC
@@ -104,13 +106,15 @@
   [./simply_support_rot_x]
     type = DirichletBC
     variable = rot_x
-    boundary = 'CD BC AB'
+    # boundary = 'CD BC AB'
+    boundary = all_nodes
     value = 0.0
   [../]
   [./simply_support_rot_y]
     type = DirichletBC
     variable = rot_y
-    boundary = 'CD AD AB'
+    # boundary = 'CD AD AB'
+    boundary = all_nodes
     value = 0.0
   [../]
   [./simply_support_rot_z]
@@ -150,7 +154,7 @@
 
 [Executioner]
   type = Transient
-  solve_type = NEWTON
+  solve_type = FD
 #   line_search = 'none'
   petsc_options_iname = '-pc_type'
   petsc_options_value = 'lu'
