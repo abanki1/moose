@@ -195,12 +195,18 @@
 # []
 
 [NodalKernels]
-    [pinch_x]
+    [fx]
       type = UserForcingFunctionNodalKernel
-      boundary = 'right'
-      function = -2.5
+      boundary = '1'
+      function = 7.07
       variable = 'disp_x'
     []
+    [fy]
+     type = UserForcingFunctionNodalKernel
+     boundary = '1'
+     function = 7.07
+     variable = 'disp_y'
+   []
    []
 
 [AuxKernels]
