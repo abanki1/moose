@@ -100,6 +100,10 @@ ADStressDivergenceShell2::computeQpResidual()
   ADReal residual1 = 0.0;
   // std::cout << "AB:_t_weights.size(): " << _t_weights.size() << std::endl; // AB: print out shear
   // strains rot_Z
+
+  // if (_current_elem->id() == 2)
+  //   return residual;
+
   for (_qp_z = 0; _qp_z < _t_weights.size(); ++_qp_z)
   {
     _stress_covariant =
@@ -112,11 +116,11 @@ ADStressDivergenceShell2::computeQpResidual()
     {
       //   std::cout << "ADStressDivergenceShell2 BWS stress pre: " << std::endl;
       //   (*_stress[_qp_z])[_qp].printReal();
-      std::cout << "ADStressDivergenceShell2 BWS kernel transf: " << std::endl;
-      (*_contravariant_transformation_matrix[_qp_z])[_qp].printReal();
-      std::cout << "ADStressDivergenceShell2 stress in residual calc: " << std::endl;
-      _stress_covariant.printReal();
-      std::cout << std::endl;
+      // std::cout << "ADStressDivergenceShell2 BWS kernel transf: " << std::endl;
+      // (*_contravariant_transformation_matrix[_qp_z])[_qp].printReal();
+      // std::cout << "ADStressDivergenceShell2 stress in residual calc: " << std::endl;
+      // _stress_covariant.printReal();
+      // std::cout << std::endl;
     }
     residual1 = _stress_covariant(0, 0) * (*_B_mat[_qp_z])[_qp](0, _i + _component * 4) +
                 _stress_covariant(1, 1) * (*_B_mat[_qp_z])[_qp](1, _i + _component * 4) +
@@ -149,7 +153,7 @@ ADStressDivergenceShell2::computeQpResidual()
       {
         // std::cout << "AB:_gamma_z: " << (*_gamma_z[_qp_z])[_qp] << std::endl; // AB: print out
         // shear strain Z std::cout << "AB:_ad_JxW[_qp]: " << _ad_JxW[_qp] << std::endl; // AB:
-        // print out geometric Jacobian std::cout << "AB:_ad_coord[_qp]: " << _ad_coord[_qp] <<
+        // print out geometric Jacobian std::cout << "AB:_ad_coord[_qp]: " << _ fad_coord[_qp] <<
         // std::endl; // AB: print out the quadrature points
         residual1 += _penalty * (*_gamma_z[_qp_z])[_qp] / (_ad_JxW[_qp] * _ad_coord[_qp]);
         // residual1 += _penalty * (*_gamma_z[_qp_z])[_qp] * (_ad_JxW[_qp] * _ad_coord[_qp]);

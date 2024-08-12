@@ -89,8 +89,9 @@ ADComputeShellStress2::computeQpProperties()
     // for (unsigned int ii = 0; ii < 3; ++ii)
     //   for (unsigned int jj = 0; jj < 3; ++jj)
     //     _unrotated_stress(ii, jj) = MetaPhysicL::raw_value((*_stress[i])[_qp](ii, jj));
-    std::cout << std::endl << "ADCompShellStress2 before rotation: UUUU Stress:" << std::endl;
-    (*_stress[i])[_qp].printReal();
+
+    // std::cout << std::endl << "ADCompShellStress2 before rotation: UUUU Stress:" << std::endl;
+    // (*_stress[i])[_qp].printReal();
 
     (*_global_stress[i])[_qp] =
         (*_covariant_transformation_matrix[i])[_qp] * (*_stress[i])[_qp] *
@@ -103,14 +104,17 @@ ADComputeShellStress2::computeQpProperties()
 
     // std::cout << std::endl << "eeee AB: Strain Increment:" << std::endl;
     // (*_strain_increment[i])[_qp].printReal();
-    std::cout << std::endl << "ADCompShellStress2 TTTT AB: Covariant matrix:" << std::endl;
-    (*_covariant_transformation_matrix[i])[_qp].printReal();
 
-    std::cout << std::endl << "ADCompShellStress2 GGGG: Global Stress:" << std::endl;
-    (*_global_stress[i])[_qp].printReal();
+    // std::cout << std::endl << "ADCompShellStress2 TTTT AB: Covariant matrix:" << std::endl;
+    // (*_covariant_transformation_matrix[i])[_qp].printReal();
+
+    // std::cout << std::endl << "ADCompShellStress2 GGGG: Global Stress:" << std::endl;
+    // (*_global_stress[i])[_qp].printReal();
+
     // std::cout << "tttt AB: Contravariant Tensor:" << std::endl;
     // (*_contravariant_transformation_matrix[i])[_qp].printReal();
-    std::cout << std::endl << "ADCompShellStress2 after rotation: SSSS Stress" << std::endl;
-    (*_stress[i])[_qp].printReal();
+
+    // std::cout << std::endl << "ADCompShellStress2 after rotation: SSSS Stress" << std::endl;
+    // (*_stress[i])[_qp].printReal();
   }
 }

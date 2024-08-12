@@ -150,7 +150,7 @@
 
 [Executioner]
   type = Transient
-  solve_type = FD
+  solve_type = NEWTON
 #   line_search = 'none'
   petsc_options_iname = '-pc_type'
   petsc_options_value = 'lu'

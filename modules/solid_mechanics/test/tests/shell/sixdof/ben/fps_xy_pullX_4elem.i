@@ -138,50 +138,50 @@
     
 []
 
-[BCs]
-    [fix_x]
-    type = DirichletBC
-    variable = disp_x
-    boundary = '3'
-    value = 0.0
-    []
-    [fix_y]
-    type = DirichletBC
-    variable = disp_y
-    boundary = '0 1 2 3'
-    value = 0.0
-    []
-    [fix_z]
-    type = DirichletBC
-    variable = disp_z
-    boundary = '0 1 2 3'
-    value = 0.0
-    []
-    [fix_rot_x]
-      type = DirichletBC
-      variable = rot_x
-      boundary = '0 1 2 3'
-      value = 0.0
-    []
-    [fix_rot_y]
-    type = DirichletBC
-    variable = rot_y
-    boundary = '0 1 2 3'
-    value = 0.0
-    []
-    [fix_rot_z]
-      type = DirichletBC
-      variable = rot_z
-      boundary = '0 1 2 3'
-      value = 0.0
-    []
-    [xy_pull_x]
-    type = DirichletBC
-    variable = disp_x
-    boundary = '1'
-    value = 0.01
-    []
-[]
+# [BCs]
+#     [fix_x]
+#     type = DirichletBC
+#     variable = disp_x
+#     boundary = '3'
+#     value = 0.0
+#     []
+#     [fix_y]
+#     type = DirichletBC
+#     variable = disp_y
+#     boundary = '0 1 2 3'
+#     value = 0.0
+#     []
+#     [fix_z]
+#     type = DirichletBC
+#     variable = disp_z
+#     boundary = '0 1 2 3'
+#     value = 0.0
+#     []
+#     [fix_rot_x]
+#       type = DirichletBC
+#       variable = rot_x
+#       boundary = '0 1 2 3'
+#       value = 0.0
+#     []
+#     [fix_rot_y]
+#     type = DirichletBC
+#     variable = rot_y
+#     boundary = '0 1 2 3'
+#     value = 0.0
+#     []
+#     [fix_rot_z]
+#       type = DirichletBC
+#       variable = rot_z
+#       boundary = '0 1 2 3'
+#       value = 0.0
+#     []
+#     [xy_pull_x]
+#     type = DirichletBC
+#     variable = disp_x
+#     boundary = '1'
+#     value = 0.01
+#     []
+# []
 
 #[DiracKernels]
 #  [point1]

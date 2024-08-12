@@ -512,14 +512,24 @@
 []
 
 [Postprocessors]
-  [xdisp_1]
+  [xdisp_bottom]
     type = PointValue
     point = '1 0 0'
     variable = disp_x
   []
-  [xdisp_2]
+  [xdisp_3]
+    type = PointValue
+    point = '0.75 0 0'
+    variable = disp_x
+  []
+  [xdisp_top]
     type = PointValue
     point = '1 1 0'
+    variable = disp_x
+  []
+  [xdisp_2]
+    type = PointValue
+    point = '0.5 0 0'
     variable = disp_x
   []
   [xreact_left]
