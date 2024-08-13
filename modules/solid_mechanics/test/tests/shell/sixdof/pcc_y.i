@@ -130,7 +130,7 @@
 [NodalKernels]
   [pinch]
     type = UserForcingFunctionNodalKernel
-    boundary = 'AD' #'11'
+    boundary = '11' #'AD'
     function = -2.5
     variable = disp_y
   []
