@@ -137,51 +137,45 @@
     [xy_fix_x]
       type = DirichletBC
       variable = disp_x
-      boundary = '3' #LeftEdge
+      boundary = 'left' #LeftEdge
       value = 0.0
     []
     [xy_fix_y]
       type = DirichletBC
       variable = disp_y
-      boundary = '3' #'6'#'LeftEdge'
+      boundary = 'left'
       value = 0.0
     []
     [xy_fix_z]
       type = DirichletBC
       variable = disp_z
-      boundary = '3' #'6' #LeftEdge
+      boundary = 'left' #'6' #LeftEdge
       value = 0.0
     []
     [xy_fix_rot_x]
       type = DirichletBC
       variable = rot_x
-      boundary = '0 1 2 3'
+      boundary = 'bottom right top left'
       value = 0.0
     []
     [xy_fix_rot_y]
       type = DirichletBC
       variable = rot_y
-      boundary = '0 1 2 3'
+      boundary = 'bottom right top left'
       value = 0.0
     []
     [xy_fix_rot_z]
       type = DirichletBC
       variable = rot_z
-      boundary = '0 1 2 3'
+      boundary = 'bottom right top left'
       value = 0.0
     []
-    # [xy_pull_x]
-    #   type = DirichletBC
-    #   variable = disp_x
-    #   boundary = '1' #RightEdge
-    #   value = 7.07e-3
-    # []
-    # [xy_pull_y]
-    #   type = DirichletBC
-    #   variable = disp_y
-    #   boundary = '1' #RightEdge
-    #   value = 7.07e-3
-    # []
+    [yz_pull_x]
+      type = DirichletBC
+      variable = disp_x
+      boundary = 'right' #RightEdge
+      value = 1.414
+    []
   []
 
 # [DiracKernels]
@@ -194,20 +188,20 @@
 #  []
 # []
 
-[NodalKernels]
-    [fx]
-      type = UserForcingFunctionNodalKernel
-      boundary = '1'
-      function = 7.07
-      variable = 'disp_x'
-    []
-    [fy]
-     type = UserForcingFunctionNodalKernel
-     boundary = '1'
-     function = 7.07
-     variable = 'disp_y'
-   []
-   []
+# [NodalKernels]
+#     [fx]
+#       type = UserForcingFunctionNodalKernel
+#       boundary = 'right'
+#       function = -1.414
+#       variable = 'disp_x'
+#     []
+#   #   [fz]
+#   #    type = UserForcingFunctionNodalKernel
+#   #    boundary = 'right'
+#   #    function = -2.5
+#   #    variable = 'disp_z'
+#   #  []
+#    []
 
 [AuxKernels]
   [stress_xx]
@@ -465,12 +459,12 @@
   [xdisp_1]
     type = PointValue
     point = '1 0.707 0.707'
-    variable = disp_y
+    variable = disp_x
   []
   [xdisp_2]
     type = PointValue
-    point = '0 0.707 0.707'
-    variable = disp_y
+    point = '1 0 0'
+    variable = disp_x
   []
 # [./disp_x]
 #         type = SideAverageValue
@@ -484,12 +478,12 @@
 #       [../]
   [xreact_left]
     type = NodalSum
-    boundary = '3'
+    boundary = 'left'
     variable = react_disp_x
   []
   [xreact_right]
     type = NodalSum
-    boundary = '1'
+    boundary = 'right'
     variable = react_disp_x
   []
   [stress_xx]
