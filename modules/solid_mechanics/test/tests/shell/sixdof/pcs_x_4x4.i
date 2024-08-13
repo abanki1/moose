@@ -26,19 +26,12 @@
 # The results from FEM analysis matches well with the series solution and with
 # the solution presented by Dvorkin and Bathe (1984).
 
-# Run with -pc_type svd -pc_svd_monitor if convergence issu
+# Run with -pc_type svd -pc_svd_monitor if convergence issue
 
 [Mesh]
   [mesh]
     type = FileMeshGenerator
     file = cyl_4x4.e
-  []
-  [all_nodes]
-    type = BoundingBoxNodeSetGenerator
-    new_boundary = 'all_nodes'
-    input = mesh
-    top_right = '1e6 1e6 1e6'
-    bottom_left = '-1e6 -1e6 -1e6'
   []
 []
 
@@ -68,46 +61,6 @@
     family = LAGRANGE
   []
 []
-
-# [ICs]
-#   [disp_x]
-#     type = RandomIC
-#     variable = disp_x
-#     min = -0.01
-#     max = 0.01
-#   []
-#   [disp_y]
-#     type = RandomIC
-#     variable = disp_y
-#     min = -0.01
-#     max = 0.01
-#   []
-#   [disp_z]
-#     type = RandomIC
-#     variable = disp_z
-#     min = -0.01
-#     max = 0.01
-#   []
-
-#   [rot_x]
-#     type = RandomIC
-#     variable = rot_x
-#     min = -0.01
-#     max = 0.01
-#   []
-#   [rot_y]
-#     type = RandomIC
-#     variable = rot_y
-#     min = -0.01
-#     max = 0.01
-#   []
-#   [rot_z]
-#     type = RandomIC
-#     variable = rot_z
-#     min = -0.01
-#     max = 0.01
-#   []
-# []
 
 [BCs]
   [simply_support_x]
@@ -143,46 +96,45 @@
   [simply_support_rot_z]
     type = DirichletBC
     variable = rot_z
-    # boundary = 'CD AD BC'
-    boundary = all_nodes #givesSymmSol
+    boundary = 'CD AD BC'
     value = 0.0
   []
 []
 
 [NodalKernels]
-  [pinch_x]
+  [pinch]
     type = UserForcingFunctionNodalKernel
     boundary = 'BC' #'10'
     function = -2.5
     variable = disp_x
   []
-  # [constraint_x]
-  #   type = PenaltyDirichletNodalKernel
-  #   variable = rot_x
-  #   value = 0
-  #   boundary = 'CD AD BC'
-  #   penalty = 1e6
-  # [../]
-  # [constraint_y]
-  #   type = PenaltyDirichletNodalKernel
-  #   variable = rot_y
-  #   value = 0
-  #   boundary = 'CD AD BC'
-  #   penalty = 1e6
-  # [../]
-  # [constraint_z]
-  #   type = PenaltyDirichletNodalKernel
-  #   variable = rot_z
-  #   value = 0.0
-  #   penalty = 1e6
-  # []
+  [constraint_x]
+    type = PenaltyDirichletNodalKernel
+    variable = rot_x
+    value = 0
+    # boundary = 'CD AD BC'
+    penalty = 1e6
+  [../]
+  [constraint_y]
+    type = PenaltyDirichletNodalKernel
+    variable = rot_y
+    value = 0
+    # boundary = 'CD AD BC'
+    penalty = 1e6
+  [../]
+  [constraint_z]
+    type = PenaltyDirichletNodalKernel
+    variable = rot_z
+    value = 0
+    penalty = 1e6
+  []
 []
 
 [Preconditioning]
-#   [./smp]
-#     type = SMP
-#     full = true
-#   [../]
+  # [./smp]
+  #   type = SMP
+  #   full = true
+  # [../]
   [FDP_jfnk]
     type = FDP
   []
@@ -190,17 +142,13 @@
 
 [Executioner]
   type = Transient
-#   solve_type = NEWTON
-  solve_type = FD  
-  # type = Steady
+  solve_type = NEWTON
   # line_search = 'none'
+  petsc_options_iname = '-pc_type'
+  petsc_options_value = 'lu'
 
-  # ###### this gives a zeroPivit error with SMP ######
-  # petsc_options_iname = '-pc_type'
-  # petsc_options_value = 'lu'
-
-  petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
-  petsc_options_value = 'lu NONZERO   1e1'
+  # petsc_options_iname = '-pc_type -pc_factor_shift_type -pc_factor_shift_amount'
+  # petsc_options_value = 'lu NONZERO   1e1'
   # petsc_options_iname = '-pc_type -pc_factor_mat_solver_package'
   # petsc_options_value = 'lu superlu_dist'
   # # petsc_options = '-snes_ksp_ew'
@@ -247,7 +195,7 @@
     component = 3
     variable = rot_x
     through_thickness_order = SECOND
-    penalty = 0
+    penalty = 1e6
   []
   [solid_rot_y]
     type = ADStressDivergenceShell2
@@ -255,7 +203,7 @@
     component = 4
     variable = rot_y
     through_thickness_order = SECOND
-    penalty = 0
+    penalty = 1e6
   []
   [solid_rot_z]
     type = ADStressDivergenceShell2
@@ -271,7 +219,7 @@
   [elasticity_shell]
     type = ADComputeIsotropicElasticityTensorShell
     youngs_modulus = 1e6
-    poissons_ratio = 0.0
+    poissons_ratio = 0
     block = '100'
     through_thickness_order = SECOND
   []

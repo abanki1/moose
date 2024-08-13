@@ -73,46 +73,6 @@
   []
 []
 
-# [ICs]
-#   [disp_x]
-#     type = RandomIC
-#     variable = disp_x
-#     min = -0.01
-#     max = 0.01
-#   []
-#   [disp_y]
-#     type = RandomIC
-#     variable = disp_y
-#     min = -0.01
-#     max = 0.01
-#   []
-#   [disp_z]
-#     type = RandomIC
-#     variable = disp_z
-#     min = -0.01
-#     max = 0.01
-#   []
-
-#   [rot_x]
-#     type = RandomIC
-#     variable = rot_x
-#     min = -0.01
-#     max = 0.01
-#   []
-#   [rot_y]
-#     type = RandomIC
-#     variable = rot_y
-#     min = -0.01
-#     max = 0.01
-#   []
-#   [rot_z]
-#     type = RandomIC
-#     variable = rot_z
-#     min = -0.01
-#     max = 0.01
-#   []
-# []
-
 [BCs]
   [simply_support_x]
     type = DirichletBC
@@ -136,22 +96,18 @@
     type = DirichletBC
     variable = rot_x
     boundary = 'CD BC AB'
-    # boundary = all_nodes
     value = 0.0
   []
   [simply_support_rot_y]
     type = DirichletBC
     variable = rot_y
     boundary = 'CD AD AB'
-    # boundary = all_nodes
     value = 0.0
   []
   [simply_support_rot_z]
     type = DirichletBC
     variable = rot_z
     boundary = 'CD AD BC'
-    # boundary = 'CD AD BC AB' #debugging attempts
-    # boundary = all_nodes
     value = 0.0
   []
 []
@@ -163,6 +119,20 @@
     function = -2.5
     variable = disp_x
   []
+  [constraint_x]
+    type = PenaltyDirichletNodalKernel
+    variable = rot_x
+    value = 0
+    # boundary = 'CD AD BC'
+    penalty = 1e6
+  [../]
+  [constraint_y]
+    type = PenaltyDirichletNodalKernel
+    variable = rot_y
+    value = 0
+    # boundary = 'CD AD BC'
+    penalty = 1e6
+  [../]
   [./constraint_z]
     type = PenaltyDirichletNodalKernel
     variable = rot_z
@@ -183,7 +153,7 @@
 
 [Executioner]
   type = Transient
-  solve_type = FD
+  solve_type = NEWTON
 #   line_search = 'none'
   petsc_options_iname = '-pc_type'
   petsc_options_value = 'lu'
