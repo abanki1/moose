@@ -40,13 +40,13 @@
   [./simply_support_x]
     type = DirichletBC
     variable = disp_x
-    boundary = 'CD AD'
+    boundary = 'CD'
     value = 0.0
   [../]
   [./simply_support_y]
     type = DirichletBC
     variable = disp_y
-    boundary = 'CD BC'
+    boundary = 'CD'
     value = 0.0
   [../]
   [./simply_support_z]
@@ -58,19 +58,19 @@
   [./simply_support_rot_x]
     type = DirichletBC
     variable = rot_x
-    boundary = 'CD BC'
+    boundary = 'CD'
     value = 0.0
   [../]
   [./simply_support_rot_y]
     type = DirichletBC
     variable = rot_y
-    boundary = 'CD AD'
+    boundary = 'CD'
     value = 0.0
   [../]
   [./simply_support_rot_z]
     type = DirichletBC
     variable = rot_z
-    boundary = 'CD AD BC'
+    boundary = 'CD'
     value = 0.0
   [../]
 []
@@ -102,7 +102,7 @@
 
 [Executioner]
   type = Transient
-  solve_type = FD
+  solve_type = NEWTON
   line_search = 'none'
   petsc_options_iname = '-pc_type'
   petsc_options_value = 'lu'
@@ -142,7 +142,7 @@
     component = 3
     variable = rot_x
     through_thickness_order = SECOND
-    penalty = 0
+    penalty = 1e6
   [../]
   [./solid_rot_y]
     type = ADStressDivergenceShell2
@@ -150,7 +150,7 @@
     component = 4
     variable = rot_y
     through_thickness_order = SECOND
-    penalty = 0
+    penalty = 1e6
   [../]
   [./solid_rot_z]
     type = ADStressDivergenceShell2
@@ -206,19 +206,6 @@
       variable = disp_y
     []
   []
-# [Postprocessors]
-#   [./disp_x]
-#     type = SideAverageValue
-#     boundary = 'BC'
-#     variable = disp_x
-    
-#   [../]
-#   [./disp_y]
-#     type = SideAverageValue
-#     boundary = 'AD'
-#     variable = disp_y
-#   [../]
-# []
 
 [Outputs]
   exodus = true
