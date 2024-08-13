@@ -181,8 +181,8 @@
 [DiracKernels]
  [point1]
    type = ConstantPointSource
-   variable = disp_x
-  point = '1 0.0 0.0'
+   variable = disp_y
+  point = '1 0.707 0.707'
    value = -2.5 # P = 10
  []
 []
@@ -346,7 +346,7 @@
 
 [Executioner]
   type = Transient
-  solve_type = FD
+  solve_type = NEWTON
   # line_search = 'none'
   # petsc_options_iname = '-pc_type'
   # petsc_options_value = 'lu'
@@ -440,15 +440,15 @@
 []
 
 [Postprocessors]
-  [ydisp_1]
+  [ydisp]
     type = PointValue
     point = '1 0.707 0.707'
     variable = disp_y
   []
-  [xdisp_2]
+  [zdisp]
     type = PointValue
     point = '1 0 0'
-    variable = disp_x
+    variable = disp_z
   []
 # [./disp_x]
 #         type = SideAverageValue
