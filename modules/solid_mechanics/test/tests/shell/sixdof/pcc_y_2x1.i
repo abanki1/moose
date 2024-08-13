@@ -151,7 +151,7 @@
     component = 3
     variable = rot_x
     through_thickness_order = SECOND
-    penalty = 0
+    penalty = 1e6
   [../]
   [./solid_rot_y]
     type = ADStressDivergenceShell2
@@ -159,7 +159,7 @@
     component = 4
     variable = rot_y
     through_thickness_order = SECOND
-    penalty = 0
+    penalty = 1e6
   [../]
   [./solid_rot_z]
     type = ADStressDivergenceShell2
