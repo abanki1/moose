@@ -6,7 +6,7 @@
 [Mesh]
   [./mesh]
     type = FileMeshGenerator
-    file = cyl.e
+    file = cyl_2x2.e
   [../]
   [all_nodes]
     type = BoundingBoxNodeSetGenerator
