@@ -2,8 +2,8 @@
   [gmg]
     type = GeneratedMeshGenerator #In 2D, bottom =0, right = 1, top = 2, left = 3
     dim = 2
-    nx = 4
-    ny = 4
+    nx = 10
+    ny = 10
     xmin = 0.0
     xmax = 1.0
     ymin = 0.0
@@ -183,7 +183,7 @@
    type = ConstantPointSource
    variable = disp_y
   point = '1 0.707 0.707'
-   value = -2.5 # P = 10
+   value = -0.5 # P = 10
  []
 []
 
