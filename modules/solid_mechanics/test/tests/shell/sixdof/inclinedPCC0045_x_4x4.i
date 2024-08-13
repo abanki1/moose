@@ -14,7 +14,7 @@
     type = TransformGenerator
     input = gmg
     transform = ROTATE
-    vector_value = '0 45 0'
+    vector_value = '0 0 45'
   []
 []
 
@@ -137,19 +137,19 @@
     [xy_fix_x]
       type = DirichletBC
       variable = disp_x
-      boundary = 'left' #LeftEdge
+      boundary = 'right' #LeftEdge
       value = 0.0
     []
     [xy_fix_y]
       type = DirichletBC
       variable = disp_y
-      boundary = 'left'
+      boundary = 'right'
       value = 0.0
     []
     [xy_fix_z]
       type = DirichletBC
       variable = disp_z
-      boundary = 'left' #'6' #LeftEdge
+      boundary = 'right' #'6' #LeftEdge
       value = 0.0
     []
     [xy_fix_rot_x]
@@ -170,12 +170,12 @@
       boundary = 'bottom right top left'
       value = 0.0
     []
-    # [yz_pull_x]
-    #   type = DirichletBC
-    #   variable = disp_x
-    #   boundary = 'right' #RightEdge
-    #   value = 1.414
-    # []
+    [yz_pull_x]
+      type = DirichletBC
+      variable = disp_x
+      boundary = 'left' #RightEdge
+      value = 1.414
+    []
   []
 
 # [DiracKernels]
@@ -188,14 +188,20 @@
 #  []
 # []
 
-[NodalKernels]
-    [fx]
-      type = UserForcingFunctionNodalKernel
-      boundary = 'right'
-      function = -1.414
-      variable = 'disp_x'
-    []
-   []
+# [NodalKernels]
+#     [fx]
+#       type = UserForcingFunctionNodalKernel
+#       boundary = 'right'
+#       function = -1.414
+#       variable = 'disp_x'
+#     []
+#   #   [fz]
+#   #    type = UserForcingFunctionNodalKernel
+#   #    boundary = 'right'
+#   #    function = -2.5
+#   #    variable = 'disp_z'
+#   #  []
+#    []
 
 [AuxKernels]
   [stress_xx]

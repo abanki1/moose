@@ -137,19 +137,19 @@
     [xy_fix_x]
       type = DirichletBC
       variable = disp_x
-      boundary = 'left' #LeftEdge
+      boundary = 'bottom' 
       value = 0.0
     []
     [xy_fix_y]
       type = DirichletBC
       variable = disp_y
-      boundary = 'left'
+      boundary = 'bottom'
       value = 0.0
     []
     [xy_fix_z]
       type = DirichletBC
       variable = disp_z
-      boundary = 'left' #'6' #LeftEdge
+      boundary = 'bottom' #'6' #LeftEdge
       value = 0.0
     []
     [xy_fix_rot_x]
@@ -170,12 +170,18 @@
       boundary = 'bottom right top left'
       value = 0.0
     []
-    # [yz_pull_x]
-    #   type = DirichletBC
-    #   variable = disp_x
-    #   boundary = 'right' #RightEdge
-    #   value = 1.414
-    # []
+    [yz_pull_y]
+      type = DirichletBC
+      variable = disp_y
+      boundary = 'top'
+      value = 1
+    []
+    [yz_pull_z]
+      type = DirichletBC
+      variable = disp_z
+      boundary = 'top' 
+      value = 1
+    []
   []
 
 # [DiracKernels]
@@ -187,15 +193,21 @@
 #    value = 2.5 # P = 10
 #  []
 # []
-
-[NodalKernels]
-    [fx]
-      type = UserForcingFunctionNodalKernel
-      boundary = 'right'
-      function = -1.414
-      variable = 'disp_x'
-    []
-   []
+# 
+# [NodalKernels]
+#     [pinch_y]
+#       type = UserForcingFunctionNodalKernel
+#       boundary = 'top'
+#       function = -1
+#       variable = 'disp_y'
+#     []
+#     [pinch_z]
+#       type = UserForcingFunctionNodalKernel
+#       boundary = 'top'
+#       function = -1
+#       variable = 'disp_z'
+#     []
+#    []
 
 [AuxKernels]
   [stress_xx]
@@ -450,15 +462,15 @@
 []
 
 [Postprocessors]
-  [xdisp_1]
+  [ydisp_2]
     type = PointValue
     point = '1 0.707 0.707'
-    variable = disp_x
+    variable = disp_y
   []
-  [xdisp_2]
+  [ydisp_1]
     type = PointValue
-    point = '1 0 0'
-    variable = disp_x
+    point = '0 0.707 0.707'
+    variable = disp_y
   []
 # [./disp_x]
 #         type = SideAverageValue
@@ -470,34 +482,49 @@
 #         boundary ='top' #'AD'
 #         variable = disp_y
 #       [../]
-  [xreact_left]
+  [yreact_bottom]
     type = NodalSum
-    boundary = 'left'
-    variable = react_disp_x
+    boundary = 'bottom'
+    variable = react_disp_y
   []
-  [xreact_right]
+  [yreact_top]
     type = NodalSum
-    boundary = 'right'
-    variable = react_disp_x
+    boundary = 'top'
+    variable = react_disp_y
   []
-  [stress_xx]
+  [zreact_bottom]
+    type = NodalSum
+    boundary = 'bottom'
+    variable = react_disp_z
+  []
+  [zreact_top]
+    type = NodalSum
+    boundary = 'top'
+    variable = react_disp_z
+  []
+  # [stress_xx]
+  #   type = ElementalVariableValue
+  #   variable = 'stress_xx'
+  #   elementid = 0
+  # []
+  [stress_yy]
     type = ElementalVariableValue
-    variable = 'stress_xx'
+    variable = 'stress_yy'
     elementid = 0
   []
-  # # [stress_yy]
-  # #   type = ElementalVariableValue
-  # #   variable = 'stress_yy'
-  # #   elementid = 0
-  # # []
   # # [stress_xy]
   # #   type = ElementalVariableValue
   # #   variable = 'stress_xy'
   # #   elementid = 0
   # # []
-  [strain_xx]
+  # [strain_xx]
+  #   type = ElementalVariableValue
+  #   variable = 'strain_xx'
+  #   elementid = 0
+  # []
+  [strain_yy]
     type = ElementalVariableValue
-    variable = 'strain_xx'
+    variable = 'strain_yy'
     elementid = 0
   []
 []

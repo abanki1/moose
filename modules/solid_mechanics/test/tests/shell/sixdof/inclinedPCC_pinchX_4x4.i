@@ -2,8 +2,8 @@
   [gmg]
     type = GeneratedMeshGenerator #In 2D, bottom =0, right = 1, top = 2, left = 3
     dim = 2
-    nx = 4
-    ny = 4
+    nx = 1
+    ny = 1
     xmin = 0.0
     xmax = 1.0
     ymin = 0.0
@@ -178,24 +178,24 @@
     # []
   []
 
-# [DiracKernels]
-#  [point1]
-#    type = ConstantPointSource
-#    variable = disp_x
-#   #  point = '1 0 1'
-#   point = '1 1 0'
-#    value = 2.5 # P = 10
-#  []
-# []
+[DiracKernels]
+ [point1]
+   type = ConstantPointSource
+   variable = disp_y
+  #  point = '1 0 1'
+  point = '1 0.707 0.707'
+   value = -2.5 # P = 10
+ []
+[]
 
-[NodalKernels]
-    [fx]
-      type = UserForcingFunctionNodalKernel
-      boundary = 'right'
-      function = -1.414
-      variable = 'disp_x'
-    []
-   []
+# [NodalKernels]
+#     [fx]
+#       type = UserForcingFunctionNodalKernel
+#       boundary = 'right'
+#       function = -1.414
+#       variable = 'disp_x'
+#     []
+#    []
 
 [AuxKernels]
   [stress_xx]
@@ -455,10 +455,10 @@
     point = '1 0.707 0.707'
     variable = disp_x
   []
-  [xdisp_2]
+  [ydisp_2]
     type = PointValue
     point = '1 0 0'
-    variable = disp_x
+    variable = disp_y
   []
 # [./disp_x]
 #         type = SideAverageValue
