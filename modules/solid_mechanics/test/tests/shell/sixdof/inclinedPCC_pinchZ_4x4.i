@@ -130,7 +130,6 @@
     order = CONSTANT
     family = MONOMIAL
   []
-  
 []
 
 [BCs]
@@ -460,34 +459,24 @@
 #         boundary ='top' #'AD'
 #         variable = disp_y
 #       [../]
-  [xreact_left]
+  [zreact_left]
     type = NodalSum
     boundary = 'left'
-    variable = react_disp_x
+    variable = react_disp_z
   []
-  [xreact_right]
+  [zreact_right]
     type = NodalSum
     boundary = 'right'
-    variable = react_disp_x
+    variable = react_disp_z
   []
-  [stress_xx]
+  [stress_zz]
     type = ElementalVariableValue
-    variable = 'stress_xx'
+    variable = 'stress_zz'
     elementid = 0
   []
-  # # [stress_yy]
-  # #   type = ElementalVariableValue
-  # #   variable = 'stress_yy'
-  # #   elementid = 0
-  # # []
-  # # [stress_xy]
-  # #   type = ElementalVariableValue
-  # #   variable = 'stress_xy'
-  # #   elementid = 0
-  # # []
-  [strain_xx]
+  [strain_zz]
     type = ElementalVariableValue
-    variable = 'strain_xx'
+    variable = 'strain_zz'
     elementid = 0
   []
 []

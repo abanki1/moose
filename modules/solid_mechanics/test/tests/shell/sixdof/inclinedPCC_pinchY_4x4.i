@@ -460,34 +460,24 @@
 #         boundary ='top' #'AD'
 #         variable = disp_y
 #       [../]
-  [xreact_left]
+  [yreact_left]
     type = NodalSum
     boundary = 'left'
-    variable = react_disp_x
+    variable = react_disp_y
   []
-  [xreact_right]
+  [yreact_right]
     type = NodalSum
     boundary = 'right'
-    variable = react_disp_x
+    variable = react_disp_y
   []
-  [stress_xx]
+  [stress_yy]
     type = ElementalVariableValue
-    variable = 'stress_xx'
+    variable = 'stress_yy'
     elementid = 0
   []
-  # # [stress_yy]
-  # #   type = ElementalVariableValue
-  # #   variable = 'stress_yy'
-  # #   elementid = 0
-  # # []
-  # # [stress_xy]
-  # #   type = ElementalVariableValue
-  # #   variable = 'stress_xy'
-  # #   elementid = 0
-  # # []
-  [strain_xx]
+  [strain_yy]
     type = ElementalVariableValue
-    variable = 'strain_xx'
+    variable = 'strain_yy'
     elementid = 0
   []
 []
