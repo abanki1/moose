@@ -35,7 +35,7 @@
 [Mesh]
   [mesh]
     type = FileMeshGenerator
-    file = cyl_1x1.e
+    file = cyl_1x2.e
   []
 []
 
@@ -70,13 +70,13 @@
   [simply_support_x]
     type = DirichletBC
     variable = disp_x
-    boundary = 'CD'
+    boundary = 'CD AD'
     value = 0.0
   []
   [simply_support_y]
     type = DirichletBC
     variable = disp_y
-    boundary = 'CD'
+    boundary = 'CD BC'
     value = 0.0
   []
   [simply_support_z]
@@ -88,19 +88,19 @@
   [simply_support_rot_x]
     type = DirichletBC
     variable = rot_x
-    boundary = 'CD'
+    boundary = 'CD BC'
     value = 0.0
   []
   [simply_support_rot_y]
     type = DirichletBC
     variable = rot_y
-    boundary = 'CD'
+    boundary = 'CD AD'
     value = 0.0
   []
   [simply_support_rot_z]
     type = DirichletBC
     variable = rot_z
-    boundary = 'CD'
+    boundary = 'CD AD BC'
     value = 0.0
   []
 []
@@ -133,7 +133,7 @@
 [Executioner]
   type = Transient
   solve_type = NEWTON
-  line_search = 'none'
+  # line_search = 'none'
   petsc_options_iname = '-pc_type'
   petsc_options_value = 'lu'
   petsc_options = '-ksp_view_pmat'
