@@ -43,45 +43,6 @@
     family = LAGRANGE
   [../]
 []
-# [ICs]
-#     [disp_x]
-#       type = RandomIC
-#       variable = disp_x
-#       min = -0.01
-#       max = 0.01
-#     []
-#     [disp_y]
-#       type = RandomIC
-#       variable = disp_y
-#       min = -0.01
-#       max = 0.01
-#     []
-#     [disp_z]
-#       type = RandomIC
-#       variable = disp_z
-#       min = -0.01
-#       max = 0.01
-#     []
-
-#     [rot_x]
-#       type = RandomIC
-#       variable = rot_x
-#       min = -0.01
-#       max = 0.01
-#     []
-#     [rot_y]
-#       type = RandomIC
-#       variable = rot_y
-#       min = -0.01
-#       max = 0.01
-#     []
-#     [rot_z]
-#       type = RandomIC
-#       variable = rot_z
-#       min = -0.01
-#       max = 0.01
-#     []
-#   []
 [BCs]
   [./simply_support_x]
     type = DirichletBC
@@ -126,7 +87,7 @@
 [NodalKernels]
   [pinch]
     type = UserForcingFunctionNodalKernel
-    boundary = 'AD' #'11'
+    boundary = '11' #'AD'
     function = -2.5
     variable = disp_y
   []
