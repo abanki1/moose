@@ -6,7 +6,7 @@
 [Mesh]
   [./mesh]
     type = FileMeshGenerator
-    file = cyl_2x2.e
+    file = cyl.e
   [../]
   [all_nodes]
     type = BoundingBoxNodeSetGenerator
@@ -43,46 +43,6 @@
     family = LAGRANGE
   [../]
 []
-
-# [ICs]
-#     [disp_x]
-#       type = RandomIC
-#       variable = disp_x
-#       min = -0.01
-#       max = 0.01
-#     []
-#     [disp_y]
-#       type = RandomIC
-#       variable = disp_y
-#       min = -0.01
-#       max = 0.01
-#     []
-#     [disp_z]
-#       type = RandomIC
-#       variable = disp_z
-#       min = -0.01
-#       max = 0.01
-#     []
-
-#     [rot_x]
-#       type = RandomIC
-#       variable = rot_x
-#       min = -0.01
-#       max = 0.01
-#     []
-#     [rot_y]
-#       type = RandomIC
-#       variable = rot_y
-#       min = -0.01
-#       max = 0.01
-#     []
-#     [rot_z]
-#       type = RandomIC
-#       variable = rot_z
-#       min = -0.01
-#       max = 0.01
-#     []
-#   []
 
 [BCs]
   [./simply_support_x]
@@ -122,7 +82,6 @@
     variable = rot_z
     boundary = 'CD AD BC'
     # boundary = all_nodes
-    # boundary = 'CD AD BC AB' #debugging attempts
     value = 0.0
   [../]
 []

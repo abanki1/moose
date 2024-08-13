@@ -35,7 +35,7 @@
 [Mesh]
   [mesh]
     type = FileMeshGenerator
-    file = cyl_2x2.e
+    file = cyl.e
   []
   [all_nodes]
     type = BoundingBoxNodeSetGenerator
@@ -163,6 +163,18 @@
     function = -2.5
     variable = disp_x
   []
+  # [constraint_x]
+  #   type = PenaltyDirichletNodalKernel
+  #   variable = rot_x
+  #   value = 0
+  #   penalty = 1e6
+  # []
+  # [constraint_y]
+  #   type = PenaltyDirichletNodalKernel
+  #   variable = rot_y
+  #   value = 0
+  #   penalty = 1e6
+  # []
   [./constraint_z]
     type = PenaltyDirichletNodalKernel
     variable = rot_z
@@ -183,7 +195,7 @@
 
 [Executioner]
   type = Transient
-  solve_type = FD
+  solve_type = NEWTON
 #   line_search = 'none'
   petsc_options_iname = '-pc_type'
   petsc_options_value = 'lu'
