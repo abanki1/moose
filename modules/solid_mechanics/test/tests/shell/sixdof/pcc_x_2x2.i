@@ -163,18 +163,18 @@
     function = -2.5
     variable = disp_x
   []
-  # [constraint_x]
-  #   type = PenaltyDirichletNodalKernel
-  #   variable = rot_x
-  #   value = 0
-  #   penalty = 1e6
-  # []
-  # [constraint_y]
-  #   type = PenaltyDirichletNodalKernel
-  #   variable = rot_y
-  #   value = 0
-  #   penalty = 1e6
-  # []
+  [constraint_x]
+    type = PenaltyDirichletNodalKernel
+    variable = rot_x
+    value = 0
+    penalty = 1e6
+  []
+  [constraint_y]
+    type = PenaltyDirichletNodalKernel
+    variable = rot_y
+    value = 0
+    penalty = 1e6
+  []
   [./constraint_z]
     type = PenaltyDirichletNodalKernel
     variable = rot_z
