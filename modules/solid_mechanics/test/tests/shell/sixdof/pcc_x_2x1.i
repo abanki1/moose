@@ -147,8 +147,8 @@
   [simply_support_rot_z]
     type = DirichletBC
     variable = rot_z
-    # boundary = 'CD AD BC'
-    boundary = 'CD AD BC AB' #debugging attempts
+    boundary = 'CD AD BC'
+    # boundary = 'CD AD BC AB' #debugging attempts
     # boundary = all_nodes
     value = 0.0
   []
@@ -221,7 +221,7 @@
     component = 3
     variable = rot_x
     through_thickness_order = SECOND
-    penalty = 0
+    penalty = 1e6
   []
   [solid_rot_y]
     type = ADStressDivergenceShell2

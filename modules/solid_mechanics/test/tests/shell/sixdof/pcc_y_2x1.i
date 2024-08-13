@@ -116,8 +116,8 @@
   [./simply_support_rot_z]
     type = DirichletBC
     variable = rot_z
-    # boundary = 'CD AD BC'
-    boundary = all_nodes
+    boundary = 'CD AD BC'
+    # boundary = all_nodes
     # boundary = 'CD AD BC AB' #debugging attempts
     value = 0.0
   [../]
@@ -150,7 +150,7 @@
 
 [Executioner]
   type = Transient
-  solve_type = FD
+  solve_type = NEWTON
 #   line_search = 'none'
   petsc_options_iname = '-pc_type'
   petsc_options_value = 'lu'
