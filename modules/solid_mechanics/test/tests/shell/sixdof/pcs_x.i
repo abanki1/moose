@@ -62,46 +62,6 @@
   []
 []
 
-# [ICs]
-#   [disp_x]
-#     type = RandomIC
-#     variable = disp_x
-#     min = -0.01
-#     max = 0.01
-#   []
-#   [disp_y]
-#     type = RandomIC
-#     variable = disp_y
-#     min = -0.01
-#     max = 0.01
-#   []
-#   [disp_z]
-#     type = RandomIC
-#     variable = disp_z
-#     min = -0.01
-#     max = 0.01
-#   []
-
-#   [rot_x]
-#     type = RandomIC
-#     variable = rot_x
-#     min = -0.01
-#     max = 0.01
-#   []
-#   [rot_y]
-#     type = RandomIC
-#     variable = rot_y
-#     min = -0.01
-#     max = 0.01
-#   []
-#   [rot_z]
-#     type = RandomIC
-#     variable = rot_z
-#     min = -0.01
-#     max = 0.01
-#   []
-# []
-
 [BCs]
   [simply_support_x]
     type = DirichletBC
@@ -144,24 +104,24 @@
 [NodalKernels]
   [pinch]
     type = UserForcingFunctionNodalKernel
-    boundary = '10' #'BC'
+    boundary = 'BC' #'10'
     function = -2.5
     variable = disp_x
   []
-  # [constraint_x]
-  #   type = PenaltyDirichletNodalKernel
-  #   variable = rot_x
-  #   value = 0
-  #   boundary = 'CD AD BC'
-  #   penalty = 1e6
-  # [../]
-  # [constraint_y]
-  #   type = PenaltyDirichletNodalKernel
-  #   variable = rot_y
-  #   value = 0
-  #   boundary = 'CD AD BC'
-  #   penalty = 1e6
-  # [../]
+  [constraint_x]
+    type = PenaltyDirichletNodalKernel
+    variable = rot_x
+    value = 0
+    # boundary = 'CD AD BC'
+    penalty = 1e6
+  [../]
+  [constraint_y]
+    type = PenaltyDirichletNodalKernel
+    variable = rot_y
+    value = 0
+    # boundary = 'CD AD BC'
+    penalty = 1e6
+  [../]
   [constraint_z]
     type = PenaltyDirichletNodalKernel
     variable = rot_z
@@ -171,26 +131,19 @@
 []
 
 [Preconditioning]
-  [./smp]
-    type = SMP
-    full = true
-  [../]
-  # [FDP_jfnk]
-  #   type = FDP
-  # []
+  # [./smp]
+  #   type = SMP
+  #   full = true
+  # [../]
+  [FDP_jfnk]
+    type = FDP
+  []
 []
-
-# [Problem]
-#   solve = false
-# []
 
 [Executioner]
   type = Transient
   solve_type = NEWTON
-  # type = Steady
-  line_search = 'none'
-
-  # ###### this gives a zeroPivit error with SMP ######
+  # line_search = 'none'
   petsc_options_iname = '-pc_type'
   petsc_options_value = 'lu'
 
@@ -242,7 +195,7 @@
     component = 3
     variable = rot_x
     through_thickness_order = SECOND
-    penalty = 0
+    penalty = 1e6
   []
   [solid_rot_y]
     type = ADStressDivergenceShell2
@@ -270,7 +223,6 @@
     block = '100'
     through_thickness_order = SECOND
   []
-
   [strain]
     type = ADComputeIncrementalShellStrain2
     block = '100'
@@ -279,7 +231,6 @@
     thickness = 0.01
     through_thickness_order = SECOND
   []
-
   [stress_shell]
     type = ADComputeShellStress2
     block = '100'
