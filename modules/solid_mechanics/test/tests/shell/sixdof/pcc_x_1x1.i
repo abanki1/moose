@@ -129,13 +129,13 @@
   [simply_support_rot_x]
     type = DirichletBC
     variable = rot_x
-    boundary = 'CD BC AB'
+    boundary = 'CD BC'
     value = 0.0
   []
   [simply_support_rot_y]
     type = DirichletBC
     variable = rot_y
-    boundary = 'CD AD AB'
+    boundary = 'CD AD'
     value = 0.0
   []
   [simply_support_rot_z]
