@@ -1,7 +1,18 @@
 [Mesh]
-  [mesh]
-    type = FileMeshGenerator
-    file = flatplates_xy.e
+  # [mesh]
+  #   type = FileMeshGenerator
+  #   file = flatplates_xy.e #5-bottom 6-left 7-top 8-right
+  # []
+  [gmg]
+    type = GeneratedMeshGenerator #In 2D, bottom =0, right = 1, top = 2, left = 3
+    dim = 2
+    nx = 1
+    ny = 1
+    xmin = 0.0
+    xmax = 1.0
+    ymin = 0.0
+    ymax = 1.0
+    show_info = true
   []
 []
 
@@ -39,43 +50,61 @@
   [xy_fix_x]
     type = DirichletBC
     variable = disp_x
-    boundary = '6'
+    boundary = 'left right top bottom' #left 
     value = 0.0
   []
   [xy_fix_y]
     type = DirichletBC
     variable = disp_y
-    boundary = '1 6'
+    # boundary = '6 8 5 7' #left
+    boundary = 'left right top bottom' #left 
     value = 0.0
   []
   [xy_fix_z]
     type = DirichletBC
     variable = disp_z
-    boundary = '6'
+    # boundary = '6' #left
+    boundary = 'left' #left 
+    value = 0.0
+  []
+  [xy_fix_rot_x]
+    type = DirichletBC
+    variable = rot_x
+    # boundary = '6' #left
+    boundary = 'left right top bottom'
     value = 0.0
   []
   [xy_fix_rot_y]
     type = DirichletBC
     variable = rot_y
-    boundary = '6'
+    # boundary = '6' #left
+    boundary = 'left right top bottom'
+    value = 0.0
+  []
+  [xy_fix_rot_z]
+    type = DirichletBC
+    variable = rot_z
+    # boundary = '6' #left
+    boundary = 'left right top bottom'
     value = 0.0
   []
   [xy_pull_z]
     type = DirichletBC
     variable = disp_z
-    boundary = '8'
+    # boundary = '8' #right
+    boundary = 'right'
     value = 0.01
   []
 []
 
-[DiracKernels]
- [point1]
-   type = ConstantPointSource
-   variable = disp_x
-   point = '1 0 1'
-   value = -2.5 # P = 10
- []
-[]
+# [DiracKernels]
+#  [point1]
+#    type = ConstantPointSource
+#    variable = disp_x
+#    point = '1 0 1'
+#    value = -2.5 # P = 10
+#  []
+# []
 
 #[NodalKernels]
 #  [fx]
@@ -102,6 +131,7 @@
   line_search = 'none'
   petsc_options_iname = '-pc_type'
   petsc_options_value = 'lu'
+  petsc_options = '-ksp_view_pmat'
   nl_rel_tol = 1e-10
   nl_abs_tol = 1e-8
   dt = 1.0
@@ -137,7 +167,7 @@
     variable = rot_x
     save_in = react_rot_x
     through_thickness_order = SECOND
-    penalty = 1e-6
+    penalty = 1e6
   []
   [solid_rot_y]
     type = ADStressDivergenceShell2
@@ -145,7 +175,7 @@
     variable = rot_y
     save_in = react_rot_y
     through_thickness_order = SECOND
-    penalty = 1e-6
+    penalty = 1e6
   []
   [solid_rot_z]
     type = ADStressDivergenceShell2
@@ -153,7 +183,7 @@
     variable = rot_z
     save_in = react_rot_z
     through_thickness_order = SECOND
-    penalty = 1e-6
+    penalty = 1e6
   []
 []
 

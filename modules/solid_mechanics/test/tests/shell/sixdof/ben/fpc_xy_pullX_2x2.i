@@ -425,37 +425,37 @@
     save_in = react_disp_y
     through_thickness_order = SECOND
   []
-  # [solid_disp_z]
-  #   type = ADStressDivergenceShell2
-  #   component = 2
-  #   variable = disp_z
-  #   save_in = react_disp_z
-  #   through_thickness_order = SECOND
-  # []
-  # [solid_rot_x]
-  #   type = ADStressDivergenceShell2
-  #   component = 3
-  #   variable = rot_x
-  #   save_in = react_rot_x
-  #   through_thickness_order = SECOND
-  #   penalty = 1e6
-  # []
-  # [solid_rot_y]
-  #   type = ADStressDivergenceShell2
-  #   component = 4
-  #   variable = rot_y
-  #   save_in = react_rot_y
-  #   through_thickness_order = SECOND
-  #   penalty = 1e6
-  # []
-  # [solid_rot_z]
-  #   type = ADStressDivergenceShell2
-  #   component = 5
-  #   variable = rot_z
-  #   save_in = react_rot_z
-  #   through_thickness_order = SECOND
-  #   penalty = 1e6
-  # []
+  [solid_disp_z]
+    type = ADStressDivergenceShell2
+    component = 2
+    variable = disp_z
+    save_in = react_disp_z
+    through_thickness_order = SECOND
+  []
+  [solid_rot_x]
+    type = ADStressDivergenceShell2
+    component = 3
+    variable = rot_x
+    save_in = react_rot_x
+    through_thickness_order = SECOND
+    penalty = 1e6
+  []
+  [solid_rot_y]
+    type = ADStressDivergenceShell2
+    component = 4
+    variable = rot_y
+    save_in = react_rot_y
+    through_thickness_order = SECOND
+    penalty = 1e6
+  []
+  [solid_rot_z]
+    type = ADStressDivergenceShell2
+    component = 5
+    variable = rot_z
+    save_in = react_rot_z
+    through_thickness_order = SECOND
+    penalty = 1e6
+  []
 []
 
 [Materials]

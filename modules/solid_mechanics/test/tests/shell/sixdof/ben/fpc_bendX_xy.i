@@ -1,7 +1,7 @@
 [Mesh]
   [mesh]
     type = FileMeshGenerator
-    file = flatplates_xy.e
+    file = flatplates_xy.e #5-bottom 6-left 7-top 8-right
   []
 []
 
@@ -39,52 +39,55 @@
   [xy_fix_x]
     type = DirichletBC
     variable = disp_x
-    boundary = '6'
+    boundary = '6 8 5 7' #left 
     value = 0.0
   []
   [xy_fix_y]
     type = DirichletBC
     variable = disp_y
-    boundary = '1 6'
+    boundary = '6 8 5 7' #left
     value = 0.0
   []
   [xy_fix_z]
     type = DirichletBC
     variable = disp_z
-    boundary = '6'
+    boundary = '5' #bottom
+    value = 0.0
+  []
+  [xy_fix_rot_x]
+    type = DirichletBC
+    variable = rot_x
+    boundary = '5' #bottom
     value = 0.0
   []
   [xy_fix_rot_y]
     type = DirichletBC
     variable = rot_y
-    boundary = '6'
+    boundary = '5' #bottom
+    value = 0.0
+  []
+  [xy_fix_rot_z]
+    type = DirichletBC
+    variable = rot_z
+    boundary = '5' #bottom
     value = 0.0
   []
   [xy_pull_z]
     type = DirichletBC
     variable = disp_z
-    boundary = '8'
+    boundary = '7' #top
     value = 0.01
   []
 []
 
-[DiracKernels]
- [point1]
-   type = ConstantPointSource
-   variable = disp_x
-   point = '1 0 1'
-   value = -2.5 # P = 10
- []
-[]
-
-#[NodalKernels]
-#  [fx]
-#    type = UserForcingFunctionNodalKernel
-#    boundary = '3 4'
-#    function = 1
-#    variable = 'disp_x'
+# [DiracKernels]
+#  [point1]
+#    type = ConstantPointSource
+#    variable = disp_x
+#    point = '1 0 1'
+#    value = -2.5 # P = 10
 #  []
-#[]
+# []
 
 [Preconditioning]
   # [./smp]
@@ -222,7 +225,7 @@
 [Postprocessors]
   [zdisp1]
     type = PointValue
-    point = '1 0 0'
+    point = '0 1 0'
     variable = disp_z
   []
   [zdisp2]
@@ -230,24 +233,24 @@
     point = '1 1 0'
     variable = disp_z
   []
-  [zreact_right]
+  [zreact_bottom]
     type = NodalSum
-    boundary = 8
+    boundary = '5'
     variable = react_disp_z
   []
-  [zreact_left]
+  [zreact_top]
     type = NodalSum
-    boundary = 6
+    boundary = '7'
     variable = react_disp_z
   []
-  [y_rot_react_right]
+  [y_rot_react_top]
     type = NodalSum
-    boundary = 8
+    boundary = '7'
     variable = react_rot_y
   []
-  [y_rot_react_left]
+  [y_rot_react_bottom]
     type = NodalSum
-    boundary = 6
+    boundary = '5'
     variable = react_rot_y
   []
 []
