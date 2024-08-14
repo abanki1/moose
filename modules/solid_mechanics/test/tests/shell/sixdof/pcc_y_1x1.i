@@ -87,12 +87,24 @@
     function = -2.5
     variable = disp_y
   []
-  [constraint_z]
+  [./constraint_x]
     type = PenaltyDirichletNodalKernel
-    variable = rot_z
+    variable = rot_x
     value = 0
     penalty = 1e12
   []
+  [./constraint_y]
+    type = PenaltyDirichletNodalKernel
+    variable = rot_y
+    value = 0
+    penalty = 1e12
+  []
+  # [constraint_z]
+  #   type = PenaltyDirichletNodalKernel
+  #   variable = rot_z
+  #   value = 0
+  #   penalty = 1e12
+  # []
 []
 
 [Preconditioning]
