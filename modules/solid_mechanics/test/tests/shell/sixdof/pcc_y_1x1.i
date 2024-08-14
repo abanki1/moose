@@ -6,7 +6,7 @@
 [Mesh]
   [./mesh]
     type = FileMeshGenerator
-    file = cyl_1x2.e
+    file = cyl_1x1.e
   [../]
 []
 
@@ -40,13 +40,15 @@
   [./simply_support_x]
     type = DirichletBC
     variable = disp_x
-    boundary = 'CD AD'
+    # boundary = 'CD AD'
+    boundary ='CD'
     value = 0.0
   [../]
   [./simply_support_y]
     type = DirichletBC
     variable = disp_y
-    boundary = 'CD BC'
+    # boundary = 'CD BC'
+    boundary ='CD'
     value = 0.0
   [../]
   [./simply_support_z]
@@ -58,19 +60,22 @@
   [./simply_support_rot_x]
     type = DirichletBC
     variable = rot_x
-    boundary = 'CD BC'
+    # boundary = 'CD BC'
+    boundary ='CD'
     value = 0.0
   [../]
   [./simply_support_rot_y]
     type = DirichletBC
     variable = rot_y
-    boundary = 'CD AD'
+    # boundary = 'CD AD'
+    boundary ='CD'
     value = 0.0
   [../]
   [./simply_support_rot_z]
     type = DirichletBC
     variable = rot_z
-    boundary = 'CD AD BC'
+    # boundary = 'CD AD BC'
+    boundary ='CD'
     value = 0.0
   [../]
 []
@@ -82,12 +87,12 @@
     function = -2.5
     variable = disp_y
   []
-  [constraint]
-    type = PenaltyDirichletNodalKernel
-    variable = rot_z
-    value = 0
-    penalty = 1e6
-  []
+  # [constraint]
+  #   type = PenaltyDirichletNodalKernel
+  #   variable = rot_z
+  #   value = 0
+  #   penalty = 1e6
+  # []
 []
 
 [Preconditioning]
