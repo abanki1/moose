@@ -6,7 +6,7 @@
 [Mesh]
   [./mesh]
     type = FileMeshGenerator
-    file = cyl_1x2.e
+    file = cyl_2x1.e
   [../]
 []
 
@@ -87,7 +87,7 @@
     function = -2.5
     variable = disp_y
   []
-  # [constraint]
+  # [constraint_z]
   #   type = PenaltyDirichletNodalKernel
   #   variable = rot_z
   #   value = 0

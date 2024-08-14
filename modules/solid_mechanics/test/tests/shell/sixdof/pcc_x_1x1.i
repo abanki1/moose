@@ -35,7 +35,7 @@
 [Mesh]
   [mesh]
     type = FileMeshGenerator
-    file = cyl_1x2.e
+    file = cyl_2x1.e
   []
 []
 
