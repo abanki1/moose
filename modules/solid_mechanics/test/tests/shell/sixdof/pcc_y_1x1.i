@@ -6,7 +6,7 @@
 [Mesh]
   [./mesh]
     type = FileMeshGenerator
-    file = cyl_1x1.e
+    file = cyl_1x2.e
   [../]
 []
 
