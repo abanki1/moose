@@ -100,14 +100,6 @@
     # boundary = all_nodes
     value = 0.0
   [../]
-    # [u_top_pull]
-    #     type = ADPressure
-    #     variable = disp_y
-    #     displacements = disp_y
-    #     boundary = '4'
-    #     factor = -10.0e6
-    #     function = top_pull
-    #   []
 []
 
 [NodalKernels]
