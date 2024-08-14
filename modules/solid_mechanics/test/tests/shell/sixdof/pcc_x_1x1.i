@@ -97,17 +97,17 @@
   [simply_support_rot_x]
     type = DirichletBC
     variable = rot_x
-    # boundary = 'CD AB BC'
+    boundary = 'CD AB BC'
     # boundary ='CD BC'
-    boundary = all_nodes
+    # boundary = all_nodes
     value = 0.0
   []
   [simply_support_rot_y]
     type = DirichletBC
     variable = rot_y
-    boundary = 'CD AB AD'
+    # boundary = 'CD AB AD'
     # boundary ='CD AD'
-    # boundary = all_nodes
+    boundary = all_nodes
     value = 0.0
   []
   [simply_support_rot_z]
