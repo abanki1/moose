@@ -79,7 +79,7 @@
   [./simply_support_rot_x]
     type = DirichletBC
     variable = rot_x
-    boundary = 'CD BC'
+    boundary = 'CD BC AB'
     # boundary ='CD BC'
     # boundary = all_nodes
     value = 0.0
@@ -87,7 +87,7 @@
   [./simply_support_rot_y]
     type = DirichletBC
     variable = rot_y
-    boundary = 'CD AD'
+    boundary = 'CD AD AB'
     # boundary ='CD AD'
     # boundary = all_nodes
     value = 0.0
@@ -129,12 +129,12 @@
   #   value = 0
   #   penalty = 1e12
   # []
-    [constraint_z]
-        type = PenaltyDirichletNodalKernel
-        variable = rot_z
-        value = 0
-        penalty = 1e12
-    []
+    # [constraint_z]
+    #     type = PenaltyDirichletNodalKernel
+    #     variable = rot_z
+    #     value = 0
+    #     penalty = 1e12
+    # []
 []
 
 [Preconditioning]
