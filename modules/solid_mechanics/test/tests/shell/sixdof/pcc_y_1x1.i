@@ -8,6 +8,13 @@
     type = FileMeshGenerator
     file = cyl_1x2.e
   [../]
+    [all_nodes]
+      type = BoundingBoxNodeSetGenerator
+      input = mesh
+      top_right = '1e6 1e6 1e6'
+      bottom_left = '-1e6 -1e6 -1e6'
+      new_boundary = 'all_nodes'
+    []
 []
 
 [Variables]
@@ -54,21 +61,23 @@
   [./simply_support_z]
     type = DirichletBC
     variable = disp_z
-    boundary = 'CD AB'
+    boundary ='CD AB'
     value = 0.0
   [../]
   [./simply_support_rot_x]
     type = DirichletBC
     variable = rot_x
-    boundary = 'CD AB BC'
-    # boundary ='CD AB'
+    # boundary = 'CD AB BC'
+    # boundary ='CD BC'
+    boundary = all_nodes
     value = 0.0
   [../]
   [./simply_support_rot_y]
     type = DirichletBC
     variable = rot_y
-    boundary = 'CD AB AD'
-    # boundary ='CD AB'
+    # boundary = 'CD AB AD'
+    # boundary ='CD AD'
+    boundary = all_nodes
     value = 0.0
   [../]
   [./simply_support_rot_z]
@@ -87,24 +96,24 @@
     function = -2.5
     variable = disp_y
   []
-  [./constraint_x]
-    type = PenaltyDirichletNodalKernel
-    variable = rot_x
-    value = 0
-    penalty = 1e12
-  []
-  [./constraint_y]
-    type = PenaltyDirichletNodalKernel
-    variable = rot_y
-    value = 0
-    penalty = 1e12
-  []
-  # [constraint_z]
+  # [./constraint_x]
   #   type = PenaltyDirichletNodalKernel
-  #   variable = rot_z
+  #   variable = rot_x
   #   value = 0
   #   penalty = 1e12
   # []
+  # [./constraint_y]
+  #   type = PenaltyDirichletNodalKernel
+  #   variable = rot_y
+  #   value = 0
+  #   penalty = 1e12
+  # []
+  [constraint_z]
+    type = PenaltyDirichletNodalKernel
+    variable = rot_z
+    value = 0
+    penalty = 1e12
+  []
 []
 
 [Preconditioning]
