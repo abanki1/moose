@@ -6,7 +6,7 @@
 [Mesh]
   [./mesh]
     type = FileMeshGenerator
-    file = cyl_2x1.e
+    file = cyl_1x2.e
   [../]
 []
 
@@ -61,7 +61,7 @@
     type = DirichletBC
     variable = rot_x
     # boundary = 'CD BC'
-    boundary ='CD'
+    boundary ='CD AB'
     value = 0.0
   [../]
   [./simply_support_rot_y]
