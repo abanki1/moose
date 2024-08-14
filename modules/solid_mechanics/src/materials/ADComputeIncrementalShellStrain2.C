@@ -593,13 +593,15 @@ ADComputeIncrementalShellStrain2::computeBMatrix()
       _v1[k] = _x3;
 
     _v2[k] = _node_normal[k].cross(_v1[k]);
-    // std::cout << " k = " << k << " \n";
-    //   std::cout << "v1 " << k << " 0 = " << _v1[k](0) << " \n";
-    //   std::cout << "v1 " << k << " 1 = " << _v1[k](1) << " \n";
-    //   std::cout << "v1 " << k << " 2 = " << _v1[k](2) << " \n";
-    //   std::cout << "v2 " << k << " 0 = " << _v2[k](0) << " \n";
-    //   std::cout << "v2 " << k << " 1 = " << _v2[k](1) << " \n";
-    //   std::cout << "v2 " << k << " 2 = " << _v2[k](2) << " \n";
+
+    std::cout << "BWS elem: " << _current_elem->id() << " node: " << k << std::endl;
+    std::cout << " k = " << k << " \n";
+    std::cout << "v1 " << k << " 0 = " << _v1[k](0) << " \n";
+    std::cout << "v1 " << k << " 1 = " << _v1[k](1) << " \n";
+    std::cout << "v1 " << k << " 2 = " << _v1[k](2) << " \n";
+    std::cout << "v2 " << k << " 0 = " << _v2[k](0) << " \n";
+    std::cout << "v2 " << k << " 1 = " << _v2[k](1) << " \n";
+    std::cout << "v2 " << k << " 2 = " << _v2[k](2) << " \n";
 
     // Calculate angles between the local coordinate axes and global coordinate axes
     (_cos_xv1[k]) = MathUtils::dotProduct(_x1, _v1[k]) / (_x1.norm() * _v1[k].norm());
