@@ -1,7 +1,7 @@
 [Mesh]
   [mesh]
     type = FileMeshGenerator
-    file = flatplates_xy.e #6-bottom 6-left 7-top 8-right
+    file = flatplates_yz.e #5-bottom 6-left 7-top 8-right
   []
 []
 
@@ -36,75 +36,73 @@
 []
 
 [BCs]
-  [xy_fix_x]
-    type = DirichletBC
-    variable = disp_x
-    boundary =  '5' #bottom 
-    value = 0.0
-  []
-  [xy_fix_y]
+    [yz_fix_x]
+        type = DirichletBC
+        variable = disp_x
+        boundary = '6'
+        value = 0.0
+    []
+  [yz_fix_y]
     type = DirichletBC
     variable = disp_y
-    boundary = '6 8 5 7' #left
+    boundary = '6'
     value = 0.0
   []
-  [xy_fix_z]
+  [yz_fix_z]
     type = DirichletBC
     variable = disp_z
-    boundary = '5' #bottom
+    boundary = '5 6 7 8'
     value = 0.0
   []
-  [xy_fix_rot_x]
+  [yz_fix_rot_x]
     type = DirichletBC
     variable = rot_x
-    boundary = '5' #bottom
+    boundary = '6'
     value = 0.0
   []
-  [xy_fix_rot_y]
+  [yz_fix_rot_y]
     type = DirichletBC
     variable = rot_y
-    boundary = '5' #bottom
+    boundary = '6'
     value = 0.0
   []
-  [xy_fix_rot_z]
+  [yz_fix_rot_z]
     type = DirichletBC
     variable = rot_z
-    boundary = '5' #bottom
+    boundary = '6'
     value = 0.0
   []
-  # [xy_pull_z]
-  #   type = DirichletBC
-  #   variable = disp_z
-  #   boundary = '7' #top
-  #   value = 0.01
-  # []
+  [yz_pull_x]
+    type = DirichletBC
+    variable = disp_x
+    boundary = '8'
+    value = -0.01
+  []
 []
 
+#[DiracKernels]
+#  [point1]
+#    type = ConstantPointSource
+#    variable = disp_x
+#    point = '1 0 1'
+#    value = -2.5 # P = 10
+#  []
+#[]
+
 [NodalKernels]
-  [fz]
-    type = UserForcingFunctionNodalKernel
-    boundary = '7' #'top'
-    function = -3
-    variable = 'disp_z'
-  []
-  #[penaltyrot_X]
-  #   type = PenaltyDirichletNodalKernel
-  #   boundary = '0 1 2 3'
-  #   variable = 'rot_z'
-  #   value = 0.0
-  #   penalty = 1e6
-   #[]
+ [fx]
+   type = UserForcingFunctionNodalKernel
+   boundary = '8'
+   function = -3
+   variable = 'disp_x'
  []
- 
+[]
 
 [Preconditioning]
   [./smp]
     type = SMP
     full = true
   [../]
-  #[./FDP_jfnk]
-  #  type = FDP
-  #[]
 []
 
 [Executioner]
@@ -113,7 +111,6 @@
   line_search = 'none'
   petsc_options_iname = '-pc_type'
   petsc_options_value = 'lu'
-  petsc_options = '-ksp_view_pmat'
   nl_rel_tol = 1e-10
   nl_abs_tol = 1e-8
   dt = 1.0
@@ -149,7 +146,7 @@
     variable = rot_x
     save_in = react_rot_x
     through_thickness_order = SECOND
-    penalty = 1e6
+    penalty = 1e-6
   []
   [solid_rot_y]
     type = ADStressDivergenceShell2
@@ -157,7 +154,7 @@
     variable = rot_y
     save_in = react_rot_y
     through_thickness_order = SECOND
-    penalty = 1e6
+    penalty = 1e-6
   []
   [solid_rot_z]
     type = ADStressDivergenceShell2
@@ -165,7 +162,7 @@
     variable = rot_z
     save_in = react_rot_z
     through_thickness_order = SECOND
-    penalty = 1e6
+    penalty = 1e-6
   []
 []
 
@@ -197,71 +194,61 @@
     type = ADComputeLinearElasticStress
     base_name = t_points_1
   []
-  [total_strain_xx_0]
+  [total_strain_yy_0]
     type = ADRankTwoCartesianComponent
     rank_two_tensor = t_points_0_total_strain
-    property_name = 'total_strain_xx_0t'
-    index_i = 0
-    index_j = 0
+    property_name = 'total_strain_yy_0t'
+    index_i = 1
+    index_j = 1
     outputs = all
   []
-  [total_strain_xx_1]
+  [total_strain_yy_1]
     type = ADRankTwoCartesianComponent
     rank_two_tensor = t_points_1_total_strain
-    property_name = 'total_strain_xx_1t'
-    index_i = 0
-    index_j = 0
+    property_name = 'total_strain_yy_1t'
+    index_i = 1
+    index_j = 1
     outputs = all
   []
-  [stress_xx_0]
+  [stress_yy_0]
     type = ADRankTwoCartesianComponent
     rank_two_tensor = t_points_0_stress
-    property_name = 'stress_xx_0t'
-    index_i = 0
-    index_j = 0
+    property_name = 'stress_yy_0t'
+    index_i = 1
+    index_j = 1
     outputs = all
   []
-  [stress_xx_1]
+  [stress_yy_1]
     type = ADRankTwoCartesianComponent
     rank_two_tensor = t_points_1_stress
-    property_name = 'stress_xx_1t'
-    index_i = 0
-    index_j = 0
+    property_name = 'stress_yy_1t'
+    index_i = 1
+    index_j = 1
     outputs = all
   []
 []
 
 [Postprocessors]
-  [zdisp1]
+  [xdisp1]
     type = PointValue
     point = '0 1 0'
-    variable = disp_z
+    variable = disp_x
   []
-  [zdisp2]
+  [xdisp2]
     type = PointValue
-    point = '1 1 0'
-    variable = disp_z
+    point = '0 1 1'
+    variable = disp_x
   []
-  [zreact_bottom]
+  [xreact_right]
     type = NodalSum
-    boundary = '5'
-    variable = react_disp_z
+    boundary = 8
+    variable = react_disp_x
   []
-  [zreact_top]
+  [xreact_left]
     type = NodalSum
-    boundary = '7'
-    variable = react_disp_z
+    boundary = 6
+    variable = react_disp_x
   []
-  # [y_rot_react_top]
-  #   type = NodalSum
-  #   boundary = '7'
-  #   variable = react_rot_y
-  # []
-  # [y_rot_react_bottom]
-  #   type = NodalSum
-  #   boundary = '5'
-  #   variable = react_rot_y
-  # []
 []
 
 [Outputs]
