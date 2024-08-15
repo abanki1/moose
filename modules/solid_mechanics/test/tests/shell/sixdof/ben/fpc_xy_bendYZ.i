@@ -39,7 +39,7 @@
   [xy_fix_x]
     type = DirichletBC
     variable = disp_x
-    boundary =  '6' 
+    boundary =  '5' #bottom 
     value = 0.0
   []
   [xy_fix_y]
@@ -83,7 +83,7 @@
 [NodalKernels]
   [fz]
     type = UserForcingFunctionNodalKernel
-    boundary = '7' #'right'
+    boundary = '7' #'top'
     function = -3
     variable = 'disp_z'
   []
@@ -113,8 +113,9 @@
   line_search = 'none'
   petsc_options_iname = '-pc_type'
   petsc_options_value = 'lu'
-  nl_rel_tol = 1e-15
-  nl_abs_tol = 1e-50
+  petsc_options = '-ksp_view_pmat'
+  nl_rel_tol = 1e-10
+  nl_abs_tol = 1e-8
   dt = 1.0
   dtmin = 1.0
   end_time = 1.0
@@ -148,7 +149,7 @@
     variable = rot_x
     save_in = react_rot_x
     through_thickness_order = SECOND
-    penalty = 1e-6
+    penalty = 1e6
   []
   [solid_rot_y]
     type = ADStressDivergenceShell2
@@ -156,7 +157,7 @@
     variable = rot_y
     save_in = react_rot_y
     through_thickness_order = SECOND
-    penalty = 1e-6
+    penalty = 1e6
   []
   [solid_rot_z]
     type = ADStressDivergenceShell2
@@ -164,7 +165,7 @@
     variable = rot_z
     save_in = react_rot_z
     through_thickness_order = SECOND
-    penalty = 1e-6
+    penalty = 1e6
   []
 []
 

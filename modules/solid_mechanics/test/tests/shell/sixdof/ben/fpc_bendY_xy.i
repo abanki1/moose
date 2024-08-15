@@ -93,13 +93,13 @@
     # boundary = 'left right top bottom'
     value = 0.0
   []
-  [xy_pull_z]
-    type = DirichletBC
-    variable = disp_z
-    boundary = '8' #right
-    # boundary = 'right'
-    value = 0.01
-  []
+  # [xy_pull_z]
+  #   type = DirichletBC
+  #   variable = disp_z
+  #   boundary = '8' #right
+  #   # boundary = 'right'
+  #   value = 0.01
+  # []
 []
 
 # [DiracKernels]
@@ -112,12 +112,12 @@
 # []
 
 [NodalKernels]
-#  [fz]
-#    type = UserForcingFunctionNodalKernel
-#    boundary = 'right'
-#    function = -3
-#    variable = 'disp_z'
-#  []
+ [fz]
+   type = UserForcingFunctionNodalKernel
+   boundary = '7' #'right'
+   function = -3
+   variable = 'disp_z'
+ []
  #[penaltyrot_X]
  #   type = PenaltyDirichletNodalKernel
  #   boundary = '0 1 2 3'
@@ -270,7 +270,7 @@
   []
   [zdisp2]
     type = PointValue
-    point = '1 0.01 0'
+    point = '1 1 0'
     variable = disp_z
   []
   [zreact_right]
