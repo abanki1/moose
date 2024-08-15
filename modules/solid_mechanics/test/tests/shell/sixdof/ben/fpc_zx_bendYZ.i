@@ -3,6 +3,12 @@
     type = FileMeshGenerator
     file = flatplates_zx.e
   []
+  [rotate]
+    type = TransformGenerator
+    input = mesh
+    transform = ROTATE
+    vector_value = '0 45 0' #5-right 6-left 7-top 8-right
+  []
 []
 
 [Variables]

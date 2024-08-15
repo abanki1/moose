@@ -19,13 +19,13 @@
 [Mesh]
   [mesh]
     type = FileMeshGenerator
-    file = flatplates_xy.e #5-bottom 6-left 7-top 8-right
+    file = flatplates_xy.e 
   []
   [rotate]
     type = TransformGenerator
     input = mesh
     transform = ROTATE
-    vector_value = '45 0 0'
+    vector_value = '0 45 0' #5-right 6-left 7-top 8-right
   []
 []
 
@@ -261,12 +261,12 @@
 [Postprocessors]
   [zdisp1]
     type = PointValue
-    point = '0.707 0.707 0'
+    point = '1 0.707 0.707'
     variable = disp_z
   []
   [zdisp2]
     type = PointValue
-    point = '0 1.414 0'
+    point = '0 0.707 0.707'
     variable = disp_z
   []
   [zreact_right]
@@ -279,16 +279,6 @@
     boundary = '6'
     variable = react_disp_z
   []
-  # [y_rot_react_right]
-  #   type = NodalSum
-  #   boundary = 'right'
-  #   variable = react_rot_y
-  # []
-  # [y_rot_react_left]
-  #   type = NodalSum
-  #   boundary = 'left'
-  #   variable = react_rot_y
-  # []
 []
 
 [Outputs]
