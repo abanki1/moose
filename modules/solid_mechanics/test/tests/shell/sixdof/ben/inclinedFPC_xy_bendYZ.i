@@ -240,12 +240,12 @@
 [Postprocessors]
   [zdisp1]
     type = PointValue
-    point = '0 1 0'
+    point = '0.707 0.707 0'
     variable = disp_z
   []
   [zdisp2]
     type = PointValue
-    point = '1 1 0'
+    point = '0 1.414 0'
     variable = disp_z
   []
   [zreact_bottom]
