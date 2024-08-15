@@ -1,7 +1,7 @@
 [Mesh]
   [mesh]
     type = FileMeshGenerator
-    file = flatplates_yz.e #5-bottom 6-left 7-top 8-right
+    file = flatplates_zx.e
   []
 []
 
@@ -36,46 +36,46 @@
 []
 
 [BCs]
-    [yz_fix_x]
-        type = DirichletBC
-        variable = disp_x
-        boundary = '6'
-        value = 0.0
-    []
-  [yz_fix_y]
-    type = DirichletBC
-    variable = disp_y
-    boundary = '6'
-    value = 0.0
-  []
-  [yz_fix_z]
+  [zx_fix_z]
     type = DirichletBC
     variable = disp_z
     boundary = '5 6 7 8'
     value = 0.0
   []
-  [yz_fix_rot_x]
+  [zx_fix_x]
+    type = DirichletBC
+    variable = disp_x
+    boundary = '5'
+    value = 0.0
+  []
+  [zx_fix_y]
+    type = DirichletBC
+    variable = disp_y
+    boundary = '5'
+    value = 0.0
+  []
+  [zx_fix_rot_x]
     type = DirichletBC
     variable = rot_x
-    boundary = '6'
+    boundary = '5'
     value = 0.0
   []
-  [yz_fix_rot_y]
+  [zx_fix_rot_y]
     type = DirichletBC
     variable = rot_y
-    boundary = '6'
+    boundary = '5'
     value = 0.0
   []
-  [yz_fix_rot_z]
+  [zx_fix_rot_z]
     type = DirichletBC
     variable = rot_z
-    boundary = '6'
+    boundary = '5'
     value = 0.0
   []
-#   [yz_pull_x]
+#   [zx_pull_z]
 #     type = DirichletBC
-#     variable = disp_x
-#     boundary = '8'
+#     variable = disp_y
+#     boundary = '7'
 #     value = -0.01
 #   []
 []
@@ -92,9 +92,9 @@
 [NodalKernels]
  [fx]
    type = UserForcingFunctionNodalKernel
-   boundary = '8'
+   boundary = '7'
    function = -3
-   variable = 'disp_x'
+   variable = 'disp_y'
  []
 []
 
@@ -194,60 +194,60 @@
     type = ADComputeLinearElasticStress
     base_name = t_points_1
   []
-  [total_strain_yy_0]
+  [total_strain_zz_0]
     type = ADRankTwoCartesianComponent
     rank_two_tensor = t_points_0_total_strain
-    property_name = 'total_strain_yy_0t'
-    index_i = 1
-    index_j = 1
+    property_name = 'total_strain_zz_0t'
+    index_i = 2
+    index_j = 2
     outputs = all
   []
-  [total_strain_yy_1]
+  [total_strain_zz_1]
     type = ADRankTwoCartesianComponent
     rank_two_tensor = t_points_1_total_strain
-    property_name = 'total_strain_yy_1t'
-    index_i = 1
-    index_j = 1
+    property_name = 'total_strain_zz_1t'
+    index_i = 2
+    index_j = 2
     outputs = all
   []
-  [stress_yy_0]
+  [stress_zz_0]
     type = ADRankTwoCartesianComponent
     rank_two_tensor = t_points_0_stress
-    property_name = 'stress_yy_0t'
-    index_i = 1
-    index_j = 1
+    property_name = 'stress_zz_0t'
+    index_i = 2
+    index_j = 2
     outputs = all
   []
-  [stress_yy_1]
+  [stress_zz_1]
     type = ADRankTwoCartesianComponent
     rank_two_tensor = t_points_1_stress
-    property_name = 'stress_yy_1t'
-    index_i = 1
-    index_j = 1
+    property_name = 'stress_zz_1t'
+    index_i = 2
+    index_j = 2
     outputs = all
   []
 []
 
 [Postprocessors]
-  [xdisp1]
+  [ydisp1]
     type = PointValue
-    point = '0 1 0'
-    variable = disp_x
+    point = '1 0 1'
+    variable = disp_y
   []
-  [xdisp2]
+  [ydisp2]
     type = PointValue
-    point = '0 1 1'
-    variable = disp_x
+    point = '1 0 0'
+    variable = disp_y
   []
-  [xreact_right]
+  [yreact_right]
     type = NodalSum
-    boundary = 8
-    variable = react_disp_x
+    boundary = 7
+    variable = react_disp_y
   []
-  [xreact_left]
+  [zreact_left]
     type = NodalSum
-    boundary = 6
-    variable = react_disp_x
+    boundary = 5
+    variable = react_disp_y
   []
 []
 

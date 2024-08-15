@@ -93,7 +93,7 @@
  [fx]
    type = UserForcingFunctionNodalKernel
    boundary = '8'
-   function = -3
+   function = 1
    variable = 'disp_x'
  []
 []
