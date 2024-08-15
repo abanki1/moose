@@ -78,12 +78,6 @@
     boundary = '6' #left
     value = 0.0
   []
-  # [xy_pull_z]
-  #   type = DirichletBC
-  #   variable = disp_z
-  #   boundary = '7' #top
-  #   value = 0.01
-  # []
 []
 
 [NodalKernels]
@@ -97,7 +91,6 @@
     type = UserForcingFunctionNodalKernel
     variable = disp_z
     boundary = '8' #right
-    # boundary = 'top'
     function = -0.707
   []
  []
