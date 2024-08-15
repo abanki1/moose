@@ -45,37 +45,37 @@
   [xy_fix_x]
     type = DirichletBC
     variable = disp_x
-    boundary =  '5' #bottom 
+    boundary =  '6' #left
     value = 0.0
   []
   [xy_fix_y]
     type = DirichletBC
     variable = disp_y
-    boundary = '6 8 5 7' #left
+    boundary = '6' #left
     value = 0.0
   []
   [xy_fix_z]
     type = DirichletBC
     variable = disp_z
-    boundary = '5' #bottom
+    boundary = '6' #left
     value = 0.0
   []
   [xy_fix_rot_x]
     type = DirichletBC
     variable = rot_x
-    boundary = '5' #bottom
+    boundary = '6' #left
     value = 0.0
   []
   [xy_fix_rot_y]
     type = DirichletBC
     variable = rot_y
-    boundary = '5' #bottom
+    boundary = '6' #left
     value = 0.0
   []
   [xy_fix_rot_z]
     type = DirichletBC
     variable = rot_z
-    boundary = '5' #bottom
+    boundary = '6' #left
     value = 0.0
   []
   # [xy_pull_z]
@@ -87,30 +87,26 @@
 []
 
 [NodalKernels]
-  [fz]
+  [xy_pull_y]
     type = UserForcingFunctionNodalKernel
-    boundary = '7' #'top'
-    function = -3
-    variable = 'disp_z'
+    variable = disp_y
+    boundary = '8' #right
+    function = 0.707
   []
-  #[penaltyrot_X]
-  #   type = PenaltyDirichletNodalKernel
-  #   boundary = '0 1 2 3'
-  #   variable = 'rot_z'
-  #   value = 0.0
-  #   penalty = 1e6
-   #[]
+  [xy_pull_z]
+    type = UserForcingFunctionNodalKernel
+    variable = disp_z
+    boundary = '8' #right
+    # boundary = 'top'
+    function = -0.707
+  []
  []
  
-
 [Preconditioning]
   [./smp]
     type = SMP
     full = true
   [../]
-  #[./FDP_jfnk]
-  #  type = FDP
-  #[]
 []
 
 [Executioner]
@@ -240,13 +236,23 @@
 [Postprocessors]
   [zdisp1]
     type = PointValue
-    point = '1 0.707 0.707'
+    point = '1 0 0'
     variable = disp_z
   []
   [zdisp2]
     type = PointValue
-    point = '0 0.707 0.707'
+    point = '1 0.707 0.707'
     variable = disp_z
+  []
+  [ydisp1]
+    type = PointValue
+    point = '1 0 0'
+    variable = disp_y
+  []
+  [ydisp2]
+    type = PointValue
+    point = '1 0.707 0.707'
+    variable = disp_y
   []
   [zreact_bottom]
     type = NodalSum
@@ -257,6 +263,18 @@
     type = NodalSum
     boundary = '7'
     variable = react_disp_z
+  []
+  [yreact_bottom]
+    type = NodalSum
+    boundary = '5' #'bottom'
+    # boundary = 'bottom'
+    variable = react_disp_y
+  []
+  [yreact_top]
+    type = NodalSum
+    boundary = '7'
+    # boundary = 'top'
+    variable = react_disp_y
   []
   # [y_rot_react_top]
   #   type = NodalSum

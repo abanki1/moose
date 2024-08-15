@@ -1,33 +1,35 @@
-# [Mesh]
-#   # [mesh]
-#   #   type = FileMeshGenerator
-#   #   file = flatplates_xy.e #5-bottom 6-left 7-top 8-right
-#   # []
-#   [gmg]
-#     type = GeneratedMeshGenerator #In 2D, bottom =0, right = 1, top = 2, left = 3
-#     dim = 2
-#     nx = 1
-#     ny = 1
-#     xmin = 0.0
-#     xmax = 1.0
-#     ymin = 0.0
-#     ymax = 1
-#     show_info = true
-#   []
-# []
-
 [Mesh]
-  [mesh]
-    type = FileMeshGenerator
-    file = flatplates_xy.e 
+  [gmg]
+    type = GeneratedMeshGenerator #In 2D, bottom =0, right = 1, top = 2, left = 3
+    dim = 2
+    nx = 4
+    ny = 4
+    xmin = 0.0
+    xmax = 1.0
+    ymin = 0.0
+    ymax = 1.0
+    show_info = true
   []
   [rotate]
-    type = TransformGenerator
-    input = mesh
-    transform = ROTATE
-    vector_value = '0 45 0' #5-right 6-left 7-top 8-right
-  []
+        type = TransformGenerator
+        input = gmg
+        transform = ROTATE
+        vector_value = '0 45 0' #5-right 6-left 7-top 8-right
+      []
 []
+
+# [Mesh]
+#   [mesh]
+#     type = FileMeshGenerator
+#     file = flatplates_xy.e 
+#   []
+#   [rotate]
+#     type = TransformGenerator
+#     input = mesh
+#     transform = ROTATE
+#     vector_value = '0 45 0' #5-right 6-left 7-top 8-right
+#   []
+# []
 
 [Variables]
   [disp_x]
@@ -63,65 +65,109 @@
   [xy_fix_x]
     type = DirichletBC
     variable = disp_x
-    boundary = '6' 
+    # boundary = '5' 
+    boundary = 'bottom'
     value = 0.0
   []
   [xy_fix_y]
     type = DirichletBC
     variable = disp_y
-    boundary = '6 8 5 7' #left
+    # boundary = '6 8 5 7'
+    boundary = 'bottom'
     value = 0.0
   []
   [xy_fix_z]
     type = DirichletBC
     variable = disp_z
-    boundary = '6' #left
-    # boundary = 'left' #left 
+    # boundary = '5' #bottom
+    boundary = 'bottom'
     value = 0.0
   []
   [xy_fix_rot_x]
     type = DirichletBC
     variable = rot_x
-    boundary = '6' #left
+    # boundary = '5' #bottom
+    boundary = 'bottom'
     value = 0.0
   []
   [xy_fix_rot_y]
     type = DirichletBC
     variable = rot_y
-    boundary = '6' #left
+    # boundary = '5' #bottom
+    boundary = 'bottom'
     value = 0.0
   []
   [xy_fix_rot_z]
     type = DirichletBC
     variable = rot_z
-    boundary = '6' #left
+    # boundary = '5' #bottom
+    boundary = 'bottom'
     # boundary = 'left right top bottom'
     value = 0.0
   []
   # [xy_pull_z]
   #   type = DirichletBC
   #   variable = disp_z
-  #   boundary = '8' #right
+  #   # boundary = '7' #top
+  #   boundary = 'top'
   #   # boundary = 'right'
-  #   value = 0.01
+  #   value = -0.0707
+  # []
+  # [xy_pull_y]
+  #   type = DirichletBC
+  #   variable = disp_y
+  #   # boundary = '7' #top
+  #   boundary = 'top'
+  #   # boundary = 'right'
+  #   value = 0.0707
   # []
 []
 
-[NodalKernels]
- [fz]
-   type = UserForcingFunctionNodalKernel
-   boundary = '8' #'right'
-   function = -3
-   variable = 'disp_z'
- []
- #[penaltyrot_X]
- #   type = PenaltyDirichletNodalKernel
- #   boundary = '0 1 2 3'
- #   variable = 'rot_z'
- #   value = 0.0
- #   penalty = 1e6
-  #[]
+[DiracKernels]
+  # [./point1]
+  #   type = ConstantPointSource
+  #   variable = disp_y
+  #   point = '0 1 1'
+  #   value = -2.5 # P = 10
+  # [../]
+[]
 
+[NodalKernels]
+#  [fz]
+#    type = UserForcingFunctionNodalKernel
+#    boundary = '8' #'right'
+#    function = -3
+#    variable = 'disp_z'
+#  []
+#  #[penaltyrot_X]
+#  #   type = PenaltyDirichletNodalKernel
+#  #   boundary = '0 1 2 3'
+#  #   variable = 'rot_z'
+#  #   value = 0.0
+#  #   penalty = 1e6
+#   #[]
+# [xy_pull_x]
+#   type = UserForcingFunctionNodalKernel
+#   variable = disp_x
+#   # boundary = '7' #top
+#   boundary = 'top'
+#   function = 0.707
+# []
+[xy_pull_y]
+  type = UserForcingFunctionNodalKernel
+  variable = disp_y
+  # boundary = '7' #top
+  boundary = 'top'
+  function = 0.707
+[]
+  [xy_pull_z]
+    type = UserForcingFunctionNodalKernel
+    variable = disp_z
+    # boundary = '7' #top
+    boundary = 'top'
+    function = -0.707
+  []
+    
 []
 
 [Preconditioning]
@@ -129,9 +175,6 @@
      type = SMP
      full = true
   [../]
-  #[./FDP_jfnk]
-  #  type = FDP
-  #[]
 []
 
 [Executioner]
@@ -269,15 +312,39 @@
     point = '0 0.707 0.707'
     variable = disp_z
   []
-  [zreact_right]
+  [ydisp1]
+    type = PointValue
+    point = '1 0.707 0.707'
+    variable = disp_y
+  []
+  [ydisp2]
+    type = PointValue
+    point = '0 0.707 0.707'
+    variable = disp_y
+  []
+  [zreact_bottom]
     type = NodalSum
-    boundary = '8' #'right'
+    # boundary = '5' #'bottom'
+    boundary = 'bottom'
     variable = react_disp_z
   []
-  [zreact_left]
+  [zreact_top]
     type = NodalSum
-    boundary = '6'
+    # boundary = '7'
+    boundary = 'top'
     variable = react_disp_z
+  []
+  [yreact_bottom]
+    type = NodalSum
+    # boundary = '5' #'bottom'
+    boundary = 'bottom'
+    variable = react_disp_y
+  []
+  [yreact_top]
+    type = NodalSum
+    # boundary = '7'
+    boundary = 'top'
+    variable = react_disp_y
   []
 []
 
