@@ -39,7 +39,7 @@
   [xy_fix_x]
     type = DirichletBC
     variable = disp_x
-    boundary = '6 8 5 7' #left 
+    boundary =  '6' 
     value = 0.0
   []
   [xy_fix_y]
@@ -79,15 +79,6 @@
     value = 0.01
   []
 []
-
-# [DiracKernels]
-#  [point1]
-#    type = ConstantPointSource
-#    variable = disp_x
-#    point = '1 0 1'
-#    value = -2.5 # P = 10
-#  []
-# []
 
 [Preconditioning]
   [./smp]
@@ -243,16 +234,16 @@
     boundary = '7'
     variable = react_disp_z
   []
-  [y_rot_react_top]
-    type = NodalSum
-    boundary = '7'
-    variable = react_rot_y
-  []
-  [y_rot_react_bottom]
-    type = NodalSum
-    boundary = '5'
-    variable = react_rot_y
-  []
+  # [y_rot_react_top]
+  #   type = NodalSum
+  #   boundary = '7'
+  #   variable = react_rot_y
+  # []
+  # [y_rot_react_bottom]
+  #   type = NodalSum
+  #   boundary = '5'
+  #   variable = react_rot_y
+  # []
 []
 
 [Outputs]
