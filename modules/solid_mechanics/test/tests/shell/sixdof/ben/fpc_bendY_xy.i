@@ -11,7 +11,7 @@
     xmin = 0.0
     xmax = 1.0
     ymin = 0.0
-    ymax = 1.0
+    ymax = 1
     show_info = true
   []
 []
@@ -50,14 +50,15 @@
   [xy_fix_x]
     type = DirichletBC
     variable = disp_x
-    boundary = 'left right top bottom' #left 
+    boundary = left 
     value = 0.0
   []
   [xy_fix_y]
     type = DirichletBC
     variable = disp_y
     # boundary = '6 8 5 7' #left
-    boundary = 'left right top bottom' #left 
+    boundary = left 
+    # boundary = 'left' #left 
     value = 0.0
   []
   [xy_fix_z]
@@ -71,14 +72,14 @@
     type = DirichletBC
     variable = rot_x
     # boundary = '6' #left
-    boundary = 'left right top bottom'
+    boundary = 'left'
     value = 0.0
   []
   [xy_fix_rot_y]
     type = DirichletBC
     variable = rot_y
     # boundary = '6' #left
-    boundary = 'left right top bottom'
+    boundary = 'left'
     value = 0.0
   []
   [xy_fix_rot_z]
@@ -88,13 +89,13 @@
     boundary = 'left right top bottom'
     value = 0.0
   []
-  [xy_pull_z]
-    type = DirichletBC
-    variable = disp_z
-    # boundary = '8' #right
-    boundary = 'right'
-    value = 0.01
-  []
+  # [xy_pull_z]
+  #   type = DirichletBC
+  #   variable = disp_z
+  #   # boundary = '8' #right
+  #   boundary = 'right'
+  #   value = 0.001
+  # []
 []
 
 # [DiracKernels]
@@ -106,23 +107,31 @@
 #  []
 # []
 
-#[NodalKernels]
-#  [fx]
-#    type = UserForcingFunctionNodalKernel
-#    boundary = '3 4'
-#    function = 1
-#    variable = 'disp_x'
-#  []
-#[]
+[NodalKernels]
+ [fz]
+   type = UserForcingFunctionNodalKernel
+   boundary = 'right'
+   function = -3
+   variable = 'disp_z'
+ []
+ #[penaltyrot_X]
+ #   type = PenaltyDirichletNodalKernel
+ #   boundary = '0 1 2 3'
+ #   variable = 'rot_z'
+ #   value = 0.0
+ #   penalty = 1e6
+  #[]
+
+[]
 
 [Preconditioning]
-  # [./smp]
-  #   type = SMP
-  #   full = true
-  # [../]
-  [./FDP_jfnk]
-    type = FDP
-  []
+  [./smp]
+     type = SMP
+     full = true
+  [../]
+  #[./FDP_jfnk]
+  #  type = FDP
+  #[]
 []
 
 [Executioner]
@@ -257,29 +266,29 @@
   []
   [zdisp2]
     type = PointValue
-    point = '1 1 0'
+    point = '1 0.01 0'
     variable = disp_z
   []
   [zreact_right]
     type = NodalSum
-    boundary = 8
+    boundary = 'right'
     variable = react_disp_z
   []
   [zreact_left]
     type = NodalSum
-    boundary = 6
+    boundary = 'left'
     variable = react_disp_z
   []
-  [y_rot_react_right]
-    type = NodalSum
-    boundary = 8
-    variable = react_rot_y
-  []
-  [y_rot_react_left]
-    type = NodalSum
-    boundary = 6
-    variable = react_rot_y
-  []
+  # [y_rot_react_right]
+  #   type = NodalSum
+  #   boundary = 'right'
+  #   variable = react_rot_y
+  # []
+  # [y_rot_react_left]
+  #   type = NodalSum
+  #   boundary = 'left'
+  #   variable = react_rot_y
+  # []
 []
 
 [Outputs]

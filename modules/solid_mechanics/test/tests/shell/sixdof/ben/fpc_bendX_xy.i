@@ -90,13 +90,13 @@
 # []
 
 [Preconditioning]
-  # [./smp]
-  #   type = SMP
-  #   full = true
-  # [../]
-  [./FDP_jfnk]
-    type = FDP
-  []
+  [./smp]
+    type = SMP
+    full = true
+  [../]
+  #[./FDP_jfnk]
+  #  type = FDP
+  #[]
 []
 
 [Executioner]
@@ -105,8 +105,8 @@
   line_search = 'none'
   petsc_options_iname = '-pc_type'
   petsc_options_value = 'lu'
-  nl_rel_tol = 1e-10
-  nl_abs_tol = 1e-8
+  nl_rel_tol = 1e-15
+  nl_abs_tol = 1e-50
   dt = 1.0
   dtmin = 1.0
   end_time = 1.0
