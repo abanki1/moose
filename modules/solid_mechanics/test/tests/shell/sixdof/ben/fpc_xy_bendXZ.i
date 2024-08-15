@@ -102,15 +102,6 @@
   # []
 []
 
-# [DiracKernels]
-#  [point1]
-#    type = ConstantPointSource
-#    variable = disp_x
-#    point = '1 0 1'
-#    value = -2.5 # P = 10
-#  []
-# []
-
 [NodalKernels]
  [fz]
    type = UserForcingFunctionNodalKernel
