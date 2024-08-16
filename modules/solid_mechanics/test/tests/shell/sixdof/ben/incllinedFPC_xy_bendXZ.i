@@ -18,19 +18,6 @@
       []
 []
 
-# [Mesh]
-#   [mesh]
-#     type = FileMeshGenerator
-#     file = flatplates_xy.e 
-#   []
-#   [rotate]
-#     type = TransformGenerator
-#     input = mesh
-#     transform = ROTATE
-#     vector_value = '0 45 0' #5-right 6-left 7-top 8-right
-#   []
-# []
-
 [Variables]
   [disp_x]
   []
@@ -133,41 +120,18 @@
 []
 
 [NodalKernels]
-#  [fz]
-#    type = UserForcingFunctionNodalKernel
-#    boundary = '8' #'right'
-#    function = -3
-#    variable = 'disp_z'
-#  []
-#  #[penaltyrot_X]
-#  #   type = PenaltyDirichletNodalKernel
-#  #   boundary = '0 1 2 3'
-#  #   variable = 'rot_z'
-#  #   value = 0.0
-#  #   penalty = 1e6
-#   #[]
-# [xy_pull_x]
-#   type = UserForcingFunctionNodalKernel
-#   variable = disp_x
-#   # boundary = '7' #top
-#   boundary = 'top'
-#   function = 0.707
-# []
 [xy_pull_y]
   type = UserForcingFunctionNodalKernel
   variable = disp_y
-  # boundary = '7' #top
-  boundary = 'top'
+  boundary = 'top' #7
   function = 0.707
 []
   [xy_pull_z]
     type = UserForcingFunctionNodalKernel
     variable = disp_z
-    # boundary = '7' #top
-    boundary = 'top'
+    boundary = 'top' #7
     function = -0.707
   []
-    
 []
 
 [Preconditioning]
